@@ -5,130 +5,104 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>My Flashcards</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --pk: #f5b8cc; --pkl: #fce8ef; --pkd: #d4607f;
-  --gn: #a8d9b5; --gnl: #ddf0e4; --gnd: #4a9962;
-  --ye: #fde8a0; --yed: #b38600;
-  --cream: #fdf7f0; --txt: #2d2320; --muted: #9a8a85;
-  --shadow: 0 4px 24px rgba(180,100,130,.12); --r: 18px;
-}
-body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--txt); min-height: 100vh; }
-.bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.b { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .28; }
-.b1 { width: 400px; height: 400px; background: var(--pk); top: -120px; left: -100px; animation: d1 14s ease-in-out infinite; }
-.b2 { width: 320px; height: 320px; background: var(--gn); bottom: -80px; right: -80px; animation: d2 18s ease-in-out infinite; }
-@keyframes d1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px,28px); } }
-@keyframes d2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-28px,-38px); } }
-.app { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 26px 16px 70px; }
-h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: var(--pkd); text-align: center; }
-.sub { text-align: center; color: var(--muted); font-size: .88rem; margin-top: 4px; margin-bottom: 24px; }
-.tabs { display: flex; gap: 6px; background: #fff; border-radius: 50px; padding: 5px; box-shadow: var(--shadow); margin-bottom: 22px; }
-.tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: .85rem; cursor: pointer; color: var(--muted); transition: all .2s; }
-.tab.on { background: var(--pk); color: var(--txt); font-weight: 500; }
-.stats { display: flex; gap: 10px; margin-bottom: 18px; }
-.sp { flex: 1; background: #fff; border-radius: 14px; padding: 11px 6px; text-align: center; box-shadow: var(--shadow); }
-.sp .n { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; line-height: 1; }
-.sp .l { font-size: .68rem; color: var(--muted); margin-top: 2px; }
-.sp.pk .n { color: var(--pkd); } .sp.gn .n { color: var(--gnd); } .sp.gr .n { color: var(--muted); }
-.folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
-.folder-card { background: #fff; border-radius: var(--r); padding: 22px 14px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: all .2s; border: 2px solid transparent; }
-.folder-card:hover, .folder-card:active { transform: translateY(-3px); border-color: var(--pk); }
-.folder-card .fi { font-size: 2rem; margin-bottom: 8px; }
-.folder-card .fn { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600; }
-.folder-card .fc2 { font-size: .73rem; color: var(--muted); margin-top: 3px; }
-.folder-card .fp { margin-top: 9px; height: 5px; background: var(--pkl); border-radius: 50px; overflow: hidden; }
-.folder-card .fpf { height: 100%; background: linear-gradient(90deg, var(--pk), var(--gn)); border-radius: 50px; }
-.add-folder { background: var(--pkl); border: 2px dashed var(--pk); border-radius: var(--r); padding: 22px 14px; text-align: center; cursor: pointer; color: var(--pkd); font-size: .9rem; font-weight: 500; }
-.add-folder .fi { font-size: 1.8rem; margin-bottom: 6px; }
-.study-all { display: block; width: 100%; padding: 13px; background: linear-gradient(135deg, var(--pk), var(--gn)); border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; cursor: pointer; margin-bottom: 16px; }
-.study-all:hover { opacity: .88; }
-.bc { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: .85rem; color: var(--muted); flex-wrap: wrap; }
-.bc button { background: none; border: none; cursor: pointer; color: var(--pkd); font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500; padding: 0; }
-.deck-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
-.chip { padding: 6px 14px; border-radius: 50px; border: 2px solid transparent; font-size: .82rem; cursor: pointer; background: #fff; color: var(--muted); font-family: 'DM Sans', sans-serif; transition: all .18s; }
-.chip.on { border-color: var(--pkd); color: var(--pkd); background: var(--pkl); font-weight: 500; }
-.pbar { margin-bottom: 16px; }
-.plabel { display: flex; justify-content: space-between; font-size: .76rem; color: var(--muted); margin-bottom: 4px; }
-.ptrack { background: #fff; border-radius: 50px; height: 7px; overflow: hidden; }
-.pfill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--pk), var(--gn)); transition: width .4s; }
-.card-area { perspective: 1200px; margin-bottom: 16px; cursor: pointer; min-height: 250px; }
-.fc { width: 100%; min-height: 250px; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
-.fc.flipped { transform: rotateY(180deg); }
-.face { position: absolute; inset: 0; background: #fff; border-radius: var(--r); box-shadow: var(--shadow); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 24px; text-align: center; }
-.face.back { transform: rotateY(180deg); background: var(--gnl); }
-.dtag { position: absolute; top: 12px; left: 13px; font-size: .68rem; font-weight: 500; color: var(--pkd); background: var(--pkl); padding: 2px 8px; border-radius: 50px; }
-.stag { position: absolute; top: 12px; right: 13px; font-size: .68rem; padding: 2px 8px; border-radius: 50px; font-weight: 500; }
-.stag.new { background: #eee; color: #666; } .stag.hard { background: var(--pkl); color: var(--pkd); } .stag.medium { background: var(--ye); color: var(--yed); } .stag.easy { background: var(--gnl); color: var(--gnd); }
-.cq { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 300; line-height: 1.5; }
-.chint { font-size: .75rem; color: var(--muted); margin-top: 9px; }
-.ca { font-size: .95rem; line-height: 1.65; }
-.ca b { color: var(--gnd); }
-.ctx { display: block; font-size: .77rem; color: var(--muted); margin-top: 9px; font-style: italic; }
-.fhint { text-align: center; font-size: .76rem; color: var(--muted); margin-bottom: 11px; }
-.fhint span { background: #fff; padding: 3px 11px; border-radius: 50px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+body { font-family: sans-serif; background: #fdf7f0; color: #2d2320; min-height: 100vh; padding: 20px; }
+#error-box { display: none; background: #fee; border: 2px solid red; padding: 12px; border-radius: 8px; margin: 12px 0; font-size: 13px; word-break: break-all; }
+h1 { font-size: 1.8rem; color: #d4607f; text-align: center; margin-bottom: 6px; }
+.sub { text-align: center; color: #9a8a85; font-size: .88rem; margin-bottom: 20px; }
+.tabs { display: flex; gap: 6px; background: #fff; border-radius: 50px; padding: 5px; margin-bottom: 20px; }
+.tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 50px; font-size: .85rem; cursor: pointer; color: #9a8a85; }
+.tab.on { background: #f5b8cc; color: #2d2320; font-weight: bold; }
+#panel-study, #panel-add, #panel-manage { min-height: 100px; }
+.stats { display: flex; gap: 10px; margin-bottom: 16px; }
+.sp { flex: 1; background: #fff; border-radius: 12px; padding: 12px 6px; text-align: center; }
+.sp .n { font-size: 1.5rem; font-weight: bold; }
+.sp.pk .n { color: #d4607f; } .sp.gn .n { color: #4a9962; } .sp.gr .n { color: #9a8a85; }
+.sp .l { font-size: .7rem; color: #9a8a85; }
+.folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+.folder-card { background: #fff; border-radius: 16px; padding: 20px 14px; text-align: center; cursor: pointer; border: 2px solid #fce8ef; }
+.folder-card .fi { font-size: 2rem; margin-bottom: 6px; }
+.folder-card .fn { font-size: 1rem; font-weight: bold; }
+.folder-card .fc2 { font-size: .75rem; color: #9a8a85; margin-top: 3px; }
+.folder-card .fp { margin-top: 8px; height: 5px; background: #fce8ef; border-radius: 50px; }
+.folder-card .fpf { height: 100%; background: #f5b8cc; border-radius: 50px; }
+.btn-main { display: block; width: 100%; padding: 13px; background: #f5b8cc; border: none; border-radius: 12px; font-size: .95rem; font-weight: bold; cursor: pointer; margin-bottom: 14px; }
+.add-folder-btn { background: #fce8ef; border: 2px dashed #f5b8cc; border-radius: 16px; padding: 20px 14px; text-align: center; cursor: pointer; color: #d4607f; font-weight: bold; }
+.bc { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; font-size: .85rem; color: #9a8a85; flex-wrap: wrap; }
+.bc button { background: none; border: none; cursor: pointer; color: #d4607f; font-size: .85rem; font-weight: bold; }
+.deck-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip { padding: 5px 13px; border-radius: 50px; border: 2px solid #fce8ef; background: #fff; font-size: .82rem; cursor: pointer; color: #9a8a85; }
+.chip.on { border-color: #d4607f; color: #d4607f; background: #fce8ef; font-weight: bold; }
+.pbar { margin-bottom: 14px; }
+.plabel { display: flex; justify-content: space-between; font-size: .75rem; color: #9a8a85; margin-bottom: 4px; }
+.ptrack { background: #fff; border-radius: 50px; height: 7px; }
+.pfill { height: 100%; border-radius: 50px; background: #f5b8cc; transition: width .3s; }
+.card-wrap { background: #fff; border-radius: 16px; padding: 30px 22px; text-align: center; min-height: 200px; cursor: pointer; margin-bottom: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.card-wrap.revealed { background: #ddf0e4; }
+.card-q { font-size: 1.2rem; line-height: 1.5; margin-bottom: 10px; }
+.card-hint { font-size: .8rem; color: #9a8a85; }
+.card-a { font-size: 1rem; line-height: 1.6; }
+.card-ctx { font-size: .78rem; color: #9a8a85; font-style: italic; margin-top: 8px; }
 .abts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
-.ab { padding: 10px; border: none; border-radius: 13px; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.ab small { font-size: .66rem; font-weight: 400; opacity: .75; }
-.ab.hard { background: var(--pkl); color: var(--pkd); } .ab.medium { background: var(--ye); color: var(--yed); } .ab.easy { background: var(--gnl); color: var(--gnd); }
-.nav { display: flex; gap: 8px; justify-content: center; }
-.nb { padding: 8px 18px; border-radius: 50px; border: 2px solid var(--pk); background: #fff; color: var(--txt); font-family: 'DM Sans', sans-serif; font-size: .83rem; cursor: pointer; transition: all .18s; }
-.nb.pri { background: var(--pk); border-color: var(--pk); }
-.form { background: #fff; border-radius: var(--r); padding: 24px; box-shadow: var(--shadow); }
-.form h2 { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 300; color: var(--pkd); margin-bottom: 16px; }
-.fr { margin-bottom: 13px; }
-.fr label { display: block; font-size: .72rem; font-weight: 500; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
-.fr input, .fr textarea, .fr select { width: 100%; padding: 10px 12px; border: 2px solid var(--pkl); border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--txt); background: var(--cream); outline: none; resize: vertical; }
+.ab { padding: 10px; border: none; border-radius: 12px; font-size: .85rem; font-weight: bold; cursor: pointer; }
+.ab.hard { background: #fce8ef; color: #d4607f; }
+.ab.medium { background: #fde8a0; color: #b38600; }
+.ab.easy { background: #ddf0e4; color: #4a9962; }
+.nav { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
+.nb { padding: 8px 18px; border-radius: 50px; border: 2px solid #f5b8cc; background: #fff; cursor: pointer; font-size: .83rem; }
+.nb.pri { background: #f5b8cc; }
+.form-box { background: #fff; border-radius: 16px; padding: 22px; }
+.form-box h2 { font-size: 1.2rem; color: #d4607f; margin-bottom: 14px; }
+.fr { margin-bottom: 12px; }
+.fr label { display: block; font-size: .75rem; font-weight: bold; color: #9a8a85; margin-bottom: 4px; text-transform: uppercase; }
+.fr input, .fr textarea, .fr select { width: 100%; padding: 10px 12px; border: 2px solid #fce8ef; border-radius: 10px; font-size: .9rem; color: #2d2320; background: #fdf7f0; resize: vertical; }
 .fr textarea { min-height: 75px; }
-.fbtns { display: flex; gap: 8px; margin-top: 18px; }
-.bpri { flex: 1; padding: 11px; background: linear-gradient(135deg, var(--pk), var(--gn)); border: none; border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 500; cursor: pointer; }
-.bsec { padding: 11px 18px; background: #fff; border: 2px solid var(--pkl); border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; cursor: pointer; color: var(--muted); }
+.fbtns { display: flex; gap: 8px; margin-top: 16px; }
+.bpri { flex: 1; padding: 11px; background: #f5b8cc; border: none; border-radius: 10px; font-size: .9rem; font-weight: bold; cursor: pointer; }
+.bsec { padding: 11px 16px; background: #fff; border: 2px solid #fce8ef; border-radius: 10px; font-size: .9rem; cursor: pointer; color: #9a8a85; }
 .mlist { display: flex; flex-direction: column; gap: 8px; }
-.mi { background: #fff; border-radius: 13px; padding: 12px 14px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; }
+.mi { background: #fff; border-radius: 12px; padding: 11px 13px; display: flex; align-items: center; gap: 10px; }
 .mq { flex: 1; font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mb { font-size: .68rem; background: var(--pkl); color: var(--pkd); padding: 2px 7px; border-radius: 50px; white-space: nowrap; }
-.ms { font-size: .68rem; background: var(--gnl); color: var(--gnd); padding: 2px 7px; border-radius: 50px; white-space: nowrap; }
-.del { background: none; border: none; cursor: pointer; color: var(--muted); font-size: .95rem; flex-shrink: 0; }
-.done { text-align: center; background: #fff; border-radius: var(--r); padding: 42px 24px; box-shadow: var(--shadow); }
-.done .di { font-size: 3rem; margin-bottom: 13px; }
-.done h2 { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 600; color: var(--gnd); margin-bottom: 6px; }
-.done p { color: var(--muted); margin-bottom: 20px; }
-.empty { text-align: center; padding: 48px 18px; color: var(--muted); }
-.empty .di { font-size: 2.6rem; margin-bottom: 9px; }
-.overlay { display: none; position: fixed; inset: 0; background: rgba(45,35,32,.4); z-index: 100; align-items: center; justify-content: center; }
-.overlay.show { display: flex; }
-.modal { background: #fff; border-radius: var(--r); padding: 26px; max-width: 400px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,.2); }
-.modal h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--pkd); margin-bottom: 14px; }
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--txt); color: #fff; padding: 8px 18px; border-radius: 50px; font-size: .84rem; transition: transform .3s; z-index: 999; pointer-events: none; }
+.mb { font-size: .68rem; background: #fce8ef; color: #d4607f; padding: 2px 7px; border-radius: 50px; }
+.ms { font-size: .68rem; background: #ddf0e4; color: #4a9962; padding: 2px 7px; border-radius: 50px; }
+.del { background: none; border: none; cursor: pointer; color: #9a8a85; font-size: .95rem; }
+.done-box { background: #fff; border-radius: 16px; padding: 40px 22px; text-align: center; }
+.done-box h2 { font-size: 1.5rem; color: #4a9962; margin-bottom: 8px; }
+.done-box p { color: #9a8a85; margin-bottom: 18px; }
+.empty-box { text-align: center; padding: 40px 16px; color: #9a8a85; }
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100; }
+.modal-bg.show { display: flex; align-items: center; justify-content: center; }
+.modal { background: #fff; border-radius: 16px; padding: 24px; width: 90%; max-width: 380px; }
+.modal h3 { font-size: 1.1rem; color: #d4607f; margin-bottom: 14px; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(80px); background: #2d2320; color: #fff; padding: 8px 18px; border-radius: 50px; font-size: .84rem; transition: transform .3s; z-index: 999; }
 .toast.show { transform: translateX(-50%) translateY(0); }
-@media (max-width: 480px) { h1 { font-size: 1.6rem; } .abts { grid-template-columns: 1fr; } .stats { flex-wrap: wrap; } .folder-grid { grid-template-columns: repeat(2,1fr); } }
 </style>
 </head>
 <body>
-<div class="bg"><div class="b b1"></div><div class="b b2"></div></div>
-<div class="app">
-  <h1>My Flashcards</h1>
-  <p class="sub">Tous tes cours en un seul endroit</p>
-  <div class="tabs">
-    <button class="tab on" id="t-study">Reviser</button>
-    <button class="tab" id="t-add">+ Ajouter</button>
-    <button class="tab" id="t-manage">Gerer</button>
-  </div>
-  <div id="panel-study"></div>
-  <div id="panel-add" style="display:none"></div>
-  <div id="panel-manage" style="display:none"></div>
+<h1>My Flashcards</h1>
+<p class="sub">Tous tes cours en un seul endroit</p>
+
+<div id="error-box"></div>
+
+<div class="tabs">
+  <button class="tab on" id="t-study">Reviser</button>
+  <button class="tab" id="t-add">+ Ajouter</button>
+  <button class="tab" id="t-manage">Gerer</button>
 </div>
 
-<div class="overlay" id="folder-modal">
+<div id="panel-study"></div>
+<div id="panel-add" style="display:none"></div>
+<div id="panel-manage" style="display:none"></div>
+
+<div class="modal-bg" id="modal-bg">
   <div class="modal">
     <h3>Nouveau dossier</h3>
-    <div class="fr"><label>Nom</label><input id="fn" type="text" placeholder="Ex: Grammaire, Phonologie..."/></div>
-    <div class="fr"><label>Emoji</label><input id="fi" type="text" placeholder="Ex: pencil" maxlength="4"/></div>
+    <div class="fr"><label>Nom</label><input id="fn" type="text" placeholder="Ex: Grammaire"/></div>
+    <div class="fr"><label>Emoji (colle un emoji ici)</label><input id="fi" type="text" placeholder="🎯" maxlength="8"/></div>
     <div class="fbtns">
-      <button class="bpri" id="btn-confirm-folder">Creer</button>
-      <button class="bsec" id="btn-cancel-folder">Annuler</button>
+      <button class="bpri" id="btn-ok-folder">Creer</button>
+      <button class="bsec" id="btn-ko-folder">Annuler</button>
     </div>
   </div>
 </div>
@@ -136,100 +110,84 @@ h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: v
 <div class="toast" id="toast"></div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+function showErr(e) {
+  var b = document.getElementById('error-box');
+  b.style.display = 'block';
+  b.textContent = 'ERREUR: ' + (e && e.message ? e.message : String(e));
+}
+
+try {
 
 // ── storage ──
 var store = (function() {
-  try {
-    localStorage.setItem('_chk', '1');
-    localStorage.removeItem('_chk');
-    return localStorage;
-  } catch(e) {
-    var mem = {};
-    return {
-      getItem: function(k) { return mem.hasOwnProperty(k) ? mem[k] : null; },
-      setItem: function(k, v) { mem[k] = String(v); }
-    };
-  }
+  try { localStorage.setItem('_x','1'); localStorage.removeItem('_x'); return localStorage; }
+  catch(e) { var m = {}; return { getItem: function(k) { return m[k] !== undefined ? m[k] : null; }, setItem: function(k,v) { m[k] = ''+v; } }; }
 })();
 
-// ── default data ──
-var DEFAULT_SUBJECTS = [
-  { id: 's1', name: 'Civilisation', icon: 'globe' },
-  { id: 's2', name: 'Litterature',  icon: 'book'  }
+// ── data ──
+var SUBJECTS = [
+  { id: 's1', name: 'Civilisation', icon: '🌍' },
+  { id: 's2', name: 'Litterature',  icon: '📚' }
 ];
 
-var DEFAULT_CARDS = [
-  { id: 1,  sub: 's1', deck: 'Brexit', q: 'What date did the Brexit referendum take place, and what was the result?', a: 'June 23, 2016. 52% Leave vs 48% Remain. One of the most consequential votes in British political history.', ctx: 'Core date - always know this.', diff: 'new' },
-  { id: 2,  sub: 's1', deck: 'Brexit', q: 'When did the UK officially leave the EU?', a: 'January 31, 2020, after a transition period until December 31, 2020.', ctx: 'Referendum to Exit: 4 years of political chaos.', diff: 'new' },
-  { id: 3,  sub: 's1', deck: 'Brexit', q: 'Who triggered Article 50 and when?', a: 'Theresa May in March 2017, starting the two-year formal exit process.', ctx: 'Article 50 = official notice to leave the EU.', diff: 'new' },
-  { id: 4,  sub: 's1', deck: 'Brexit', q: 'How many times did Parliament reject the Withdrawal Agreement?', a: 'Three times. This led to May resigning and Boris Johnson replacing her in 2019.', ctx: 'Shows the scale of the political deadlock.', diff: 'new' },
-  { id: 5,  sub: 's1', deck: 'Brexit', q: 'What was the Leave campaign key slogan?', a: 'Take Back Control - centred on sovereignty, immigration control, and national identity.', ctx: 'UKIP under Nigel Farage turbocharged this narrative.', diff: 'new' },
-  { id: 6,  sub: 's1', deck: 'Brexit', q: 'How did Scotland vote and what did the SNP demand after?', a: 'Scotland voted 62% Remain. The SNP argued this justified a second independence referendum.', ctx: 'Key devolution tension post-Brexit.', diff: 'new' },
-  { id: 7,  sub: 's1', deck: 'Brexit', q: 'What is the Good Friday Agreement and why was Brexit a threat?', a: 'Signed in 1998, it ended conflict in Northern Ireland by making the Irish border invisible. Brexit risked reimposing a hard border.', ctx: 'Most complex geopolitical dimension of Brexit.', diff: 'new' },
-  { id: 8,  sub: 's1', deck: 'Brexit', q: 'What replaced the Northern Ireland Protocol?', a: 'The Windsor Framework (2023) - keeps Northern Ireland aligned with EU single market rules, creating a de facto trade border in the Irish Sea.', ctx: 'Still controversial with Unionist communities.', diff: 'new' },
-  { id: 9,  sub: 's1', deck: 'Brexit', q: 'Name 4 fractures revealed by the Brexit vote.', a: 'England and Wales (Leave) vs Scotland and N. Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.', ctx: 'Brexit as an identity crisis, not just politics.', diff: 'new' },
-  { id: 10, sub: 's1', deck: 'Brexit', q: 'Name 5 key vocabulary words for Brexit.', a: 'sovereignty, trade deal, hard/soft Brexit, devolution, border issue', ctx: 'Use these naturally in your oral.', diff: 'new' },
-  { id: 11, sub: 's1', deck: 'Race in America', q: 'What year was the Civil Rights Act passed and what did it do?', a: '1964. It outlawed discrimination based on race, colour, religion, sex, or national origin. Signed by LBJ.', ctx: 'After years of activism led by Martin Luther King Jr.', diff: 'new' },
-  { id: 12, sub: 's1', deck: 'Race in America', q: 'What event in May 2020 sparked global Black Lives Matter protests?', a: 'The murder of George Floyd by Minneapolis police officer Derek Chauvin on May 25, 2020.', ctx: 'Became a global reckoning on systemic racism.', diff: 'new' },
-  { id: 13, sub: 's1', deck: 'Race in America', q: 'What does systemic racism mean?', a: 'Racism embedded in institutions, laws, and social systems - not just individual prejudice. Manifests in policing, housing, healthcare, and education.', ctx: 'Distinguish from individual racism in your oral.', diff: 'new' },
-  { id: 14, sub: 's1', deck: 'Climate Crisis', q: 'What is the Paris Agreement and when was it signed?', a: 'A UN climate accord signed in 2015, aiming to limit global warming to 1.5-2 degrees above pre-industrial levels.', ctx: 'US withdrew under Trump (2020), rejoined under Biden (2021).', diff: 'new' },
-  { id: 15, sub: 's1', deck: 'Climate Crisis', q: 'What is Fridays for Future and who started it?', a: 'A global youth climate strike movement launched by Greta Thunberg in 2018. Her How dare you UN speech in 2019 became iconic.', ctx: 'Represents youth vs political inaction narrative.', diff: 'new' },
-  { id: 16, sub: 's1', deck: 'Media and Democracy', q: 'What is fake news and how does it threaten democracy?', a: 'Deliberately false information spread via media and social networks. Threatens democracy by eroding trust in institutions and distorting public debate.', ctx: 'Trump weaponised the term against mainstream media.', diff: 'new' },
-  { id: 17, sub: 's1', deck: 'Media and Democracy', q: 'What is the BBC and how is it funded?', a: 'The UK public broadcaster, funded by a licence fee of around 169 pounds per year. Independent of government - a model of public service journalism.', ctx: 'Key reference in media and democracy debates.', diff: 'new' },
-  { id: 18, sub: 's2', deck: 'The Tempest', q: 'Who wrote The Tempest and when?', a: 'William Shakespeare, around 1610-1611. Generally considered his last solo play.', ctx: 'Often read as Shakespeare farewell to the theatre.', diff: 'new' },
-  { id: 19, sub: 's2', deck: 'The Tempest', q: 'What does Caliban reveal about language and colonialism?', a: 'You taught me language, and my profit on it is I know how to curse. Language was a tool of control - Caliban turns it into resistance.', ctx: 'Core postcolonial reading of the play.', diff: 'new' }
+var CARDS = [
+  { id: 1,  sub: 's1', deck: 'Brexit', q: 'What date did the Brexit referendum take place?', a: 'June 23, 2016. Result: 52% Leave vs 48% Remain.', ctx: 'Core date — always know this.', diff: 'new' },
+  { id: 2,  sub: 's1', deck: 'Brexit', q: 'When did the UK officially leave the EU?', a: 'January 31, 2020. Transition period until December 31, 2020.', ctx: 'Referendum to Exit: 4 years of chaos.', diff: 'new' },
+  { id: 3,  sub: 's1', deck: 'Brexit', q: 'Who triggered Article 50 and when?', a: 'Theresa May in March 2017, starting the 2-year exit process.', ctx: 'Article 50 = official notice to leave the EU.', diff: 'new' },
+  { id: 4,  sub: 's1', deck: 'Brexit', q: 'How many times did Parliament reject the Withdrawal Agreement?', a: 'Three times — leading to May resigning and Boris Johnson taking over.', ctx: 'Shows the scale of the deadlock.', diff: 'new' },
+  { id: 5,  sub: 's1', deck: 'Brexit', q: 'What was the Leave campaign key slogan?', a: 'Take Back Control — focused on sovereignty, immigration, and identity.', ctx: 'UKIP under Nigel Farage turbocharged this.', diff: 'new' },
+  { id: 6,  sub: 's1', deck: 'Brexit', q: 'How did Scotland vote and what did the SNP demand after?', a: 'Scotland voted 62% Remain. SNP demanded a second independence referendum.', ctx: 'Key devolution tension post-Brexit.', diff: 'new' },
+  { id: 7,  sub: 's1', deck: 'Brexit', q: 'What is the Good Friday Agreement (1998)?', a: 'It ended conflict in N. Ireland by making the Irish border invisible. Brexit threatened to reimpose a hard border.', ctx: 'Most complex geopolitical dimension of Brexit.', diff: 'new' },
+  { id: 8,  sub: 's1', deck: 'Brexit', q: 'What replaced the Northern Ireland Protocol?', a: 'The Windsor Framework (2023) — keeps N. Ireland aligned with EU rules, trade border in Irish Sea.', ctx: 'Still controversial with Unionists.', diff: 'new' },
+  { id: 9,  sub: 's1', deck: 'Brexit', q: 'Name 4 fractures Brexit revealed in British society.', a: 'England+Wales (Leave) vs Scotland+N.Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.', ctx: 'Brexit as identity crisis.', diff: 'new' },
+  { id: 10, sub: 's1', deck: 'Brexit', q: 'Name 5 key Brexit vocabulary words.', a: 'sovereignty, trade deal, hard/soft Brexit, devolution, border issue', ctx: 'Use these naturally in your oral.', diff: 'new' },
+  { id: 11, sub: 's1', deck: 'Race in America', q: 'What year was the Civil Rights Act and what did it do?', a: '1964 — outlawed discrimination based on race, colour, religion, sex. Signed by LBJ.', ctx: 'After years of activism by Martin Luther King Jr.', diff: 'new' },
+  { id: 12, sub: 's1', deck: 'Race in America', q: 'What sparked the 2020 Black Lives Matter protests?', a: 'The murder of George Floyd by Minneapolis police officer Derek Chauvin on May 25, 2020.', ctx: 'Global reckoning on systemic racism.', diff: 'new' },
+  { id: 13, sub: 's1', deck: 'Race in America', q: 'What does systemic racism mean?', a: 'Racism in institutions, laws, social systems — not just individual prejudice. Seen in policing, housing, healthcare, education.', ctx: 'Distinguish from individual racism.', diff: 'new' },
+  { id: 14, sub: 's1', deck: 'Climate Crisis', q: 'What is the Paris Agreement?', a: 'A UN accord signed in 2015, targeting max 1.5 to 2 degrees of global warming above pre-industrial levels.', ctx: 'US withdrew under Trump (2020), rejoined under Biden (2021).', diff: 'new' },
+  { id: 15, sub: 's1', deck: 'Climate Crisis', q: 'Who started Fridays for Future?', a: 'Greta Thunberg in 2018. Her "How dare you" UN speech in 2019 became iconic.', ctx: 'Youth vs political inaction narrative.', diff: 'new' },
+  { id: 16, sub: 's1', deck: 'Media', q: 'What is fake news and how does it threaten democracy?', a: 'False info spread via media/social networks. Erodes trust in institutions and distorts public debate.', ctx: 'Trump weaponised the term against mainstream media.', diff: 'new' },
+  { id: 17, sub: 's1', deck: 'Media', q: 'What is the BBC and how is it funded?', a: 'UK public broadcaster. Funded by licence fee (~169 GBP/year). Independent of government.', ctx: 'Model of public service journalism.', diff: 'new' },
+  { id: 18, sub: 's2', deck: 'The Tempest', q: 'Who wrote The Tempest and when?', a: 'William Shakespeare, around 1610-1611. Generally his last solo play.', ctx: 'Often read as his farewell to theatre.', diff: 'new' },
+  { id: 19, sub: 's2', deck: 'The Tempest', q: 'What does Caliban reveal about language and colonialism?', a: '"You taught me language, and my profit on it is I know how to curse." Language as control — Caliban turns it into resistance.', ctx: 'Core postcolonial reading.', diff: 'new' }
 ];
 
 // ── state ──
-var subjects, cards;
-var view = 'home';
-var activeSub = null;
-var activeDeck = 'Tous';
-var queue = [], qIdx = 0, flipped = false, sessionDone = 0;
+var subjects, cards, activeSub, activeDeck, view, queue, qIdx, revealed, sessionDone;
 
-function load() {
-  var ss = store.getItem('fc_s2');
-  var sc = store.getItem('fc_c2');
-  if (ss) { try { subjects = JSON.parse(ss); } catch(e) { subjects = copyDefaults(DEFAULT_SUBJECTS); } }
-  else { subjects = copyDefaults(DEFAULT_SUBJECTS); }
-  if (sc) { try { cards = JSON.parse(sc); } catch(e) { cards = copyDefaults(DEFAULT_CARDS); } }
-  else { cards = copyDefaults(DEFAULT_CARDS); }
+function initState() {
+  try {
+    var ss = store.getItem('fcs3');
+    subjects = ss ? JSON.parse(ss) : deepCopy(SUBJECTS);
+  } catch(e) { subjects = deepCopy(SUBJECTS); }
+  try {
+    var sc = store.getItem('fcc3');
+    cards = sc ? JSON.parse(sc) : deepCopy(CARDS);
+  } catch(e) { cards = deepCopy(CARDS); }
+  activeSub = null; activeDeck = 'Tous'; view = 'home';
+  queue = []; qIdx = 0; revealed = false; sessionDone = 0;
 }
 
-function copyDefaults(arr) {
+function deepCopy(arr) {
   var out = [];
   for (var i = 0; i < arr.length; i++) {
-    var obj = {};
-    for (var k in arr[i]) { if (arr[i].hasOwnProperty(k)) obj[k] = arr[i][k]; }
-    out.push(obj);
+    var o = {}, src = arr[i];
+    for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) o[k] = src[k]; }
+    out.push(o);
   }
   return out;
 }
 
 function save() {
-  try { store.setItem('fc_s2', JSON.stringify(subjects)); } catch(e) {}
-  try { store.setItem('fc_c2', JSON.stringify(cards)); } catch(e) {}
+  try { store.setItem('fcs3', JSON.stringify(subjects)); } catch(e) {}
+  try { store.setItem('fcc3', JSON.stringify(cards)); } catch(e) {}
 }
 
-function findSubject(id) {
-  for (var i = 0; i < subjects.length; i++) { if (subjects[i].id === id) return subjects[i]; }
+function findSub(id) {
+  for (var i = 0; i < subjects.length; i++) if (subjects[i].id === id) return subjects[i];
   return null;
 }
 
-function dlabel(d) {
-  if (d === 'hard')   return 'Difficile';
-  if (d === 'medium') return 'Moyen';
-  if (d === 'easy')   return 'Maitrise';
-  return 'Nouveau';
-}
-
-function subjectIcon(icon) {
-  var icons = { globe: '🌍', book: '📚', pencil: '✏️', brain: '🧠', music: '🎵', star: '⭐' };
-  return icons[icon] || icon || '📁';
-}
-
-// ── queue ──
 function buildQueue() {
   var pool = [];
   for (var i = 0; i < cards.length; i++) {
@@ -238,289 +196,265 @@ function buildQueue() {
     if (activeDeck !== 'Tous' && c.deck !== activeDeck) continue;
     pool.push(c);
   }
-  var order = { hard: 0, medium: 1, new: 2, easy: 3 };
   pool.sort(function(a, b) {
-    return (order[a.diff] !== undefined ? order[a.diff] : 2) - (order[b.diff] !== undefined ? order[b.diff] : 2);
+    var o = { hard: 0, medium: 1, new: 2, easy: 3 };
+    return (o[a.diff] !== undefined ? o[a.diff] : 2) - (o[b.diff] !== undefined ? o[b.diff] : 2);
   });
-  queue = pool; qIdx = 0; sessionDone = 0; flipped = false;
+  queue = pool; qIdx = 0; revealed = false; sessionDone = 0;
 }
 
-// ── STATS HTML ──
-function statsHtml(subId) {
-  var pool = subId ? cards.filter(function(c) { return c.sub === subId; }) : cards;
-  var easy = 0;
-  for (var i = 0; i < pool.length; i++) { if (pool[i].diff === 'easy') easy++; }
-  return '<div class="stats">'
-    + '<div class="sp pk"><div class="n">' + pool.length + '</div><div class="l">Total</div></div>'
-    + '<div class="sp gn"><div class="n">' + easy + '</div><div class="l">Maitrisees</div></div>'
-    + '<div class="sp gr"><div class="n">' + (pool.length - easy) + '</div><div class="l">A revoir</div></div>'
-    + '</div>';
+// ── tabs ──
+function showTab(t) {
+  var tabs = ['study', 'add', 'manage'];
+  for (var i = 0; i < tabs.length; i++) {
+    document.getElementById('panel-' + tabs[i]).style.display = tabs[i] === t ? 'block' : 'none';
+    document.getElementById('t-' + tabs[i]).className = 'tab' + (tabs[i] === t ? ' on' : '');
+  }
 }
 
 // ── HOME ──
 function renderHome() {
+  showTab('study');
   var el = document.getElementById('panel-study');
-  var html = statsHtml(null);
-  html += '<button class="study-all" id="btn-study-all">Tout reviser</button>';
-  html += '<div class="folder-grid" id="folder-grid">';
-  for (var i = 0; i < subjects.length; i++) {
-    var s = subjects[i];
-    var sc = 0, se = 0;
-    for (var j = 0; j < cards.length; j++) {
-      if (cards[j].sub === s.id) { sc++; if (cards[j].diff === 'easy') se++; }
+
+  var total = cards.length, easy = 0;
+  for (var i = 0; i < cards.length; i++) if (cards[i].diff === 'easy') easy++;
+
+  var html = '<div class="stats">'
+    + '<div class="sp pk"><div class="n">' + total + '</div><div class="l">Total</div></div>'
+    + '<div class="sp gn"><div class="n">' + easy + '</div><div class="l">Maitrisees</div></div>'
+    + '<div class="sp gr"><div class="n">' + (total - easy) + '</div><div class="l">A revoir</div></div>'
+    + '</div>'
+    + '<button class="btn-main" id="b-studyall">Tout reviser</button>'
+    + '<div class="folder-grid">';
+
+  for (var j = 0; j < subjects.length; j++) {
+    var s = subjects[j], sc = 0, se = 0;
+    for (var k = 0; k < cards.length; k++) {
+      if (cards[k].sub === s.id) { sc++; if (cards[k].diff === 'easy') se++; }
     }
     var pct = sc ? Math.round(se / sc * 100) : 0;
-    html += '<div class="folder-card" data-subid="' + s.id + '">'
-      + '<div class="fi">' + subjectIcon(s.icon) + '</div>'
+    html += '<div class="folder-card" id="fc-' + s.id + '">'
+      + '<div class="fi">' + s.icon + '</div>'
       + '<div class="fn">' + s.name + '</div>'
-      + '<div class="fc2">' + sc + ' carte' + (sc !== 1 ? 's' : '') + '</div>'
+      + '<div class="fc2">' + sc + ' cartes</div>'
       + '<div class="fp"><div class="fpf" style="width:' + pct + '%"></div></div>'
       + '</div>';
   }
-  html += '<div class="add-folder" id="btn-add-folder"><div class="fi">+</div>Nouveau dossier</div>';
-  html += '</div>';
+
+  html += '<div class="add-folder-btn" id="b-addfolder">➕ Nouveau dossier</div>'
+    + '</div>';
+
   el.innerHTML = html;
 
-  document.getElementById('btn-study-all').addEventListener('click', function() {
-    activeSub = null; activeDeck = 'Tous'; view = 'cards'; buildQueue(); renderCards();
-  });
-  document.getElementById('btn-add-folder').addEventListener('click', function() {
-    document.getElementById('folder-modal').className = 'overlay show';
-  });
-  var folderCards = document.querySelectorAll('.folder-card');
-  for (var k = 0; k < folderCards.length; k++) {
-    folderCards[k].addEventListener('click', (function(sid) {
-      return function() { activeSub = sid; activeDeck = 'Tous'; view = 'cards'; buildQueue(); renderCards(); };
-    })(folderCards[k].getAttribute('data-subid')));
+  // events
+  document.getElementById('b-studyall').onclick = function() {
+    activeSub = null; activeDeck = 'Tous'; buildQueue(); renderCards();
+  };
+  document.getElementById('b-addfolder').onclick = function() {
+    document.getElementById('modal-bg').className = 'modal-bg show';
+  };
+  for (var m = 0; m < subjects.length; m++) {
+    (function(sid) {
+      var el2 = document.getElementById('fc-' + sid);
+      if (el2) el2.onclick = function() {
+        activeSub = sid; activeDeck = 'Tous'; buildQueue(); renderCards();
+      };
+    })(subjects[m].id);
   }
 }
 
-// ── CARDS VIEW ──
+// ── CARDS ──
 function renderCards() {
+  showTab('study');
   var el = document.getElementById('panel-study');
-  var subj = activeSub ? findSubject(activeSub) : null;
+  var subj = activeSub ? findSub(activeSub) : null;
 
-  // breadcrumb
-  var bc = '<div class="bc">';
-  bc += '<button id="btn-home-bc">Accueil</button>';
-  if (subj) bc += '<span> &rsaquo; ' + subjectIcon(subj.icon) + ' ' + subj.name + '</span>';
-  if (activeDeck !== 'Tous') bc += '<span> &rsaquo; ' + activeDeck + '</span>';
-  bc += '</div>';
+  var bcHtml = '<div class="bc"><button id="b-home">Accueil</button>';
+  if (subj) bcHtml += '<span>› ' + subj.icon + ' ' + subj.name + '</span>';
+  bcHtml += '</div>';
 
-  // stats
-  var html = bc + statsHtml(activeSub);
+  var subCards = activeSub ? [] : cards.slice();
+  if (activeSub) {
+    for (var i = 0; i < cards.length; i++) if (cards[i].sub === activeSub) subCards.push(cards[i]);
+  }
+  var easy2 = 0;
+  for (var j = 0; j < subCards.length; j++) if (subCards[j].diff === 'easy') easy2++;
 
-  // deck chips
+  var statsH = '<div class="stats">'
+    + '<div class="sp pk"><div class="n">' + subCards.length + '</div><div class="l">Cartes</div></div>'
+    + '<div class="sp gn"><div class="n">' + easy2 + '</div><div class="l">Maitrisees</div></div>'
+    + '<div class="sp gr"><div class="n">' + (subCards.length - easy2) + '</div><div class="l">A revoir</div></div>'
+    + '</div>';
+
   var decks = ['Tous'];
-  for (var i = 0; i < cards.length; i++) {
-    var c = cards[i];
-    if (!activeSub || c.sub === activeSub) {
-      if (decks.indexOf(c.deck) === -1) decks.push(c.deck);
-    }
+  for (var d = 0; d < subCards.length; d++) {
+    var found = false;
+    for (var di = 0; di < decks.length; di++) if (decks[di] === subCards[d].deck) { found = true; break; }
+    if (!found) decks.push(subCards[d].deck);
   }
-  html += '<div class="deck-row" id="deck-row">';
-  for (var d = 0; d < decks.length; d++) {
-    html += '<button class="chip' + (decks[d] === activeDeck ? ' on' : '') + '" data-deck="' + decks[d] + '">' + decks[d] + '</button>';
+  var deckHtml = '<div class="deck-row" id="deck-row">';
+  for (var dk = 0; dk < decks.length; dk++) {
+    deckHtml += '<button class="chip' + (decks[dk] === activeDeck ? ' on' : '') + '" data-d="' + dk + '">' + decks[dk] + '</button>';
   }
-  html += '</div>';
+  deckHtml += '</div>';
+  var deckNames = decks; // keep ref
 
-  // progress
   var pct = queue.length ? Math.round(sessionDone / queue.length * 100) : 0;
-  html += '<div class="pbar"><div class="plabel"><span>' + sessionDone + ' / ' + queue.length + '</span><span>' + pct + '%</span></div>'
+  var progH = '<div class="pbar"><div class="plabel"><span>' + sessionDone + ' / ' + queue.length + '</span><span>' + pct + '%</span></div>'
     + '<div class="ptrack"><div class="pfill" style="width:' + pct + '%"></div></div></div>';
 
-  // card or done
+  var bodyH = '';
   if (!queue.length) {
-    html += '<div class="empty"><div class="di">🌸</div><p>Aucune carte ici. Ajoute-en depuis + !</p></div>';
+    bodyH = '<div class="empty-box"><p>Aucune carte ici. Ajoute-en depuis + !</p></div>';
   } else if (qIdx >= queue.length) {
-    html += '<div class="done"><div class="di">🎉</div><h2>Session terminee !</h2>'
-      + '<p>Tu as revu ' + sessionDone + ' carte' + (sessionDone > 1 ? 's' : '') + '</p>'
-      + '<button class="nb pri" id="btn-restart">Recommencer</button></div>';
+    bodyH = '<div class="done-box"><h2>Session terminee !</h2><p>Tu as revu ' + sessionDone + ' cartes</p><button class="nb pri" id="b-restart">Recommencer</button></div>';
   } else {
-    var card = queue[qIdx];
-    html += '<div class="card-area" id="card-area">'
-      + '<div class="fc" id="fc">'
-      + '<div class="face front">'
-      + '<span class="dtag">' + card.deck + '</span>'
-      + '<span class="stag ' + card.diff + '">' + dlabel(card.diff) + '</span>'
-      + '<p class="cq">' + card.q + '</p>'
-      + '<p class="chint">Tap pour reveler</p>'
-      + '</div>'
-      + '<div class="face back">'
-      + '<span class="dtag">' + card.deck + '</span>'
-      + '<p class="ca">' + card.a + (card.ctx ? '<span class="ctx">💡 ' + card.ctx + '</span>' : '') + '</p>'
-      + '</div>'
-      + '</div></div>'
-      + '<div class="fhint"><span>Clique la carte pour la retourner</span></div>'
-      + '<div class="abts" id="abts" style="display:none">'
-      + '<button class="ab hard" data-rate="hard">Difficile<small>a revoir</small></button>'
-      + '<button class="ab medium" data-rate="medium">Moyen<small>presque !</small></button>'
-      + '<button class="ab easy" data-rate="easy">Maitrise<small>top !</small></button>'
-      + '</div>'
-      + '<div class="nav">'
-      + '<button class="nb" id="btn-prev">Precedent</button>'
-      + '<button class="nb" id="btn-skip">Passer</button>'
+    var c = queue[qIdx];
+    bodyH = '<div class="card-wrap' + (revealed ? ' revealed' : '') + '" id="card-wrap">'
+      + (revealed
+        ? '<p class="card-a">' + c.a + '</p>' + (c.ctx ? '<p class="card-ctx">💡 ' + c.ctx + '</p>' : '')
+        : '<p class="card-q">' + c.q + '</p><p class="card-hint">Appuie pour voir la reponse</p>')
+      + '</div>';
+    if (revealed) {
+      bodyH += '<div class="abts">'
+        + '<button class="ab hard" id="b-hard">Difficile</button>'
+        + '<button class="ab medium" id="b-med">Moyen</button>'
+        + '<button class="ab easy" id="b-easy">Maitrise !</button>'
+        + '</div>';
+    }
+    bodyH += '<div class="nav">'
+      + '<button class="nb" id="b-prev">Precedent</button>'
+      + '<button class="nb" id="b-skip">Passer</button>'
       + '</div>';
   }
 
-  el.innerHTML = html;
+  el.innerHTML = bcHtml + statsH + deckHtml + progH + bodyH;
 
-  // attach events
-  var homeBtn = document.getElementById('btn-home-bc');
-  if (homeBtn) homeBtn.addEventListener('click', function() {
-    view = 'home'; activeSub = null; activeDeck = 'Tous'; renderHome();
-  });
+  // events
+  var homeBtn = document.getElementById('b-home');
+  if (homeBtn) homeBtn.onclick = function() { view = 'home'; activeSub = null; activeDeck = 'Tous'; renderHome(); };
 
-  var chipBtns = document.querySelectorAll('#deck-row .chip');
+  var chipBtns = document.getElementById('deck-row') ? document.getElementById('deck-row').getElementsByClassName('chip') : [];
   for (var ci = 0; ci < chipBtns.length; ci++) {
-    chipBtns[ci].addEventListener('click', (function(dk) {
-      return function() { activeDeck = dk; buildQueue(); renderCards(); };
-    })(chipBtns[ci].getAttribute('data-deck')));
+    (function(btn, idx) {
+      btn.onclick = function() { activeDeck = deckNames[idx]; buildQueue(); renderCards(); };
+    })(chipBtns[ci], parseInt(chipBtns[ci].getAttribute('data-d'), 10));
   }
 
-  var restart = document.getElementById('btn-restart');
-  if (restart) restart.addEventListener('click', function() { buildQueue(); renderCards(); });
+  var restart = document.getElementById('b-restart');
+  if (restart) restart.onclick = function() { buildQueue(); renderCards(); };
 
-  var cardArea = document.getElementById('card-area');
-  if (cardArea) cardArea.addEventListener('click', function() {
-    flipped = !flipped;
-    var fc = document.getElementById('fc');
-    if (fc) fc.className = 'fc' + (flipped ? ' flipped' : '');
-    var ab = document.getElementById('abts');
-    if (ab) ab.style.display = flipped ? 'grid' : 'none';
-  });
+  var cardWrap = document.getElementById('card-wrap');
+  if (cardWrap) cardWrap.onclick = function() { revealed = true; renderCards(); };
 
-  var rateBtns = document.querySelectorAll('[data-rate]');
-  for (var ri = 0; ri < rateBtns.length; ri++) {
-    rateBtns[ri].addEventListener('click', (function(diff) {
-      return function(e) {
-        e.stopPropagation();
-        for (var i = 0; i < cards.length; i++) {
-          if (cards[i].id === queue[qIdx].id) { cards[i].diff = diff; break; }
-        }
-        save(); sessionDone++; qIdx++; flipped = false; renderCards();
-      };
-    })(rateBtns[ri].getAttribute('data-rate')));
+  function rateCard(diff) {
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].id === queue[qIdx].id) { cards[i].diff = diff; break; }
+    }
+    save(); sessionDone++; qIdx++; revealed = false; renderCards();
   }
-
-  var prev = document.getElementById('btn-prev');
-  if (prev) prev.addEventListener('click', function() { if (qIdx > 0) { qIdx--; flipped = false; renderCards(); } });
-  var skip = document.getElementById('btn-skip');
-  if (skip) skip.addEventListener('click', function() { qIdx++; flipped = false; renderCards(); });
+  var bh = document.getElementById('b-hard');   if (bh) bh.onclick = function(e) { e.stopPropagation(); rateCard('hard'); };
+  var bm = document.getElementById('b-med');    if (bm) bm.onclick = function(e) { e.stopPropagation(); rateCard('medium'); };
+  var be = document.getElementById('b-easy');   if (be) be.onclick = function(e) { e.stopPropagation(); rateCard('easy'); };
+  var bp = document.getElementById('b-prev');   if (bp) bp.onclick = function() { if (qIdx > 0) { qIdx--; revealed = false; renderCards(); } };
+  var bs = document.getElementById('b-skip');   if (bs) bs.onclick = function() { qIdx++; revealed = false; renderCards(); };
 }
 
-// ── ADD TAB ──
+// ── ADD ──
 function renderAdd() {
   var opts = '';
-  for (var i = 0; i < subjects.length; i++) {
-    opts += '<option value="' + subjects[i].id + '">' + subjectIcon(subjects[i].icon) + ' ' + subjects[i].name + '</option>';
-  }
-  document.getElementById('panel-add').innerHTML = '<div class="form">'
+  for (var i = 0; i < subjects.length; i++) opts += '<option value="' + subjects[i].id + '">' + subjects[i].icon + ' ' + subjects[i].name + '</option>';
+  document.getElementById('panel-add').innerHTML = '<div class="form-box">'
     + '<h2>Nouvelle carte</h2>'
     + '<div class="fr"><label>Dossier</label><select id="ns">' + opts + '</select></div>'
-    + '<div class="fr"><label>Theme / Deck</label><input id="nd" type="text" placeholder="Ex: Brexit, Grammaire..."/></div>'
-    + '<div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was the Civil Rights Act?"></textarea></div>'
+    + '<div class="fr"><label>Theme</label><input id="nd" type="text" placeholder="Ex: Brexit"/></div>'
+    + '<div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was..."></textarea></div>'
 
 ```
-+ '<div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964 - outlawed discrimination..."></textarea></div>'
-+ '<div class="fr"><label>Note (optionnel)</label><input id="nc" type="text" placeholder="Ex: Key date"/></div>'
-+ '<div class="fbtns">'
-+ '<button class="bpri" id="btn-add-card">Ajouter</button>'
-+ '<button class="bsec" id="btn-cancel-add">Annuler</button>'
-+ '</div></div>';
++ '<div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964..."></textarea></div>'
++ '<div class="fr"><label>Note</label><input id="nc" type="text" placeholder="Optionnel"/></div>'
++ '<div class="fbtns"><button class="bpri" id="b-savecard">Ajouter</button><button class="bsec" id="b-cancelcard">Annuler</button></div>'
++ '</div>';
 ```
 
-document.getElementById(‘btn-add-card’).addEventListener(‘click’, function() {
-var sub  = document.getElementById(‘ns’).value;
+document.getElementById(‘b-savecard’).onclick = function() {
+var sub = document.getElementById(‘ns’).value;
 var deck = document.getElementById(‘nd’).value.trim();
-var q    = document.getElementById(‘nq’).value.trim();
-var a    = document.getElementById(‘na’).value.trim();
-var ctx  = document.getElementById(‘nc’).value.trim();
-if (!q || !a) { showToast(‘Question et reponse requises !’); return; }
-if (!deck) { showToast(‘Indique un theme / deck !’); return; }
+var q = document.getElementById(‘nq’).value.trim();
+var a = document.getElementById(‘na’).value.trim();
+var ctx = document.getElementById(‘nc’).value.trim();
+if (!q || !a || !deck) { toast(‘Remplis tous les champs !’); return; }
 cards.push({ id: Date.now(), sub: sub, deck: deck, q: q, a: a, ctx: ctx, diff: ‘new’ });
-save(); showToast(‘Carte ajoutee !’); switchTab(‘study’);
-});
-document.getElementById(‘btn-cancel-add’).addEventListener(‘click’, function() { switchTab(‘study’); });
+save(); toast(‘Carte ajoutee !’); view = ‘home’; renderHome();
+};
+document.getElementById(‘b-cancelcard’).onclick = function() { view = ‘home’; renderHome(); };
 }
 
-// ── MANAGE TAB ──
+// ── MANAGE ──
 function renderManage() {
 var el = document.getElementById(‘panel-manage’);
-if (!cards.length) { el.innerHTML = ‘<div class="empty"><div class="di">🌸</div><p>Aucune carte.</p></div>’; return; }
+if (!cards.length) { el.innerHTML = ‘<div class="empty-box"><p>Aucune carte.</p></div>’; return; }
 var html = ‘<div class="mlist">’;
 for (var i = 0; i < cards.length; i++) {
-var c = cards[i];
-var subj = findSubject(c.sub);
+var c = cards[i], s = findSub(c.sub);
 html += ‘<div class="mi">’
 + ‘<div class="mq">’ + c.q + ‘</div>’
-+ ‘<span class="ms">’ + (subj ? subjectIcon(subj.icon) + ’ ’ + subj.name : ‘?’) + ‘</span>’
++ (s ? ‘<span class="ms">’ + s.icon + ’ ’ + s.name + ‘</span>’ : ‘’)
 + ‘<span class="mb">’ + c.deck + ‘</span>’
-+ ‘<button class="del" data-delid="' + c.id + '">x</button>’
++ ‘<button class="del" data-cid="' + c.id + '">✕</button>’
 + ‘</div>’;
 }
 html += ‘</div>’;
 el.innerHTML = html;
 
-var delBtns = document.querySelectorAll(’[data-delid]’);
-for (var k = 0; k < delBtns.length; k++) {
-delBtns[k].addEventListener(‘click’, (function(cid) {
-return function() {
-cards = cards.filter(function(c) { return c.id !== cid; });
-save(); buildQueue(); renderManage(); showToast(‘Carte supprimee’);
+var dels = el.getElementsByClassName(‘del’);
+for (var d = 0; d < dels.length; d++) {
+(function(btn) {
+btn.onclick = function() {
+var cid = parseInt(this.getAttribute(‘data-cid’), 10);
+var nc = [];
+for (var i = 0; i < cards.length; i++) if (cards[i].id !== cid) nc.push(cards[i]);
+cards = nc;
+save(); buildQueue(); renderManage(); toast(‘Supprimee !’);
 };
-})(parseInt(delBtns[k].getAttribute(‘data-delid’), 10)));
+})(dels[d]);
 }
 }
 
-// ── FOLDER MODAL ──
-document.getElementById(‘btn-confirm-folder’).addEventListener(‘click’, function() {
+// ── MODAL ──
+document.getElementById(‘btn-ok-folder’).onclick = function() {
 var name = document.getElementById(‘fn’).value.trim();
-var icon = document.getElementById(‘fi’).value.trim() || ‘star’;
-if (!name) { showToast(‘Donne un nom !’); return; }
+var icon = document.getElementById(‘fi’).value.trim() || ‘📁’;
+if (!name) { toast(‘Donne un nom !’); return; }
 subjects.push({ id: ‘s’ + Date.now(), name: name, icon: icon });
 save();
-document.getElementById(‘folder-modal’).className = ‘overlay’;
+document.getElementById(‘modal-bg’).className = ‘modal-bg’;
 document.getElementById(‘fn’).value = ‘’;
 document.getElementById(‘fi’).value = ‘’;
-renderHome();
-showToast(‘Dossier cree !’);
-});
-document.getElementById(‘btn-cancel-folder’).addEventListener(‘click’, function() {
-document.getElementById(‘folder-modal’).className = ‘overlay’;
-});
+renderHome(); toast(‘Dossier cree !’);
+};
+document.getElementById(‘btn-ko-folder’).onclick = function() {
+document.getElementById(‘modal-bg’).className = ‘modal-bg’;
+};
 
-// ── TABS ──
-function switchTab(t) {
-var panels = { study: ‘panel-study’, add: ‘panel-add’, manage: ‘panel-manage’ };
-for (var k in panels) {
-if (panels.hasOwnProperty(k)) {
-document.getElementById(panels[k]).style.display = k === t ? ‘block’ : ‘none’;
-document.getElementById(‘t-’ + k).className = ‘tab’ + (k === t ? ’ on’ : ‘’);
-}
-}
-if (t === ‘study’)  { view = ‘home’; renderHome(); }
-if (t === ‘add’)    renderAdd();
-if (t === ‘manage’) renderManage();
-}
-
-document.getElementById(‘t-study’).addEventListener(‘click’,  function() { switchTab(‘study’); });
-document.getElementById(‘t-add’).addEventListener(‘click’,    function() { switchTab(‘add’); });
-document.getElementById(‘t-manage’).addEventListener(‘click’, function() { switchTab(‘manage’); });
+// ── TAB BUTTONS ──
+document.getElementById(‘t-study’).onclick = function() { showTab(‘study’); view = ‘home’; renderHome(); };
+document.getElementById(‘t-add’).onclick    = function() { showTab(‘add’);   renderAdd(); };
+document.getElementById(‘t-manage’).onclick = function() { showTab(‘manage’); renderManage(); };
 
 // ── TOAST ──
-function showToast(msg) {
+function toast(msg) {
 var el = document.getElementById(‘toast’);
 el.textContent = msg; el.className = ‘toast show’;
 setTimeout(function() { el.className = ‘toast’; }, 2400);
 }
 
 // ── INIT ──
-load();
-view = ‘home’;
+initState();
 renderHome();
 
-}); // end DOMContentLoaded
+} catch(e) { showErr(e); }
 </script>
 
 </body>

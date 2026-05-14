@@ -2,615 +2,321 @@
 
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Civi Flashcards ✿</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --pink-light: #fce8ef;
-    --pink-mid:   #f5b8cc;
-    --pink-deep:  #e07a99;
-    --green-light:#ddf0e4;
-    --green-mid:  #a8d9b5;
-    --green-deep: #5aaa74;
-    --cream:      #fdf7f0;
-    --text:       #2d2320;
-    --muted:      #9a8a85;
-    --card-bg:    #ffffff;
-    --shadow:     0 4px 24px rgba(180,100,130,.10);
-    --radius:     18px;
-  }
-
-- { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-font-family: ‘DM Sans’, sans-serif;
-background: var(–cream);
-color: var(–text);
-min-height: 100vh;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pk:#f5b8cc;--pkl:#fce8ef;--pkd:#d4607f;
+  --gn:#a8d9b5;--gnl:#ddf0e4;--gnd:#4a9962;
+  --cream:#fdf7f0;--txt:#2d2320;--muted:#9a8a85;
+  --shadow:0 4px 24px rgba(180,100,130,.12);
+  --r:18px;
 }
-
-/* ─── Blobs ─────────────────────────────────── */
-.blob-bg {
-position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
-}
-.blob {
-position: absolute; border-radius: 50%; filter: blur(80px); opacity: .35;
-}
-.blob1 { width: 420px; height: 420px; background: var(–pink-mid);  top: -100px; left: -100px; animation: drift1 14s ease-in-out infinite; }
-.blob2 { width: 340px; height: 340px; background: var(–green-mid); bottom: -80px; right: -80px; animation: drift2 18s ease-in-out infinite; }
-.blob3 { width: 200px; height: 200px; background: var(–pink-light); top: 50%; left: 60%; animation: drift3 11s ease-in-out infinite; }
-@keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
-@keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-40px)} }
-@keyframes drift3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
-
-/* ─── Layout ─────────────────────────────────── */
-.app { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 28px 20px 60px; }
-
-header {
-text-align: center; margin-bottom: 32px;
-}
-header h1 {
-font-family: ‘Fraunces’, serif; font-size: 2.4rem; font-weight: 600;
-color: var(–pink-deep); letter-spacing: -.5px;
-}
-header p { color: var(–muted); font-size: .95rem; margin-top: 6px; }
-
-/* ─── Tabs ────────────────────────────────────── */
-.tabs {
-display: flex; gap: 8px; margin-bottom: 28px; background: white;
-border-radius: 50px; padding: 5px; box-shadow: var(–shadow);
-}
-.tab-btn {
-flex: 1; padding: 10px; border: none; background: transparent;
-border-radius: 50px; font-family: ‘DM Sans’, sans-serif; font-size: .9rem;
-cursor: pointer; color: var(–muted); transition: all .2s;
-}
-.tab-btn.active {
-background: var(–pink-mid); color: var(–text); font-weight: 500;
-}
-
-/* ─── Stats bar ───────────────────────────────── */
-.stats-bar {
-display: flex; gap: 12px; margin-bottom: 24px;
-}
-.stat-pill {
-flex: 1; text-align: center; background: white; border-radius: 14px;
-padding: 12px 8px; box-shadow: var(–shadow);
-}
-.stat-pill .num {
-font-family: ‘Fraunces’, serif; font-size: 1.6rem; font-weight: 600;
-line-height: 1;
-}
-.stat-pill .label { font-size: .75rem; color: var(–muted); margin-top: 3px; }
-.stat-pill.pink .num  { color: var(–pink-deep); }
-.stat-pill.green .num { color: var(–green-deep); }
-.stat-pill.gray .num  { color: var(–muted); }
-
-/* ─── Deck selector ──────────────────────────── */
-.deck-bar {
-display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
-}
-.deck-chip {
-padding: 6px 16px; border-radius: 50px; border: 2px solid transparent;
-font-size: .85rem; cursor: pointer; transition: all .18s;
-background: white; color: var(–muted);
-}
-.deck-chip.active { border-color: var(–pink-deep); color: var(–pink-deep); background: var(–pink-light); font-weight: 500; }
-
-/* ─── Flashcard ───────────────────────────────── */
-.card-area { perspective: 1200px; margin-bottom: 22px; }
-
-.flashcard {
-width: 100%; min-height: 280px; position: relative;
-transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,0,.2,1);
-cursor: pointer;
-}
-.flashcard.flipped { transform: rotateY(180deg); }
-
-.card-face {
-position: absolute; inset: 0;
-background: var(–card-bg);
-border-radius: var(–radius);
-box-shadow: var(–shadow);
-backface-visibility: hidden;
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-padding: 36px 32px; text-align: center;
-}
-.card-face.back { transform: rotateY(180deg); background: var(–green-light); }
-
-.card-face .deck-tag {
-position: absolute; top: 16px; left: 20px;
-font-size: .72rem; font-weight: 500; color: var(–pink-deep);
-background: var(–pink-light); padding: 3px 10px; border-radius: 50px;
-}
-.card-face .difficulty-tag {
-position: absolute; top: 16px; right: 20px;
-font-size: .72rem; padding: 3px 10px; border-radius: 50px; font-weight: 500;
-}
-.difficulty-tag.easy   { background: var(–green-light); color: var(–green-deep); }
-.difficulty-tag.medium { background: #fff3cd; color: #9a7b00; }
-.difficulty-tag.hard   { background: var(–pink-light);  color: var(–pink-deep); }
-.difficulty-tag.new    { background: #e8e8f0; color: #6666aa; }
-
-.card-q {
-font-family: ‘Fraunces’, serif; font-size: 1.35rem; font-weight: 300;
-line-height: 1.45; color: var(–text);
-}
-.card-hint { font-size: .8rem; color: var(–muted); margin-top: 12px; }
-
-.card-a { font-size: 1.05rem; line-height: 1.6; color: var(–text); }
-.card-a strong { color: var(–green-deep); }
-.card-a .context { font-size: .82rem; color: var(–muted); margin-top: 10px; font-style: italic; }
-
-/* ─── Flip hint ───────────────────────────────── */
-.flip-hint {
-text-align: center; font-size: .8rem; color: var(–muted); margin-bottom: 14px;
-}
-.flip-hint span {
-display: inline-flex; align-items: center; gap: 5px;
-background: white; padding: 4px 12px; border-radius: 50px;
-box-shadow: 0 1px 6px rgba(0,0,0,.06);
-}
-
-/* ─── Answer buttons ─────────────────────────── */
-.answer-btns {
-display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
-margin-bottom: 16px;
-}
-.ans-btn {
-padding: 12px; border: none; border-radius: var(–radius);
-font-family: ‘DM Sans’, sans-serif; font-size: .9rem; font-weight: 500;
-cursor: pointer; transition: all .18s; display: flex; flex-direction: column;
-align-items: center; gap: 3px;
-}
-.ans-btn small { font-size: .7rem; font-weight: 400; opacity: .75; }
-.ans-btn.easy   { background: var(–green-light); color: var(–green-deep); }
-.ans-btn.medium { background: #fff3cd; color: #9a7b00; }
-.ans-btn.hard   { background: var(–pink-light);  color: var(–pink-deep); }
-.ans-btn:hover  { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
-
-/* ─── Nav buttons ────────────────────────────── */
-.nav-btns {
-display: flex; gap: 10px; justify-content: center;
-}
-.nav-btn {
-padding: 10px 22px; border-radius: 50px; border: 2px solid var(–pink-mid);
-background: white; color: var(–text); font-family: ‘DM Sans’, sans-serif;
-font-size: .88rem; cursor: pointer; transition: all .18s;
-}
-.nav-btn:hover { background: var(–pink-light); border-color: var(–pink-deep); }
-.nav-btn.primary { background: var(–pink-mid); border-color: var(–pink-mid); }
-.nav-btn.primary:hover { background: var(–pink-deep); border-color: var(–pink-deep); color: white; }
-
-/* ─── Progress bar ───────────────────────────── */
-.progress-wrap { margin-bottom: 20px; }
-.progress-label { display: flex; justify-content: space-between; font-size: .8rem; color: var(–muted); margin-bottom: 6px; }
-.progress-track { background: white; border-radius: 50px; height: 8px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,.08); }
-.progress-fill  { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(–pink-mid), var(–green-mid)); transition: width .4s ease; }
-
-/* ─── Add card form ──────────────────────────── */
-.add-form {
-background: white; border-radius: var(–radius); padding: 28px;
-box-shadow: var(–shadow);
-}
-.add-form h2 { font-family: ‘Fraunces’, serif; font-size: 1.4rem; font-weight: 300; margin-bottom: 20px; color: var(–pink-deep); }
-
-.form-row { margin-bottom: 16px; }
-.form-row label { display: block; font-size: .82rem; font-weight: 500; color: var(–muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .05em; }
-.form-row input, .form-row textarea, .form-row select {
-width: 100%; padding: 12px 14px;
-border: 2px solid var(–pink-light); border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif; font-size: .95rem; color: var(–text);
-background: var(–cream); outline: none; transition: border-color .18s; resize: vertical;
-}
-.form-row input:focus, .form-row textarea:focus, .form-row select:focus {
-border-color: var(–pink-mid);
-}
-.form-row textarea { min-height: 90px; }
-
-.form-btns { display: flex; gap: 10px; margin-top: 24px; }
-.btn-primary {
-flex: 1; padding: 13px; background: linear-gradient(135deg, var(–pink-mid), var(–green-mid));
-border: none; border-radius: 12px; font-family: ‘DM Sans’, sans-serif; font-size: .95rem;
-font-weight: 500; color: var(–text); cursor: pointer; transition: opacity .2s;
-}
-.btn-primary:hover { opacity: .85; }
-.btn-secondary {
-padding: 13px 22px; background: white; border: 2px solid var(–pink-light);
-border-radius: 12px; font-family: ‘DM Sans’, sans-serif; font-size: .95rem;
-cursor: pointer; color: var(–muted); transition: all .18s;
-}
-.btn-secondary:hover { border-color: var(–pink-mid); color: var(–text); }
-
-/* ─── Manage tab ─────────────────────────────── */
-.card-list { display: flex; flex-direction: column; gap: 10px; }
-.card-list-item {
-background: white; border-radius: 14px; padding: 14px 18px;
-box-shadow: var(–shadow); display: flex; align-items: center; gap: 14px;
-}
-.card-list-item .q-preview {
-flex: 1; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.card-list-item .deck-badge {
-font-size: .72rem; background: var(–pink-light); color: var(–pink-deep);
-padding: 2px 8px; border-radius: 50px; white-space: nowrap;
-}
-.delete-btn {
-background: none; border: none; cursor: pointer; color: var(–muted);
-font-size: 1.1rem; transition: color .18s; flex-shrink: 0;
-}
-.delete-btn:hover { color: var(–pink-deep); }
-
-/* ─── Toast ──────────────────────────────────── */
-.toast {
-position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
-background: var(–text); color: white; padding: 10px 22px; border-radius: 50px;
-font-size: .88rem; transition: transform .3s ease; z-index: 999;
-box-shadow: 0 4px 20px rgba(0,0,0,.2);
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-/* ─── Empty state ────────────────────────────── */
-.empty-state {
-text-align: center; padding: 60px 20px; color: var(–muted);
-}
-.empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
-.empty-state p { font-size: .95rem; }
-
-/* ─── Done screen ────────────────────────────── */
-.done-screen {
-text-align: center; background: white; border-radius: var(–radius);
-padding: 48px 32px; box-shadow: var(–shadow);
-}
-.done-screen .icon { font-size: 3.5rem; margin-bottom: 16px; }
-.done-screen h2 { font-family: ‘Fraunces’, serif; font-size: 1.8rem; font-weight: 600; color: var(–green-deep); margin-bottom: 8px; }
-.done-screen p { color: var(–muted); margin-bottom: 24px; }
-
-@media (max-width: 480px) {
-header h1 { font-size: 1.8rem; }
-.answer-btns { grid-template-columns: 1fr; }
-.stats-bar { flex-wrap: wrap; }
-}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--txt);min-height:100vh}
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.b{position:absolute;border-radius:50%;filter:blur(80px);opacity:.3}
+.b1{width:400px;height:400px;background:var(--pk);top:-120px;left:-100px;animation:d1 14s ease-in-out infinite}
+.b2{width:320px;height:320px;background:var(--gn);bottom:-80px;right:-80px;animation:d2 18s ease-in-out infinite}
+.b3{width:180px;height:180px;background:var(--pkl);top:55%;left:65%;animation:d3 11s ease-in-out infinite}
+@keyframes d1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+@keyframes d2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-40px)}}
+@keyframes d3{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+.app{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:28px 18px 60px}
+h1{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:600;color:var(--pkd);text-align:center;letter-spacing:-.5px}
+.sub{text-align:center;color:var(--muted);font-size:.9rem;margin-top:5px;margin-bottom:28px}
+.tabs{display:flex;gap:6px;background:#fff;border-radius:50px;padding:5px;box-shadow:var(--shadow);margin-bottom:24px}
+.tab{flex:1;padding:10px;border:none;background:transparent;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;color:var(--muted);transition:all .2s}
+.tab.on{background:var(--pk);color:var(--txt);font-weight:500}
+.stats{display:flex;gap:10px;margin-bottom:20px}
+.sp{flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center;box-shadow:var(--shadow)}
+.sp .n{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;line-height:1}
+.sp .l{font-size:.72rem;color:var(--muted);margin-top:2px}
+.sp.pk .n{color:var(--pkd)}.sp.gn .n{color:var(--gnd)}.sp.gr .n{color:var(--muted)}
+.decks{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.chip{padding:6px 14px;border-radius:50px;border:2px solid transparent;font-size:.82rem;cursor:pointer;background:#fff;color:var(--muted);transition:all .18s}
+.chip.on{border-color:var(--pkd);color:var(--pkd);background:var(--pkl);font-weight:500}
+.pbar{margin-bottom:18px}
+.plabel{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:5px}
+.ptrack{background:#fff;border-radius:50px;height:8px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
+.pfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--pk),var(--gn));transition:width .4s}
+.card-area{perspective:1200px;margin-bottom:18px;cursor:pointer}
+.fc{width:100%;min-height:260px;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.fc.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;background:#fff;border-radius:var(--r);box-shadow:var(--shadow);backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center}
+.face.back{transform:rotateY(180deg);background:var(--gnl)}
+.dtag{position:absolute;top:14px;left:16px;font-size:.7rem;font-weight:500;color:var(--pkd);background:var(--pkl);padding:3px 9px;border-radius:50px}
+.lvl{position:absolute;top:14px;right:16px;font-size:.7rem;padding:3px 9px;border-radius:50px;font-weight:500}
+.lvl.new{background:#eee;color:#666}.lvl.hard{background:var(--pkl);color:var(--pkd)}.lvl.medium{background:#fff3cd;color:#9a7b00}.lvl.easy{background:var(--gnl);color:var(--gnd)}
+.cq{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:300;line-height:1.5;color:var(--txt)}
+.chint{font-size:.78rem;color:var(--muted);margin-top:10px}
+.ca{font-size:1rem;line-height:1.65;color:var(--txt)}
+.ca b{color:var(--gnd)}
+.ctx{display:block;font-size:.8rem;color:var(--muted);margin-top:10px;font-style:italic}
+.fhint{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:12px}
+.fhint span{background:#fff;padding:4px 12px;border-radius:50px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.abts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.ab{padding:11px;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ab small{font-size:.68rem;font-weight:400;opacity:.75}
+.ab.hard{background:var(--pkl);color:var(--pkd)}.ab.medium{background:#fff3cd;color:#9a7b00}.ab.easy{background:var(--gnl);color:var(--gnd)}
+.ab:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.nav{display:flex;gap:9px;justify-content:center}
+.nb{padding:9px 20px;border-radius:50px;border:2px solid var(--pk);background:#fff;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;transition:all .18s}
+.nb:hover{background:var(--pkl);border-color:var(--pkd)}
+.nb.pri{background:var(--pk);border-color:var(--pk)}.nb.pri:hover{background:var(--pkd);border-color:var(--pkd);color:#fff}
+.form{background:#fff;border-radius:var(--r);padding:26px;box-shadow:var(--shadow)}
+.form h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:300;color:var(--pkd);margin-bottom:18px}
+.fr{margin-bottom:14px}
+.fr label{display:block;font-size:.75rem;font-weight:500;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.fr input,.fr textarea,.fr select{width:100%;padding:11px 13px;border:2px solid var(--pkl);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--txt);background:var(--cream);outline:none;transition:border-color .18s;resize:vertical}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--pk)}
+.fr textarea{min-height:80px}
+.fbtns{display:flex;gap:9px;margin-top:20px}
+.bpri{flex:1;padding:12px;background:linear-gradient(135deg,var(--pk),var(--gn));border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;cursor:pointer;transition:opacity .2s}
+.bpri:hover{opacity:.85}
+.bsec{padding:12px 20px;background:#fff;border:2px solid var(--pkl);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.92rem;cursor:pointer;color:var(--muted);transition:all .18s}
+.bsec:hover{border-color:var(--pk);color:var(--txt)}
+.mlist{display:flex;flex-direction:column;gap:9px}
+.mi{background:#fff;border-radius:13px;padding:13px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.mq{flex:1;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mb{font-size:.7rem;background:var(--pkl);color:var(--pkd);padding:2px 8px;border-radius:50px;white-space:nowrap}
+.del{background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;transition:color .18s;flex-shrink:0}
+.del:hover{color:var(--pkd)}
+.done{text-align:center;background:#fff;border-radius:var(--r);padding:44px 28px;box-shadow:var(--shadow)}
+.done .icon{font-size:3rem;margin-bottom:14px}
+.done h2{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;color:var(--gnd);margin-bottom:7px}
+.done p{color:var(--muted);margin-bottom:22px}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty .icon{font-size:2.8rem;margin-bottom:10px}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--txt);color:#fff;padding:9px 20px;border-radius:50px;font-size:.86rem;transition:transform .3s;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.2);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:480px){h1{font-size:1.7rem}.abts{grid-template-columns:1fr}.stats{flex-wrap:wrap}}
 </style>
-
 </head>
 <body>
-
-<div class="blob-bg">
-  <div class="blob blob1"></div>
-  <div class="blob blob2"></div>
-  <div class="blob blob3"></div>
-</div>
-
+<div class="bg"><div class="b b1"></div><div class="b b2"></div><div class="b b3"></div></div>
 <div class="app">
-  <header>
-    <h1>✿ Civi Flashcards</h1>
-    <p>CAPES Oral Prep — Civilisation britannique & américaine</p>
-  </header>
-
-  <!-- Tabs -->
-
+  <h1>✿ Civi Flashcards</h1>
+  <p class="sub">CAPES Oral Prep — Civilisation britannique &amp; américaine</p>
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('study')">📖 Réviser</button>
-    <button class="tab-btn" onclick="showTab('add')">＋ Ajouter</button>
-    <button class="tab-btn" onclick="showTab('manage')">⊞ Gérer</button>
+    <button class="tab on" id="t-study"  onclick="switchTab('study')">📖 Réviser</button>
+    <button class="tab"    id="t-add"    onclick="switchTab('add')">＋ Ajouter</button>
+    <button class="tab"    id="t-manage" onclick="switchTab('manage')">⊞ Gérer</button>
   </div>
-
-  <!-- ── STUDY TAB ── -->
-
-  <div id="tab-study">
-    <div class="stats-bar">
-      <div class="stat-pill pink">  <div class="num" id="stat-total">0</div><div class="label">Total</div></div>
-      <div class="stat-pill green"> <div class="num" id="stat-easy">0</div> <div class="label">Maîtrisées</div></div>
-      <div class="stat-pill gray">  <div class="num" id="stat-due">0</div>  <div class="label">À revoir</div></div>
-    </div>
-
-```
-<div class="deck-bar" id="deck-bar"></div>
-
-<div class="progress-wrap">
-  <div class="progress-label">
-    <span id="prog-label">Progression</span>
-    <span id="prog-pct">0%</span>
-  </div>
-  <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <div id="study"></div>
+  <div id="add" style="display:none"></div>
+  <div id="manage" style="display:none"></div>
 </div>
-
-<div id="study-content"></div>
-```
-
-  </div>
-
-  <!-- ── ADD TAB ── -->
-
-  <div id="tab-add" style="display:none">
-    <div class="add-form">
-      <h2>Nouvelle carte ✦</h2>
-      <div class="form-row">
-        <label>Question / Prompt</label>
-        <textarea id="new-q" placeholder="Ex: What year did the Brexit referendum take place?"></textarea>
-      </div>
-      <div class="form-row">
-        <label>Réponse</label>
-        <textarea id="new-a" placeholder="Ex: 23rd June 2016 — 52% Leave / 48% Remain"></textarea>
-      </div>
-      <div class="form-row">
-        <label>Contexte / Note (optionnel)</label>
-        <input type="text" id="new-ctx" placeholder="Ex: Key for 'Challenges & Transitions' axis"/>
-      </div>
-      <div class="form-row">
-        <label>Thème</label>
-        <select id="new-deck">
-          <option value="Brexit">🇬🇧 Brexit</option>
-          <option value="Race en Amérique">✊ Race en Amérique</option>
-          <option value="Crise climatique">🌱 Crise climatique</option>
-          <option value="Médias & Démocratie">📰 Médias & Démocratie</option>
-          <option value="Autre">📌 Autre</option>
-        </select>
-      </div>
-      <div class="form-btns">
-        <button class="btn-primary" onclick="addCard()">Ajouter la carte ✦</button>
-        <button class="btn-secondary" onclick="showTab('study')">Annuler</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── MANAGE TAB ── -->
-
-  <div id="tab-manage" style="display:none">
-    <div class="card-list" id="card-list"></div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-//  DATA — pre-loaded cards from your civi prep
-// ═══════════════════════════════════════════════
-const DEFAULT_CARDS = [
-  // ── Brexit ──────────────────────────────────
-  { id:1, deck:"Brexit", q:"What date did the Brexit referendum take place, and what was the result?", a:"<strong>23 June 2016</strong> — 52% Leave / 48% Remain. One of the most consequential votes in British political history.", ctx:"Core date — always know this.", difficulty:"new" },
-  { id:2, deck:"Brexit", q:"When did the UK officially leave the EU?", a:"<strong>31 January 2020</strong>, after a transition period until 31 December 2020.", ctx:"Referendum → Exit: 2016 to 2020 (4 years of chaos).", difficulty:"new" },
-  { id:3, deck:"Brexit", q:"Who triggered Article 50, when, and what did it start?", a:"<strong>Theresa May</strong> triggered Article 50 in <strong>March 2017</strong>, starting the two-year formal exit process.", ctx:"Article 50 = official notice to leave the EU.", difficulty:"new" },
-  { id:4, deck:"Brexit", q:"How many times did Parliament reject May's Withdrawal Agreement?", a:"<strong>Three times</strong>. This led to her resignation and Boris Johnson replacing her in 2019.", ctx:"Shows the scale of the political deadlock.", difficulty:"new" },
-  { id:5, deck:"Brexit", q:"What was the key slogan of the Leave campaign?", a:"<strong>"Take Back Control"</strong> — centred on sovereignty, immigration control, and national identity.", ctx:"UKIP under Nigel Farage turbocharged this narrative.", difficulty:"new" },
-  { id:6, deck:"Brexit", q:"How did Scotland vote in the referendum?", a:"Scotland voted <strong>62% Remain</strong>. The SNP argued this justified a second independence referendum (indyref2).", ctx:"Key devolution tension post-Brexit.", difficulty:"new" },
-  { id:7, deck:"Brexit", q:"What is the Good Friday Agreement and why was Brexit a threat to it?", a:"The <strong>Good Friday Agreement (1998)</strong> ended decades of conflict in Northern Ireland by making the Irish border invisible. Brexit risked reimposing a hard border, destabilising peace.", ctx:"Most complex geopolitical dimension of Brexit.", difficulty:"new" },
-  { id:8, deck:"Brexit", q:"What replaced the Northern Ireland Protocol?", a:"The <strong>Windsor Framework (2023)</strong> — keeps Northern Ireland aligned with EU single market rules, creating a de facto trade border in the Irish Sea.", ctx:"Still controversial with Unionist communities.", difficulty:"new" },
-  { id:9, deck:"Brexit", q:"Name 3 key terms to use when discussing Brexit at the oral.", a:"<em>sovereignty / trade deal / hard-soft Brexit / referendum / devolution / border issue / Leave-Remain campaign</em>", ctx:"Vocab for the oral — use these naturally.", difficulty:"new" },
-  { id:10, deck:"Brexit", q:"Name 4 main fractures revealed by the Brexit vote.", a:"<strong>England & Wales</strong> (Leave) vs <strong>Scotland & N. Ireland</strong> (Remain) — Urban vs Rural — Young vs Old — Graduates vs Non-graduates.", ctx:"Shows Brexit is about identity, not just politics.", difficulty:"new" },
+// ── safe storage (falls back to memory if localStorage is blocked) ──
+var store = (function(){
+  try {
+    localStorage.setItem('_test','1');
+    localStorage.removeItem('_test');
+    return localStorage;
+  } catch(e) {
+    var mem = {};
+    return {
+      getItem: function(k){ return mem[k] !== undefined ? mem[k] : null; },
+      setItem: function(k,v){ mem[k] = String(v); }
+    };
+  }
+})();
 
-  // ── Race en Amérique ─────────────────────────
-  { id:11, deck:"Race en Amérique", q:"What year was the Civil Rights Act passed, and what did it do?", a:"<strong>1964</strong> — outlawed discrimination based on race, color, religion, sex, or national origin.", ctx:"Signed by LBJ after years of civil rights activism.", difficulty:"new" },
-  { id:12, deck:"Race en Amérique", q:"What event in May 2020 sparked global Black Lives Matter protests?", a:"The murder of <strong>George Floyd</strong> by Minneapolis police officer Derek Chauvin on 25 May 2020.", ctx:"Became a global reckoning on systemic racism.", difficulty:"new" },
-  { id:13, deck:"Race en Amérique", q:"What does 'systemic racism' mean in the US context?", a:"Racism embedded in institutions, laws, and social systems — not just individual prejudice. Manifests in policing, housing, healthcare, education disparities.", ctx:"Key concept for the oral — distinguish from individual racism.", difficulty:"new" },
-
-  // ── Crise climatique ─────────────────────────
-  { id:14, deck:"Crise climatique", q:"What is the Paris Agreement and when was it signed?", a:"A UN climate accord signed in <strong>2015</strong>, aiming to limit global warming to 1.5–2°C above pre-industrial levels. Signed by 196 parties.", ctx:"US withdrew under Trump (2020), rejoined under Biden (2021).", difficulty:"new" },
-  { id:15, deck:"Crise climatique", q:"What is Greta Thunberg's contribution to climate activism?", a:"Launched <strong>Fridays for Future</strong> in 2018 — a global youth strike movement. Her 'How dare you' speech at the UN (2019) became iconic.", ctx:"Represents youth vs. political inaction narrative.", difficulty:"new" },
-
-  // ── Médias & Démocratie ──────────────────────
-  { id:16, deck:"Médias & Démocratie", q:"What is 'fake news' and how does it threaten democracy?", a:"Deliberately false information spread via media/social networks. Threatens democracy by eroding trust in institutions and distorting public debate.", ctx:"Trump weaponised the term against mainstream media.", difficulty:"new" },
-  { id:17, deck:"Médias & Démocratie", q:"What is the role of the BBC and how is it funded?", a:"The <strong>BBC</strong> (British Broadcasting Corporation) is the UK's public broadcaster, funded by a licence fee (~£169/yr). Independent of government — a model of public service journalism.", ctx:"Often cited as a reference in media & democracy debates.", difficulty:"new" },
+// ── default cards ──
+var DEFAULTS = [
+  {id:1, deck:"Brexit", q:"What date did the Brexit referendum take place, and what was the result?", a:"<b>23 June 2016</b> — 52% Leave / 48% Remain. One of the most consequential votes in British political history.", ctx:"Core date — always know this.", diff:"new"},
+  {id:2, deck:"Brexit", q:"When did the UK officially leave the EU?", a:"<b>31 January 2020</b>, after a transition period until 31 December 2020.", ctx:"Referendum to Exit: 4 years of political chaos.", diff:"new"},
+  {id:3, deck:"Brexit", q:"Who triggered Article 50 and when?", a:"<b>Theresa May</b> in <b>March 2017</b>, starting the two-year formal exit process.", ctx:"Article 50 = official notice to leave the EU.", diff:"new"},
+  {id:4, deck:"Brexit", q:"How many times did Parliament reject May's Withdrawal Agreement?", a:"<b>Three times.</b> This led to her resignation and Boris Johnson replacing her in 2019.", ctx:"Shows the scale of the political deadlock.", diff:"new"},
+  {id:5, deck:"Brexit", q:"What was the Leave campaign's key slogan?", a:"<b>'Take Back Control'</b> — centred on sovereignty, immigration control, and national identity.", ctx:"UKIP under Nigel Farage turbocharged this narrative.", diff:"new"},
+  {id:6, deck:"Brexit", q:"How did Scotland vote, and what did it demand afterwards?", a:"Scotland voted <b>62% Remain</b>. The SNP argued this justified a second independence referendum (indyref2).", ctx:"Key devolution tension post-Brexit.", diff:"new"},
+  {id:7, deck:"Brexit", q:"What is the Good Friday Agreement and why was Brexit a threat to it?", a:"Signed in <b>1998</b>, it ended conflict in Northern Ireland by making the Irish border invisible. Brexit risked reimposing a hard border.", ctx:"Most complex geopolitical dimension of Brexit.", diff:"new"},
+  {id:8, deck:"Brexit", q:"What replaced the Northern Ireland Protocol?", a:"The <b>Windsor Framework (2023)</b> — keeps Northern Ireland aligned with EU single market rules, creating a trade border in the Irish Sea.", ctx:"Still controversial with Unionist communities.", diff:"new"},
+  {id:9, deck:"Brexit", q:"Name 4 fractures revealed by the Brexit vote.", a:"England & Wales (Leave) vs Scotland & N. Ireland (Remain) — <b>Urban vs Rural</b> — <b>Young vs Old</b> — <b>Graduates vs Non-graduates</b>.", ctx:"Brexit as an identity crisis, not just politics.", diff:"new"},
+  {id:10, deck:"Brexit", q:"Name 5 key vocabulary words for discussing Brexit.", a:"<b>sovereignty / trade deal / hard-soft Brexit / devolution / border issue</b>", ctx:"Use these naturally — don't just list them.", diff:"new"},
+  {id:11, deck:"Race en Amérique", q:"What year was the Civil Rights Act passed, and what did it do?", a:"<b>1964</b> — outlawed discrimination based on race, colour, religion, sex, or national origin. Signed by LBJ.", ctx:"After years of activism led by Martin Luther King Jr.", diff:"new"},
+  {id:12, deck:"Race en Amérique", q:"What event in May 2020 sparked global Black Lives Matter protests?", a:"The murder of <b>George Floyd</b> by Minneapolis police officer Derek Chauvin on <b>25 May 2020</b>.", ctx:"Became a global reckoning on systemic racism.", diff:"new"},
+  {id:13, deck:"Race en Amérique", q:"What does 'systemic racism' mean?", a:"Racism embedded in <b>institutions, laws, and social systems</b> — not just individual prejudice. Manifests in policing, housing, healthcare, and education.", ctx:"Distinguish from individual racism in your oral.", diff:"new"},
+  {id:14, deck:"Crise climatique", q:"What is the Paris Agreement and when was it signed?", a:"A UN climate accord signed in <b>2015</b>, aiming to limit global warming to 1.5–2°C above pre-industrial levels.", ctx:"US withdrew under Trump (2020), rejoined under Biden (2021).", diff:"new"},
+  {id:15, deck:"Crise climatique", q:"What is Fridays for Future and who started it?", a:"A global youth climate strike movement launched by <b>Greta Thunberg</b> in 2018. Her 'How dare you' UN speech in 2019 became iconic.", ctx:"Represents youth vs. political inaction narrative.", diff:"new"},
+  {id:16, deck:"Medias et Democratie", q:"What is 'fake news' and how does it threaten democracy?", a:"Deliberately false information spread via media and social networks. Threatens democracy by eroding trust in institutions and distorting public debate.", ctx:"Trump weaponised the term against mainstream media.", diff:"new"},
+  {id:17, deck:"Medias et Democratie", q:"What is the BBC and how is it funded?", a:"The UK's public broadcaster, funded by a licence fee (~£169/yr). Independent of government — a model of public service journalism.", ctx:"Key reference in media & democracy debates.", diff:"new"}
 ];
 
-// ═══════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════
-let cards = [];
-let queue = [];
-let currentIdx = 0;
-let isFlipped = false;
-let activeDeck = "Tous";
-let sessionDone = 0;
+// ── state ──
+var cards, queue, idx, flipped, activeDeck, sessionDone;
 
 function loadCards() {
-  const saved = localStorage.getItem("civi_cards_v2");
-  cards = saved ? JSON.parse(saved) : DEFAULT_CARDS.map(c => ({...c}));
+  var saved = store.getItem('civi_v4');
+  if (saved) {
+    try { cards = JSON.parse(saved); } catch(e) { cards = DEFAULTS.map(function(c){ return Object.assign({},c); }); }
+  } else {
+    cards = DEFAULTS.map(function(c){ return Object.assign({},c); });
+  }
 }
 function saveCards() {
-  localStorage.setItem("civi_cards_v2", JSON.stringify(cards));
+  try { store.setItem('civi_v4', JSON.stringify(cards)); } catch(e) {}
 }
-
-// ═══════════════════════════════════════════════
-//  QUEUE — progressive: hard first, then medium, then new, then easy
-// ═══════════════════════════════════════════════
 function buildQueue() {
-  let pool = activeDeck === "Tous" ? [...cards] : cards.filter(c => c.deck === activeDeck);
-  const order = { hard:0, medium:1, new:2, easy:3 };
-  pool.sort((a,b) => (order[a.difficulty]??2) - (order[b.difficulty]??2));
-  queue = pool;
-  currentIdx = 0;
-  sessionDone = 0;
+  var pool = activeDeck === 'Tous' ? cards.slice() : cards.filter(function(c){ return c.deck === activeDeck; });
+  var order = {hard:0, medium:1, new:2, easy:3};
+  pool.sort(function(a,b){ return (order[a.diff]||2) - (order[b.diff]||2); });
+  queue = pool; idx = 0; sessionDone = 0; flipped = false;
+}
+function diffLabel(d) {
+  return {new:'✨ Nouveau', hard:'😬 Difficile', medium:'🤔 Moyen', easy:'✅ Maîtrisé'}[d] || '✨ Nouveau';
 }
 
-function currentCard() { return queue[currentIdx]; }
-
-// ═══════════════════════════════════════════════
-//  RENDER STUDY
-// ═══════════════════════════════════════════════
+// ── STUDY ──
 function renderStudy() {
-  updateStats();
-  buildDeckBar();
+  var el = document.getElementById('study');
+  var easy = cards.filter(function(c){ return c.diff === 'easy'; }).length;
 
-  const area = document.getElementById("study-content");
+  var html = '<div class="stats">'
+    + '<div class="sp pk"><div class="n">' + cards.length + '</div><div class="l">Total</div></div>'
+    + '<div class="sp gn"><div class="n">' + easy + '</div><div class="l">Maîtrisées</div></div>'
+    + '<div class="sp gr"><div class="n">' + (cards.length - easy) + '</div><div class="l">À revoir</div></div>'
+    + '</div>';
+
+  var decks = ['Tous'];
+  cards.forEach(function(c){ if (decks.indexOf(c.deck) === -1) decks.push(c.deck); });
+  html += '<div class="decks">' + decks.map(function(d){
+    return '<button class="chip' + (d === activeDeck ? ' on' : '') + '" onclick="selDeck(\'' + d + '\')">' + d + '</button>';
+  }).join('') + '</div>';
+
+  var pct = queue.length ? Math.round(sessionDone / queue.length * 100) : 0;
+  html += '<div class="pbar"><div class="plabel"><span>' + sessionDone + ' / ' + queue.length + '</span><span>' + pct + '%</span></div>'
+    + '<div class="ptrack"><div class="pfill" style="width:' + pct + '%"></div></div></div>';
+
   if (!queue.length) {
-    area.innerHTML = `<div class="empty-state"><div class="icon">🌸</div><p>Aucune carte dans ce thème.<br/>Ajoute-en depuis l'onglet <strong>+</strong> !</p></div>`;
+    el.innerHTML = html + '<div class="empty"><div class="icon">🌸</div><p>Aucune carte dans ce thème.<br/>Ajoute-en depuis l\'onglet <b>+</b> !</p></div>';
+    return;
+  }
+  if (idx >= queue.length) {
+    el.innerHTML = html + '<div class="done"><div class="icon">🎉</div><h2>Session terminée !</h2>'
+      + '<p>Tu as revu <b>' + sessionDone + '</b> carte' + (sessionDone > 1 ? 's' : '') + ' — super boulot !</p>'
+      + '<button class="nb pri" onclick="buildQueue();renderStudy()">Recommencer</button></div>';
     return;
   }
 
-  if (currentIdx >= queue.length) {
-    area.innerHTML = `
-      <div class="done-screen">
-        <div class="icon">🎉</div>
-        <h2>Session terminée !</h2>
-        <p>Tu as revu <strong>${sessionDone}</strong> carte${sessionDone>1?'s':''}. Bien joué !</p>
-        <button class="nav-btn primary" onclick="buildQueue();renderStudy()">Recommencer</button>
-      </div>`;
-    return;
-  }
+  var c = queue[idx];
+  html += '<div class="card-area" onclick="doFlip()">'
+    + '<div class="fc" id="fc">'
+    + '<div class="face front">'
+    + '<span class="dtag">' + c.deck + '</span>'
+    + '<span class="lvl ' + c.diff + '">' + diffLabel(c.diff) + '</span>'
+    + '<p class="cq">' + c.q + '</p>'
+    + '<p class="chint">Tap pour révéler ✦</p>'
+    + '</div>'
+    + '<div class="face back">'
+    + '<span class="dtag">' + c.deck + '</span>'
+    + '<p class="ca">' + c.a + (c.ctx ? '<span class="ctx">💡 ' + c.ctx + '</span>' : '') + '</p>'
+    + '</div>'
+    + '</div></div>'
+    + '<div class="fhint"><span>👆 Clique la carte pour la retourner</span></div>'
+    + '<div class="abts" id="abts" style="display:none">'
+    + '<button class="ab hard" onclick="rate(\'hard\')">😬 Difficile<small>à revoir bientôt</small></button>'
+    + '<button class="ab medium" onclick="rate(\'medium\')">🤔 Moyen<small>dans quelques jours</small></button>'
+    + '<button class="ab easy" onclick="rate(\'easy\')">✅ Maîtrisé<small>top !</small></button>'
+    + '</div>'
+    + '<div class="nav">'
+    + '<button class="nb" onclick="prevCard()">← Précédent</button>'
+    + '<button class="nb" onclick="skipCard()">Passer →</button>'
+    + '</div>';
 
-  const c = currentCard();
-  const pct = Math.round((sessionDone / queue.length) * 100);
-  document.getElementById("prog-fill").style.width = pct + "%";
-  document.getElementById("prog-pct").textContent = pct + "%";
-  document.getElementById("prog-label").textContent = `${sessionDone} / ${queue.length}`;
-
-  isFlipped = false;
-  area.innerHTML = `
-    <div class="card-area" onclick="flipCard()">
-      <div class="flashcard" id="fc">
-        <div class="card-face front">
-          <span class="deck-tag">${c.deck}</span>
-          <span class="difficulty-tag ${c.difficulty}">${labelDiff(c.difficulty)}</span>
-          <p class="card-q">${c.q}</p>
-          <p class="card-hint">Tap to reveal ✦</p>
-        </div>
-        <div class="card-face back">
-          <span class="deck-tag">${c.deck}</span>
-          <p class="card-a">${c.a}${c.ctx ? `<span class="context">💡 ${c.ctx}</span>` : ''}</p>
-        </div>
-      </div>
-    </div>
-    <div class="flip-hint"><span>👆 Clique pour retourner</span></div>
-    <div class="answer-btns" id="ans-btns" style="display:none">
-      <button class="ans-btn hard"   onclick="rate('hard')">😬 Difficile<small>à revoir</small></button>
-      <button class="ans-btn medium" onclick="rate('medium')">🤔 Moyen<small>bientôt</small></button>
-      <button class="ans-btn easy"   onclick="rate('easy')">✅ Maîtrisé<small>top !</small></button>
-    </div>
-    <div class="nav-btns">
-      <button class="nav-btn" onclick="prevCard()">← Précédent</button>
-      <button class="nav-btn" onclick="skipCard()">Passer →</button>
-    </div>`;
+  el.innerHTML = html;
 }
 
-function flipCard() {
-  const fc = document.getElementById("fc");
-  if (!fc) return;
-  isFlipped = !isFlipped;
-  fc.classList.toggle("flipped", isFlipped);
-  const btns = document.getElementById("ans-btns");
-  if (btns) btns.style.display = isFlipped ? "grid" : "none";
+function doFlip() {
+  flipped = !flipped;
+  var fc = document.getElementById('fc');
+  if (fc) fc.className = 'fc' + (flipped ? ' flipped' : '');
+  var ab = document.getElementById('abts');
+  if (ab) ab.style.display = flipped ? 'grid' : 'none';
 }
-
-function rate(difficulty) {
-  const c = currentCard();
-  const cardData = cards.find(x => x.id === c.id);
-  if (cardData) { cardData.difficulty = difficulty; saveCards(); }
-  sessionDone++;
-  currentIdx++;
-  renderStudy();
+function rate(d) {
+  var orig = null;
+  for (var i = 0; i < cards.length; i++) { if (cards[i].id === queue[idx].id) { orig = cards[i]; break; } }
+  if (orig) { orig.diff = d; saveCards(); }
+  sessionDone++; idx++; flipped = false; renderStudy();
 }
-function skipCard()  { currentIdx++; renderStudy(); }
-function prevCard()  { if(currentIdx>0){ currentIdx--; renderStudy(); } }
+function skipCard() { idx++; flipped = false; renderStudy(); }
+function prevCard() { if (idx > 0) { idx--; flipped = false; renderStudy(); } }
+function selDeck(d) { activeDeck = d; buildQueue(); renderStudy(); }
 
-function labelDiff(d) {
-  return { hard:"😬 Difficile", medium:"🤔 Moyen", easy:"✅ Maîtrisé", new:"✨ Nouveau" }[d] || "✨ Nouveau";
+// ── ADD ──
+function renderAdd() {
+  var opts = ['Brexit','Race en Amérique','Crise climatique','Medias et Democratie','Autre']
+    .map(function(d){ return '<option>' + d + '</option>'; }).join('');
+  document.getElementById('add').innerHTML = '<div class="form">'
+    + '<h2>Nouvelle carte ✦</h2>'
+    + '<div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year did the Brexit referendum take place?"></textarea></div>'
+
+```
++ '<div class="fr"><label>Réponse</label><textarea id="na" placeholder="Ex: 23 June 2016 — 52% Leave / 48% Remain"></textarea></div>'
++ '<div class="fr"><label>Contexte / Note (optionnel)</label><input id="nc" type="text" placeholder="Ex: Key date for Challenges & Transitions axis"/></div>'
++ '<div class="fr"><label>Thème</label><select id="nd">' + opts + '</select></div>'
++ '<div class="fbtns">'
++ '<button class="bpri" onclick="addCard()">Ajouter la carte ✦</button>'
++ '<button class="bsec" onclick="switchTab(\'study\')">Annuler</button>'
++ '</div></div>';
+```
+
 }
-
-// ═══════════════════════════════════════════════
-//  STATS
-// ═══════════════════════════════════════════════
-function updateStats() {
-  document.getElementById("stat-total").textContent = cards.length;
-  document.getElementById("stat-easy").textContent  = cards.filter(c=>c.difficulty==="easy").length;
-  document.getElementById("stat-due").textContent   = cards.filter(c=>c.difficulty!=="easy").length;
-}
-
-// ═══════════════════════════════════════════════
-//  DECK BAR
-// ═══════════════════════════════════════════════
-function buildDeckBar() {
-  const decks = ["Tous", ...new Set(cards.map(c=>c.deck))];
-  const bar = document.getElementById("deck-bar");
-  bar.innerHTML = decks.map(d =>
-    `<button class="deck-chip ${d===activeDeck?'active':''}" onclick="selectDeck('${d}')">${d}</button>`
-  ).join("");
-}
-
-function selectDeck(d) {
-  activeDeck = d;
-  buildQueue();
-  renderStudy();
-}
-
-// ═══════════════════════════════════════════════
-//  ADD CARD
-// ═══════════════════════════════════════════════
 function addCard() {
-  const q    = document.getElementById("new-q").value.trim();
-  const a    = document.getElementById("new-a").value.trim();
-  const ctx  = document.getElementById("new-ctx").value.trim();
-  const deck = document.getElementById("new-deck").value;
-  if (!q || !a) { showToast("⚠️ Question et réponse requises !"); return; }
-  const newCard = { id: Date.now(), deck, q, a, ctx, difficulty:"new" };
-  cards.push(newCard);
-  saveCards();
-  document.getElementById("new-q").value = "";
-  document.getElementById("new-a").value = "";
-  document.getElementById("new-ctx").value = "";
-  showToast("✦ Carte ajoutée !");
-  showTab("study");
-  buildQueue();
-  renderStudy();
+var q = document.getElementById(‘nq’).value.trim();
+var a = document.getElementById(‘na’).value.trim();
+var ctx = document.getElementById(‘nc’).value.trim();
+var d = document.getElementById(‘nd’).value;
+if (!q || !a) { showToast(‘⚠️ Question et réponse requises !’); return; }
+cards.push({id: Date.now(), deck: d, q: q, a: a, ctx: ctx, diff: ‘new’});
+saveCards();
+showToast(‘✦ Carte ajoutée !’);
+switchTab(‘study’);
 }
 
-// ═══════════════════════════════════════════════
-//  MANAGE TAB
-// ═══════════════════════════════════════════════
+// ── MANAGE ──
 function renderManage() {
-  const list = document.getElementById("card-list");
-  if (!cards.length) {
-    list.innerHTML = `<div class="empty-state"><div class="icon">🌸</div><p>Aucune carte pour l'instant.</p></div>`;
-    return;
-  }
-  list.innerHTML = cards.map(c => `
-    <div class="card-list-item">
-      <div class="q-preview">${c.q}</div>
-      <span class="deck-badge">${c.deck}</span>
-      <button class="delete-btn" onclick="deleteCard(${c.id})" title="Supprimer">✕</button>
-    </div>`).join("");
+var el = document.getElementById(‘manage’);
+if (!cards.length) { el.innerHTML = ‘<div class="empty"><div class="icon">🌸</div><p>Aucune carte.</p></div>’; return; }
+el.innerHTML = ‘<div class="mlist">’ + cards.map(function(c){
+return ‘<div class="mi"><div class="mq">’ + c.q + ‘</div>’
++ ‘<span class="mb">’ + c.deck + ‘</span>’
++ ‘<button class="del" onclick="delCard(' + c.id + ')">✕</button></div>’;
+}).join(’’) + ‘</div>’;
+}
+function delCard(id) {
+cards = cards.filter(function(c){ return c.id !== id; });
+saveCards(); buildQueue(); renderManage(); showToast(‘Carte supprimée’);
 }
 
-function deleteCard(id) {
-  cards = cards.filter(c => c.id !== id);
-  saveCards();
-  buildQueue();
-  renderManage();
-  showToast("Carte supprimée");
+// ── TABS ──
+function switchTab(t) {
+[‘study’,‘add’,‘manage’].forEach(function(x){
+document.getElementById(x).style.display = x === t ? ‘block’ : ‘none’;
+document.getElementById(‘t-’ + x).className = ‘tab’ + (x === t ? ’ on’ : ‘’);
+});
+if (t === ‘study’) { buildQueue(); renderStudy(); }
+if (t === ‘add’)   renderAdd();
+if (t === ‘manage’) renderManage();
 }
 
-// ═══════════════════════════════════════════════
-//  TABS
-// ═══════════════════════════════════════════════
-function showTab(tab) {
-  ["study","add","manage"].forEach(t => {
-    document.getElementById("tab-"+t).style.display = t===tab ? "block" : "none";
-  });
-  document.querySelectorAll(".tab-btn").forEach((btn,i) => {
-    btn.classList.toggle("active", ["study","add","manage"][i]===tab);
-  });
-  if (tab === "study")  { buildQueue(); renderStudy(); }
-  if (tab === "manage") { renderManage(); }
-}
-
-// ═══════════════════════════════════════════════
-//  TOAST
-// ═══════════════════════════════════════════════
+// ── TOAST ──
 function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2400);
+var el = document.getElementById(‘toast’);
+el.textContent = msg;
+el.className = ‘toast show’;
+setTimeout(function(){ el.className = ‘toast’; }, 2400);
 }
 
-// ═══════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════
+// ── INIT ──
 loadCards();
+activeDeck = ‘Tous’;
 buildQueue();
 renderStudy();
 </script>

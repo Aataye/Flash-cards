@@ -7,83 +7,91 @@
 <title>My Flashcards</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: sans-serif; background: #fdf7f0; color: #2d2320; min-height: 100vh; padding: 20px; }
-#error-box { display: none; background: #fee; border: 2px solid red; padding: 12px; border-radius: 8px; margin: 12px 0; font-size: 13px; word-break: break-all; }
-h1 { font-size: 1.8rem; color: #d4607f; text-align: center; margin-bottom: 6px; }
-.sub { text-align: center; color: #9a8a85; font-size: .88rem; margin-bottom: 20px; }
-.tabs { display: flex; gap: 6px; background: #fff; border-radius: 50px; padding: 5px; margin-bottom: 20px; }
+body { font-family: sans-serif; background: #fdf7f0; color: #2d2320; padding: 20px 16px 60px; }
+h1 { font-size: 1.8rem; color: #d4607f; text-align: center; margin-bottom: 4px; }
+.sub { text-align: center; color: #9a8a85; font-size: .88rem; margin-bottom: 18px; }
+.tabs { display: flex; gap: 6px; background: #fff; border-radius: 50px; padding: 5px; margin-bottom: 18px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
 .tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 50px; font-size: .85rem; cursor: pointer; color: #9a8a85; }
 .tab.on { background: #f5b8cc; color: #2d2320; font-weight: bold; }
-#panel-study, #panel-add, #panel-manage { min-height: 100px; }
 .stats { display: flex; gap: 10px; margin-bottom: 16px; }
-.sp { flex: 1; background: #fff; border-radius: 12px; padding: 12px 6px; text-align: center; }
-.sp .n { font-size: 1.5rem; font-weight: bold; }
+.sp { flex: 1; background: #fff; border-radius: 12px; padding: 11px 6px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.sp .n { font-size: 1.4rem; font-weight: bold; }
 .sp.pk .n { color: #d4607f; } .sp.gn .n { color: #4a9962; } .sp.gr .n { color: #9a8a85; }
-.sp .l { font-size: .7rem; color: #9a8a85; }
-.folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-.folder-card { background: #fff; border-radius: 16px; padding: 20px 14px; text-align: center; cursor: pointer; border: 2px solid #fce8ef; }
-.folder-card .fi { font-size: 2rem; margin-bottom: 6px; }
-.folder-card .fn { font-size: 1rem; font-weight: bold; }
-.folder-card .fc2 { font-size: .75rem; color: #9a8a85; margin-top: 3px; }
-.folder-card .fp { margin-top: 8px; height: 5px; background: #fce8ef; border-radius: 50px; }
-.folder-card .fpf { height: 100%; background: #f5b8cc; border-radius: 50px; }
-.btn-main { display: block; width: 100%; padding: 13px; background: #f5b8cc; border: none; border-radius: 12px; font-size: .95rem; font-weight: bold; cursor: pointer; margin-bottom: 14px; }
-.add-folder-btn { background: #fce8ef; border: 2px dashed #f5b8cc; border-radius: 16px; padding: 20px 14px; text-align: center; cursor: pointer; color: #d4607f; font-weight: bold; }
-.bc { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; font-size: .85rem; color: #9a8a85; flex-wrap: wrap; }
-.bc button { background: none; border: none; cursor: pointer; color: #d4607f; font-size: .85rem; font-weight: bold; }
+.sp .l { font-size: .7rem; color: #9a8a85; margin-top: 2px; }
+.btn-main { display: block; width: 100%; padding: 13px; background: #f5b8cc; border: none; border-radius: 12px; font-size: .95rem; font-weight: bold; cursor: pointer; margin-bottom: 14px; text-align: center; }
+.folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 14px; }
+.folder-card { background: #fff; border-radius: 14px; padding: 18px 12px; text-align: center; cursor: pointer; border: 2px solid #fce8ef; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.folder-card:active { background: #fce8ef; }
+.fi { font-size: 1.8rem; margin-bottom: 6px; }
+.fn { font-size: .95rem; font-weight: bold; }
+.fc2 { font-size: .73rem; color: #9a8a85; margin-top: 2px; }
+.fp { margin-top: 8px; height: 5px; background: #fce8ef; border-radius: 50px; }
+.fpf { height: 100%; background: #f5b8cc; border-radius: 50px; }
+.add-folder-card { background: #fce8ef; border: 2px dashed #f5b8cc; border-radius: 14px; padding: 18px 12px; text-align: center; cursor: pointer; }
+.add-folder-card:active { background: #f5b8cc; }
+.add-folder-card .fi { color: #d4607f; font-size: 1.5rem; }
+.add-folder-card .fn { color: #d4607f; font-size: .9rem; }
+
+/* cards view */
+.bc { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; font-size: .85rem; color: #9a8a85; }
+.bc-home { background: none; border: none; cursor: pointer; color: #d4607f; font-size: .85rem; font-weight: bold; padding: 0; }
 .deck-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
 .chip { padding: 5px 13px; border-radius: 50px; border: 2px solid #fce8ef; background: #fff; font-size: .82rem; cursor: pointer; color: #9a8a85; }
 .chip.on { border-color: #d4607f; color: #d4607f; background: #fce8ef; font-weight: bold; }
 .pbar { margin-bottom: 14px; }
 .plabel { display: flex; justify-content: space-between; font-size: .75rem; color: #9a8a85; margin-bottom: 4px; }
-.ptrack { background: #fff; border-radius: 50px; height: 7px; }
-.pfill { height: 100%; border-radius: 50px; background: #f5b8cc; transition: width .3s; }
-.card-wrap { background: #fff; border-radius: 16px; padding: 30px 22px; text-align: center; min-height: 200px; cursor: pointer; margin-bottom: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.card-wrap.revealed { background: #ddf0e4; }
-.card-q { font-size: 1.2rem; line-height: 1.5; margin-bottom: 10px; }
-.card-hint { font-size: .8rem; color: #9a8a85; }
-.card-a { font-size: 1rem; line-height: 1.6; }
-.card-ctx { font-size: .78rem; color: #9a8a85; font-style: italic; margin-top: 8px; }
+.ptrack { background: #fff; border-radius: 50px; height: 7px; overflow: hidden; }
+.pfill { height: 100%; border-radius: 50px; background: #f5b8cc; }
+.card-box { background: #fff; border-radius: 14px; padding: 28px 20px; text-align: center; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+.card-box.back { background: #ddf0e4; }
+.cq { font-size: 1.15rem; line-height: 1.5; margin-bottom: 8px; }
+.chint { font-size: .8rem; color: #9a8a85; }
+.ca { font-size: .97rem; line-height: 1.65; }
+.ctx { font-size: .78rem; color: #9a8a85; font-style: italic; margin-top: 8px; display: block; }
 .abts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
 .ab { padding: 10px; border: none; border-radius: 12px; font-size: .85rem; font-weight: bold; cursor: pointer; }
 .ab.hard { background: #fce8ef; color: #d4607f; }
 .ab.medium { background: #fde8a0; color: #b38600; }
 .ab.easy { background: #ddf0e4; color: #4a9962; }
-.nav { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
+.nav { display: flex; gap: 8px; justify-content: center; }
 .nb { padding: 8px 18px; border-radius: 50px; border: 2px solid #f5b8cc; background: #fff; cursor: pointer; font-size: .83rem; }
-.nb.pri { background: #f5b8cc; }
-.form-box { background: #fff; border-radius: 16px; padding: 22px; }
-.form-box h2 { font-size: 1.2rem; color: #d4607f; margin-bottom: 14px; }
+.nb.pri { background: #f5b8cc; border-color: #f5b8cc; font-weight: bold; }
+
+/* add / manage */
+.panel { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.panel h2 { font-size: 1.15rem; color: #d4607f; margin-bottom: 14px; }
 .fr { margin-bottom: 12px; }
-.fr label { display: block; font-size: .75rem; font-weight: bold; color: #9a8a85; margin-bottom: 4px; text-transform: uppercase; }
-.fr input, .fr textarea, .fr select { width: 100%; padding: 10px 12px; border: 2px solid #fce8ef; border-radius: 10px; font-size: .9rem; color: #2d2320; background: #fdf7f0; resize: vertical; }
-.fr textarea { min-height: 75px; }
-.fbtns { display: flex; gap: 8px; margin-top: 16px; }
+.fr label { display: block; font-size: .72rem; font-weight: bold; color: #9a8a85; margin-bottom: 4px; text-transform: uppercase; }
+.fr input, .fr textarea, .fr select { width: 100%; padding: 10px 12px; border: 2px solid #fce8ef; border-radius: 10px; font-size: .9rem; color: #2d2320; background: #fdf7f0; resize: vertical; font-family: sans-serif; }
+.fr textarea { min-height: 72px; }
+.fbtns { display: flex; gap: 8px; margin-top: 14px; }
 .bpri { flex: 1; padding: 11px; background: #f5b8cc; border: none; border-radius: 10px; font-size: .9rem; font-weight: bold; cursor: pointer; }
 .bsec { padding: 11px 16px; background: #fff; border: 2px solid #fce8ef; border-radius: 10px; font-size: .9rem; cursor: pointer; color: #9a8a85; }
 .mlist { display: flex; flex-direction: column; gap: 8px; }
-.mi { background: #fff; border-radius: 12px; padding: 11px 13px; display: flex; align-items: center; gap: 10px; }
+.mi { background: #fff; border-radius: 12px; padding: 11px 13px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
 .mq { flex: 1; font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mb { font-size: .68rem; background: #fce8ef; color: #d4607f; padding: 2px 7px; border-radius: 50px; }
-.ms { font-size: .68rem; background: #ddf0e4; color: #4a9962; padding: 2px 7px; border-radius: 50px; }
-.del { background: none; border: none; cursor: pointer; color: #9a8a85; font-size: .95rem; }
-.done-box { background: #fff; border-radius: 16px; padding: 40px 22px; text-align: center; }
-.done-box h2 { font-size: 1.5rem; color: #4a9962; margin-bottom: 8px; }
-.done-box p { color: #9a8a85; margin-bottom: 18px; }
-.empty-box { text-align: center; padding: 40px 16px; color: #9a8a85; }
-.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100; }
-.modal-bg.show { display: flex; align-items: center; justify-content: center; }
-.modal { background: #fff; border-radius: 16px; padding: 24px; width: 90%; max-width: 380px; }
-.modal h3 { font-size: 1.1rem; color: #d4607f; margin-bottom: 14px; }
-.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(80px); background: #2d2320; color: #fff; padding: 8px 18px; border-radius: 50px; font-size: .84rem; transition: transform .3s; z-index: 999; }
+.mb { font-size: .68rem; background: #fce8ef; color: #d4607f; padding: 2px 7px; border-radius: 50px; white-space: nowrap; }
+.ms { font-size: .68rem; background: #ddf0e4; color: #4a9962; padding: 2px 7px; border-radius: 50px; white-space: nowrap; }
+.del { background: none; border: none; cursor: pointer; color: #9a8a85; font-size: .95rem; flex-shrink: 0; }
+.empty { text-align: center; padding: 40px 16px; color: #9a8a85; font-size: .95rem; }
+.done { text-align: center; background: #fff; border-radius: 14px; padding: 36px 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.done h2 { font-size: 1.4rem; color: #4a9962; margin-bottom: 8px; }
+.done p { color: #9a8a85; margin-bottom: 18px; }
+
+/* modal */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100; align-items: flex-start; justify-content: center; padding-top: 80px; }
+.overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 16px; padding: 22px; width: 90%; max-width: 360px; }
+.modal h3 { font-size: 1.1rem; color: #d4607f; margin-bottom: 12px; }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(100px); background: #2d2320; color: #fff; padding: 8px 20px; border-radius: 50px; font-size: .84rem; transition: transform .3s; z-index: 200; pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
+
 </head>
 <body>
+
 <h1>My Flashcards</h1>
 <p class="sub">Tous tes cours en un seul endroit</p>
-
-<div id="error-box"></div>
 
 <div class="tabs">
   <button class="tab on" id="t-study">Reviser</button>
@@ -91,18 +99,73 @@ h1 { font-size: 1.8rem; color: #d4607f; text-align: center; margin-bottom: 6px; 
   <button class="tab" id="t-manage">Gerer</button>
 </div>
 
-<div id="panel-study"></div>
-<div id="panel-add" style="display:none"></div>
-<div id="panel-manage" style="display:none"></div>
+<!-- STUDY PANEL — home rendered as static HTML, replaced by JS -->
 
-<div class="modal-bg" id="modal-bg">
+<div id="panel-study">
+  <div class="stats">
+    <div class="sp pk"><div class="n" id="stat-total">-</div><div class="l">Total</div></div>
+    <div class="sp gn"><div class="n" id="stat-easy">-</div><div class="l">Maitrisees</div></div>
+    <div class="sp gr"><div class="n" id="stat-due">-</div><div class="l">A revoir</div></div>
+  </div>
+  <button class="btn-main" id="btn-study-all">Tout reviser</button>
+  <div class="folder-grid" id="folder-grid">
+    <!-- folders injected by JS -->
+  </div>
+</div>
+
+<!-- ADD PANEL -->
+
+<div id="panel-add" style="display:none">
+  <div class="panel">
+    <h2>Nouvelle carte</h2>
+    <div class="fr"><label>Dossier</label><select id="ns"></select></div>
+    <div class="fr"><label>Theme</label><input id="nd" type="text" placeholder="Ex: Brexit"/></div>
+    <div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was..."></textarea></div>
+    <div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964..."></textarea></div>
+    <div class="fr"><label>Note (optionnel)</label><input id="nc" type="text"/></div>
+    <div class="fbtns">
+      <button class="bpri" id="btn-save-card">Ajouter</button>
+      <button class="bsec" id="btn-cancel-card">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE PANEL -->
+
+<div id="panel-manage" style="display:none">
+  <div id="manage-list"></div>
+</div>
+
+<!-- CARDS VIEW (hidden until needed) -->
+
+<div id="panel-cards" style="display:none">
+  <div class="bc">
+    <button class="bc-home" id="btn-back-home">Accueil</button>
+    <span id="bc-sub"></span>
+  </div>
+  <div class="stats">
+    <div class="sp pk"><div class="n" id="cstat-total">0</div><div class="l">Cartes</div></div>
+    <div class="sp gn"><div class="n" id="cstat-easy">0</div><div class="l">Maitrisees</div></div>
+    <div class="sp gr"><div class="n" id="cstat-due">0</div><div class="l">A revoir</div></div>
+  </div>
+  <div class="deck-row" id="deck-row"></div>
+  <div class="pbar">
+    <div class="plabel"><span id="prog-txt">0 / 0</span><span id="prog-pct">0%</span></div>
+    <div class="ptrack"><div class="pfill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div id="card-content"></div>
+</div>
+
+<!-- MODAL -->
+
+<div class="overlay" id="modal">
   <div class="modal">
     <h3>Nouveau dossier</h3>
-    <div class="fr"><label>Nom</label><input id="fn" type="text" placeholder="Ex: Grammaire"/></div>
-    <div class="fr"><label>Emoji (colle un emoji ici)</label><input id="fi" type="text" placeholder="🎯" maxlength="8"/></div>
+    <div class="fr"><label>Nom</label><input id="folder-name" type="text" placeholder="Ex: Grammaire"/></div>
+    <div class="fr"><label>Emoji</label><input id="folder-icon" type="text" placeholder="Ex: colle un emoji ici" maxlength="8"/></div>
     <div class="fbtns">
-      <button class="bpri" id="btn-ok-folder">Creer</button>
-      <button class="bsec" id="btn-ko-folder">Annuler</button>
+      <button class="bpri" id="btn-confirm-folder">Creer</button>
+      <button class="bsec" id="btn-cancel-folder">Annuler</button>
     </div>
   </div>
 </div>
@@ -110,84 +173,144 @@ h1 { font-size: 1.8rem; color: #d4607f; text-align: center; margin-bottom: 6px; 
 <div class="toast" id="toast"></div>
 
 <script>
-function showErr(e) {
-  var b = document.getElementById('error-box');
-  b.style.display = 'block';
-  b.textContent = 'ERREUR: ' + (e && e.message ? e.message : String(e));
-}
-
-try {
-
 // ── storage ──
 var store = (function() {
-  try { localStorage.setItem('_x','1'); localStorage.removeItem('_x'); return localStorage; }
-  catch(e) { var m = {}; return { getItem: function(k) { return m[k] !== undefined ? m[k] : null; }, setItem: function(k,v) { m[k] = ''+v; } }; }
-})();
+  try {
+    localStorage.setItem('_chk','1');
+    localStorage.removeItem('_chk');
+    return localStorage;
+  } catch(e) {
+    var m = {};
+    return {
+      getItem: function(k) { return m.hasOwnProperty(k) ? m[k] : null; },
+      setItem: function(k,v) { m[k] = String(v); }
+    };
+  }
+}());
 
-// ── data ──
+// ── defaults ──
 var SUBJECTS = [
-  { id: 's1', name: 'Civilisation', icon: '🌍' },
-  { id: 's2', name: 'Litterature',  icon: '📚' }
+  {id:'s1', name:'Civilisation', icon:'🌍'},
+  {id:'s2', name:'Litterature', icon:'📚'}
 ];
-
 var CARDS = [
-  { id: 1,  sub: 's1', deck: 'Brexit', q: 'What date did the Brexit referendum take place?', a: 'June 23, 2016. Result: 52% Leave vs 48% Remain.', ctx: 'Core date — always know this.', diff: 'new' },
-  { id: 2,  sub: 's1', deck: 'Brexit', q: 'When did the UK officially leave the EU?', a: 'January 31, 2020. Transition period until December 31, 2020.', ctx: 'Referendum to Exit: 4 years of chaos.', diff: 'new' },
-  { id: 3,  sub: 's1', deck: 'Brexit', q: 'Who triggered Article 50 and when?', a: 'Theresa May in March 2017, starting the 2-year exit process.', ctx: 'Article 50 = official notice to leave the EU.', diff: 'new' },
-  { id: 4,  sub: 's1', deck: 'Brexit', q: 'How many times did Parliament reject the Withdrawal Agreement?', a: 'Three times — leading to May resigning and Boris Johnson taking over.', ctx: 'Shows the scale of the deadlock.', diff: 'new' },
-  { id: 5,  sub: 's1', deck: 'Brexit', q: 'What was the Leave campaign key slogan?', a: 'Take Back Control — focused on sovereignty, immigration, and identity.', ctx: 'UKIP under Nigel Farage turbocharged this.', diff: 'new' },
-  { id: 6,  sub: 's1', deck: 'Brexit', q: 'How did Scotland vote and what did the SNP demand after?', a: 'Scotland voted 62% Remain. SNP demanded a second independence referendum.', ctx: 'Key devolution tension post-Brexit.', diff: 'new' },
-  { id: 7,  sub: 's1', deck: 'Brexit', q: 'What is the Good Friday Agreement (1998)?', a: 'It ended conflict in N. Ireland by making the Irish border invisible. Brexit threatened to reimpose a hard border.', ctx: 'Most complex geopolitical dimension of Brexit.', diff: 'new' },
-  { id: 8,  sub: 's1', deck: 'Brexit', q: 'What replaced the Northern Ireland Protocol?', a: 'The Windsor Framework (2023) — keeps N. Ireland aligned with EU rules, trade border in Irish Sea.', ctx: 'Still controversial with Unionists.', diff: 'new' },
-  { id: 9,  sub: 's1', deck: 'Brexit', q: 'Name 4 fractures Brexit revealed in British society.', a: 'England+Wales (Leave) vs Scotland+N.Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.', ctx: 'Brexit as identity crisis.', diff: 'new' },
-  { id: 10, sub: 's1', deck: 'Brexit', q: 'Name 5 key Brexit vocabulary words.', a: 'sovereignty, trade deal, hard/soft Brexit, devolution, border issue', ctx: 'Use these naturally in your oral.', diff: 'new' },
-  { id: 11, sub: 's1', deck: 'Race in America', q: 'What year was the Civil Rights Act and what did it do?', a: '1964 — outlawed discrimination based on race, colour, religion, sex. Signed by LBJ.', ctx: 'After years of activism by Martin Luther King Jr.', diff: 'new' },
-  { id: 12, sub: 's1', deck: 'Race in America', q: 'What sparked the 2020 Black Lives Matter protests?', a: 'The murder of George Floyd by Minneapolis police officer Derek Chauvin on May 25, 2020.', ctx: 'Global reckoning on systemic racism.', diff: 'new' },
-  { id: 13, sub: 's1', deck: 'Race in America', q: 'What does systemic racism mean?', a: 'Racism in institutions, laws, social systems — not just individual prejudice. Seen in policing, housing, healthcare, education.', ctx: 'Distinguish from individual racism.', diff: 'new' },
-  { id: 14, sub: 's1', deck: 'Climate Crisis', q: 'What is the Paris Agreement?', a: 'A UN accord signed in 2015, targeting max 1.5 to 2 degrees of global warming above pre-industrial levels.', ctx: 'US withdrew under Trump (2020), rejoined under Biden (2021).', diff: 'new' },
-  { id: 15, sub: 's1', deck: 'Climate Crisis', q: 'Who started Fridays for Future?', a: 'Greta Thunberg in 2018. Her "How dare you" UN speech in 2019 became iconic.', ctx: 'Youth vs political inaction narrative.', diff: 'new' },
-  { id: 16, sub: 's1', deck: 'Media', q: 'What is fake news and how does it threaten democracy?', a: 'False info spread via media/social networks. Erodes trust in institutions and distorts public debate.', ctx: 'Trump weaponised the term against mainstream media.', diff: 'new' },
-  { id: 17, sub: 's1', deck: 'Media', q: 'What is the BBC and how is it funded?', a: 'UK public broadcaster. Funded by licence fee (~169 GBP/year). Independent of government.', ctx: 'Model of public service journalism.', diff: 'new' },
-  { id: 18, sub: 's2', deck: 'The Tempest', q: 'Who wrote The Tempest and when?', a: 'William Shakespeare, around 1610-1611. Generally his last solo play.', ctx: 'Often read as his farewell to theatre.', diff: 'new' },
-  { id: 19, sub: 's2', deck: 'The Tempest', q: 'What does Caliban reveal about language and colonialism?', a: '"You taught me language, and my profit on it is I know how to curse." Language as control — Caliban turns it into resistance.', ctx: 'Core postcolonial reading.', diff: 'new' }
+  {id:1, sub:'s1', deck:'Brexit', q:'What date was the Brexit referendum?', a:'June 23, 2016. Result: 52% Leave vs 48% Remain.', ctx:'Core date - always know this.', diff:'new'},
+  {id:2, sub:'s1', deck:'Brexit', q:'When did the UK officially leave the EU?', a:'January 31, 2020. Transition period until Dec 31, 2020.', ctx:'4 years between vote and exit.', diff:'new'},
+  {id:3, sub:'s1', deck:'Brexit', q:'Who triggered Article 50 and when?', a:'Theresa May, March 2017 - starting the 2-year exit process.', ctx:'Article 50 = official notice to leave.', diff:'new'},
+  {id:4, sub:'s1', deck:'Brexit', q:'How many times did Parliament reject the Withdrawal Agreement?', a:'Three times. Led to May resigning, Johnson taking over in 2019.', ctx:'Shows the scale of the deadlock.', diff:'new'},
+  {id:5, sub:'s1', deck:'Brexit', q:'What was the Leave campaign key slogan?', a:'Take Back Control. Focused on sovereignty, immigration, identity.', ctx:'UKIP under Farage pushed this hard.', diff:'new'},
+  {id:6, sub:'s1', deck:'Brexit', q:'How did Scotland vote and what did the SNP demand?', a:'62% Remain. SNP demanded a second independence referendum.', ctx:'Key devolution tension post-Brexit.', diff:'new'},
+  {id:7, sub:'s1', deck:'Brexit', q:'Why was Brexit a threat to the Good Friday Agreement?', a:'The 1998 Agreement made the Irish border invisible. Brexit risked reimposing a hard border, destabilising peace.', ctx:'Most complex geopolitical dimension.', diff:'new'},
+  {id:8, sub:'s1', deck:'Brexit', q:'What replaced the Northern Ireland Protocol?', a:'The Windsor Framework (2023) - N. Ireland stays aligned with EU rules.', ctx:'Still controversial with Unionists.', diff:'new'},
+  {id:9, sub:'s1', deck:'Brexit', q:'Name 4 fractures Brexit revealed.', a:'England+Wales (Leave) vs Scotland+N.Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.', ctx:'Brexit as identity crisis.', diff:'new'},
+  {id:10, sub:'s1', deck:'Brexit', q:'Name 5 key Brexit vocabulary words.', a:'sovereignty, trade deal, hard/soft Brexit, devolution, border issue', ctx:'Use these naturally in your oral.', diff:'new'},
+  {id:11, sub:'s1', deck:'Race in America', q:'What did the 1964 Civil Rights Act do?', a:'Outlawed discrimination based on race, colour, religion, sex. Signed by LBJ after years of activism.', ctx:'MLK was key figure.', diff:'new'},
+  {id:12, sub:'s1', deck:'Race in America', q:'What sparked the 2020 BLM protests?', a:'Murder of George Floyd by officer Derek Chauvin, May 25, 2020 in Minneapolis.', ctx:'Global reckoning on systemic racism.', diff:'new'},
+  {id:13, sub:'s1', deck:'Race in America', q:'What is systemic racism?', a:'Racism in institutions, laws, systems - not just individual prejudice. Seen in policing, housing, healthcare, education.', ctx:'Distinguish from individual racism.', diff:'new'},
+  {id:14, sub:'s1', deck:'Climate', q:'What is the Paris Agreement?', a:'UN accord signed in 2015, targeting max 1.5-2 degrees of warming above pre-industrial levels.', ctx:'US withdrew under Trump, rejoined under Biden.', diff:'new'},
+  {id:15, sub:'s1', deck:'Climate', q:'Who started Fridays for Future?', a:'Greta Thunberg, 2018. Her How dare you UN speech in 2019 became iconic.', ctx:'Youth vs political inaction.', diff:'new'},
+  {id:16, sub:'s1', deck:'Media', q:'What is fake news and why is it dangerous?', a:'Deliberately false info spread via media/social networks. Erodes trust in institutions.', ctx:'Trump weaponised the term.', diff:'new'},
+  {id:17, sub:'s1', deck:'Media', q:'What is the BBC and how is it funded?', a:'UK public broadcaster, funded by licence fee (~169 GBP/year). Independent of government.', ctx:'Model of public service journalism.', diff:'new'},
+  {id:18, sub:'s2', deck:'The Tempest', q:'Who wrote The Tempest and when?', a:'Shakespeare, around 1610-1611. Generally his last solo play.', ctx:'Often read as his farewell to theatre.', diff:'new'},
+  {id:19, sub:'s2', deck:'The Tempest', q:'What does Caliban say about language?', a:'You taught me language, and my profit on it is I know how to curse. Language as control - Caliban turns it into resistance.', ctx:'Core postcolonial reading.', diff:'new'}
 ];
 
 // ── state ──
-var subjects, cards, activeSub, activeDeck, view, queue, qIdx, revealed, sessionDone;
+var subjects, cards, activeSub, activeDeck, queue, qIdx, revealed, sessionDone;
 
-function initState() {
-  try {
-    var ss = store.getItem('fcs3');
-    subjects = ss ? JSON.parse(ss) : deepCopy(SUBJECTS);
-  } catch(e) { subjects = deepCopy(SUBJECTS); }
-  try {
-    var sc = store.getItem('fcc3');
-    cards = sc ? JSON.parse(sc) : deepCopy(CARDS);
-  } catch(e) { cards = deepCopy(CARDS); }
-  activeSub = null; activeDeck = 'Tous'; view = 'home';
-  queue = []; qIdx = 0; revealed = false; sessionDone = 0;
+function loadData() {
+  var ss = store.getItem('fcs4');
+  var sc = store.getItem('fcc4');
+  subjects = ss ? tryParse(ss, cloneArr(SUBJECTS)) : cloneArr(SUBJECTS);
+  cards    = sc ? tryParse(sc, cloneArr(CARDS))    : cloneArr(CARDS);
 }
-
-function deepCopy(arr) {
+function tryParse(str, fallback) {
+  try { var v = JSON.parse(str); return (v && typeof v === 'object' && v.length !== undefined) ? v : fallback; }
+  catch(e) { return fallback; }
+}
+function cloneArr(arr) {
   var out = [];
   for (var i = 0; i < arr.length; i++) {
-    var o = {}, src = arr[i];
-    for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) o[k] = src[k]; }
+    var o = {}, s = arr[i];
+    for (var k in s) { o[k] = s[k]; }
     out.push(o);
   }
   return out;
 }
-
-function save() {
-  try { store.setItem('fcs3', JSON.stringify(subjects)); } catch(e) {}
-  try { store.setItem('fcc3', JSON.stringify(cards)); } catch(e) {}
+function persist() {
+  try { store.setItem('fcs4', JSON.stringify(subjects)); } catch(e) {}
+  try { store.setItem('fcc4', JSON.stringify(cards));    } catch(e) {}
 }
-
 function findSub(id) {
   for (var i = 0; i < subjects.length; i++) if (subjects[i].id === id) return subjects[i];
   return null;
 }
+function countEasy(arr) {
+  var n = 0;
+  for (var i = 0; i < arr.length; i++) if (arr[i].diff === 'easy') n++;
+  return n;
+}
 
+// ── tabs ──
+function showPanel(name) {
+  var panels = ['study','add','manage','cards'];
+  for (var i = 0; i < panels.length; i++) {
+    var el = document.getElementById('panel-' + panels[i]);
+    if (el) el.style.display = panels[i] === name ? 'block' : 'none';
+  }
+  var tabs = ['study','add','manage'];
+  for (var j = 0; j < tabs.length; j++) {
+    var t = document.getElementById('t-' + tabs[j]);
+    if (t) t.className = 'tab' + (tabs[j] === name || (name === 'cards' && tabs[j] === 'study') ? ' on' : '');
+  }
+}
+
+// ── HOME ──
+function renderHome() {
+  showPanel('study');
+
+  // stats
+  var easy = countEasy(cards);
+  document.getElementById('stat-total').textContent = cards.length;
+  document.getElementById('stat-easy').textContent  = easy;
+  document.getElementById('stat-due').textContent   = cards.length - easy;
+
+  // folders
+  var grid = document.getElementById('folder-grid');
+  var html = '';
+  for (var i = 0; i < subjects.length; i++) {
+    var s = subjects[i];
+    var sc = 0, se = 0;
+    for (var j = 0; j < cards.length; j++) {
+      if (cards[j].sub === s.id) { sc++; if (cards[j].diff === 'easy') se++; }
+    }
+    var pct = sc ? Math.round(se / sc * 100) : 0;
+    html += '<div class="folder-card" data-sid="' + s.id + '">'
+      + '<div class="fi">' + s.icon + '</div>'
+      + '<div class="fn">' + s.name + '</div>'
+      + '<div class="fc2">' + sc + ' cartes</div>'
+      + '<div class="fp"><div class="fpf" style="width:' + pct + '%"></div></div>'
+      + '</div>';
+  }
+  html += '<div class="add-folder-card" id="btn-new-folder">'
+    + '<div class="fi">+</div>'
+    + '<div class="fn">Nouveau dossier</div>'
+    + '</div>';
+  grid.innerHTML = html;
+
+  // folder click events
+  var fcs = grid.getElementsByClassName('folder-card');
+  for (var k = 0; k < fcs.length; k++) {
+    fcs[k].onclick = (function(sid) {
+      return function() { goToSubject(sid); };
+    })(fcs[k].getAttribute('data-sid'));
+  }
+  document.getElementById('btn-new-folder').onclick = function() {
+    document.getElementById('modal').className = 'overlay open';
+  };
+}
+
+// ── SUBJECT/CARDS ──
 function buildQueue() {
   var pool = [];
   for (var i = 0; i < cards.length; i++) {
@@ -196,265 +319,198 @@ function buildQueue() {
     if (activeDeck !== 'Tous' && c.deck !== activeDeck) continue;
     pool.push(c);
   }
-  pool.sort(function(a, b) {
-    var o = { hard: 0, medium: 1, new: 2, easy: 3 };
-    return (o[a.diff] !== undefined ? o[a.diff] : 2) - (o[b.diff] !== undefined ? o[b.diff] : 2);
+  pool.sort(function(a,b){
+    var o={hard:0,medium:1,new:2,easy:3};
+    return (o[a.diff]!==undefined?o[a.diff]:2)-(o[b.diff]!==undefined?o[b.diff]:2);
   });
-  queue = pool; qIdx = 0; revealed = false; sessionDone = 0;
+  queue=pool; qIdx=0; revealed=false; sessionDone=0;
 }
 
-// ── tabs ──
-function showTab(t) {
-  var tabs = ['study', 'add', 'manage'];
-  for (var i = 0; i < tabs.length; i++) {
-    document.getElementById('panel-' + tabs[i]).style.display = tabs[i] === t ? 'block' : 'none';
-    document.getElementById('t-' + tabs[i]).className = 'tab' + (tabs[i] === t ? ' on' : '');
-  }
+function goToSubject(sid) {
+  activeSub = sid; activeDeck = 'Tous'; buildQueue(); renderCards();
+}
+function goToAll() {
+  activeSub = null; activeDeck = 'Tous'; buildQueue(); renderCards();
 }
 
-// ── HOME ──
-function renderHome() {
-  showTab('study');
-  var el = document.getElementById('panel-study');
-
-  var total = cards.length, easy = 0;
-  for (var i = 0; i < cards.length; i++) if (cards[i].diff === 'easy') easy++;
-
-  var html = '<div class="stats">'
-    + '<div class="sp pk"><div class="n">' + total + '</div><div class="l">Total</div></div>'
-    + '<div class="sp gn"><div class="n">' + easy + '</div><div class="l">Maitrisees</div></div>'
-    + '<div class="sp gr"><div class="n">' + (total - easy) + '</div><div class="l">A revoir</div></div>'
-    + '</div>'
-    + '<button class="btn-main" id="b-studyall">Tout reviser</button>'
-    + '<div class="folder-grid">';
-
-  for (var j = 0; j < subjects.length; j++) {
-    var s = subjects[j], sc = 0, se = 0;
-    for (var k = 0; k < cards.length; k++) {
-      if (cards[k].sub === s.id) { sc++; if (cards[k].diff === 'easy') se++; }
-    }
-    var pct = sc ? Math.round(se / sc * 100) : 0;
-    html += '<div class="folder-card" id="fc-' + s.id + '">'
-      + '<div class="fi">' + s.icon + '</div>'
-      + '<div class="fn">' + s.name + '</div>'
-      + '<div class="fc2">' + sc + ' cartes</div>'
-      + '<div class="fp"><div class="fpf" style="width:' + pct + '%"></div></div>'
-      + '</div>';
-  }
-
-  html += '<div class="add-folder-btn" id="b-addfolder">➕ Nouveau dossier</div>'
-    + '</div>';
-
-  el.innerHTML = html;
-
-  // events
-  document.getElementById('b-studyall').onclick = function() {
-    activeSub = null; activeDeck = 'Tous'; buildQueue(); renderCards();
-  };
-  document.getElementById('b-addfolder').onclick = function() {
-    document.getElementById('modal-bg').className = 'modal-bg show';
-  };
-  for (var m = 0; m < subjects.length; m++) {
-    (function(sid) {
-      var el2 = document.getElementById('fc-' + sid);
-      if (el2) el2.onclick = function() {
-        activeSub = sid; activeDeck = 'Tous'; buildQueue(); renderCards();
-      };
-    })(subjects[m].id);
-  }
-}
-
-// ── CARDS ──
 function renderCards() {
-  showTab('study');
-  var el = document.getElementById('panel-study');
+  showPanel('cards');
+
   var subj = activeSub ? findSub(activeSub) : null;
+  document.getElementById('bc-sub').textContent = subj ? (' › ' + subj.icon + ' ' + subj.name) : ' › Tout';
 
-  var bcHtml = '<div class="bc"><button id="b-home">Accueil</button>';
-  if (subj) bcHtml += '<span>› ' + subj.icon + ' ' + subj.name + '</span>';
-  bcHtml += '</div>';
+  // stats
+  var pool = [];
+  for (var i = 0; i < cards.length; i++) if (!activeSub || cards[i].sub === activeSub) pool.push(cards[i]);
+  var easy = countEasy(pool);
+  document.getElementById('cstat-total').textContent = pool.length;
+  document.getElementById('cstat-easy').textContent  = easy;
+  document.getElementById('cstat-due').textContent   = pool.length - easy;
 
-  var subCards = activeSub ? [] : cards.slice();
-  if (activeSub) {
-    for (var i = 0; i < cards.length; i++) if (cards[i].sub === activeSub) subCards.push(cards[i]);
-  }
-  var easy2 = 0;
-  for (var j = 0; j < subCards.length; j++) if (subCards[j].diff === 'easy') easy2++;
-
-  var statsH = '<div class="stats">'
-    + '<div class="sp pk"><div class="n">' + subCards.length + '</div><div class="l">Cartes</div></div>'
-    + '<div class="sp gn"><div class="n">' + easy2 + '</div><div class="l">Maitrisees</div></div>'
-    + '<div class="sp gr"><div class="n">' + (subCards.length - easy2) + '</div><div class="l">A revoir</div></div>'
-    + '</div>';
-
+  // decks
   var decks = ['Tous'];
-  for (var d = 0; d < subCards.length; d++) {
+  for (var d = 0; d < pool.length; d++) {
     var found = false;
-    for (var di = 0; di < decks.length; di++) if (decks[di] === subCards[d].deck) { found = true; break; }
-    if (!found) decks.push(subCards[d].deck);
+    for (var di = 0; di < decks.length; di++) { if (decks[di] === pool[d].deck) { found = true; break; } }
+    if (!found) decks.push(pool[d].deck);
   }
-  var deckHtml = '<div class="deck-row" id="deck-row">';
+  var dr = document.getElementById('deck-row');
+  var dhtml = '';
   for (var dk = 0; dk < decks.length; dk++) {
-    deckHtml += '<button class="chip' + (decks[dk] === activeDeck ? ' on' : '') + '" data-d="' + dk + '">' + decks[dk] + '</button>';
+    dhtml += '<button class="chip' + (decks[dk]===activeDeck?' on':'') + '" data-deck="' + decks[dk] + '">' + decks[dk] + '</button>';
   }
-  deckHtml += '</div>';
-  var deckNames = decks; // keep ref
+  dr.innerHTML = dhtml;
+  var chips = dr.getElementsByTagName('button');
+  for (var ci = 0; ci < chips.length; ci++) {
+    chips[ci].onclick = (function(dn) {
+      return function() { activeDeck = dn; buildQueue(); renderCards(); };
+    })(chips[ci].getAttribute('data-deck'));
+  }
 
-  var pct = queue.length ? Math.round(sessionDone / queue.length * 100) : 0;
-  var progH = '<div class="pbar"><div class="plabel"><span>' + sessionDone + ' / ' + queue.length + '</span><span>' + pct + '%</span></div>'
-    + '<div class="ptrack"><div class="pfill" style="width:' + pct + '%"></div></div></div>';
+  // progress
+  var pct = queue.length ? Math.round(sessionDone/queue.length*100) : 0;
+  document.getElementById('prog-txt').textContent  = sessionDone + ' / ' + queue.length;
+  document.getElementById('prog-pct').textContent  = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
 
-  var bodyH = '';
+  // card content
+  var cc = document.getElementById('card-content');
   if (!queue.length) {
-    bodyH = '<div class="empty-box"><p>Aucune carte ici. Ajoute-en depuis + !</p></div>';
+    cc.innerHTML = '<div class="empty">Aucune carte ici. Ajoute-en depuis + !</div>';
   } else if (qIdx >= queue.length) {
-    bodyH = '<div class="done-box"><h2>Session terminee !</h2><p>Tu as revu ' + sessionDone + ' cartes</p><button class="nb pri" id="b-restart">Recommencer</button></div>';
+    cc.innerHTML = '<div class="done"><h2>Session terminee !</h2><p>Tu as revu ' + sessionDone + ' cartes</p><button class="nb pri" id="btn-restart">Recommencer</button></div>';
+    document.getElementById('btn-restart').onclick = function() { buildQueue(); renderCards(); };
   } else {
     var c = queue[qIdx];
-    bodyH = '<div class="card-wrap' + (revealed ? ' revealed' : '') + '" id="card-wrap">'
-      + (revealed
-        ? '<p class="card-a">' + c.a + '</p>' + (c.ctx ? '<p class="card-ctx">💡 ' + c.ctx + '</p>' : '')
-        : '<p class="card-q">' + c.q + '</p><p class="card-hint">Appuie pour voir la reponse</p>')
-      + '</div>';
-    if (revealed) {
-      bodyH += '<div class="abts">'
-        + '<button class="ab hard" id="b-hard">Difficile</button>'
-        + '<button class="ab medium" id="b-med">Moyen</button>'
-        + '<button class="ab easy" id="b-easy">Maitrise !</button>'
-        + '</div>';
+    if (!revealed) {
+      cc.innerHTML = '<div class="card-box" id="card-box"><p class="cq">' + c.q + '</p><p class="chint">Appuie pour voir la reponse</p></div>'
+        + '<div class="nav"><button class="nb" id="btn-prev">Precedent</button><button class="nb" id="btn-skip">Passer</button></div>';
+      document.getElementById('card-box').onclick = function() { revealed = true; renderCards(); };
+    } else {
+      cc.innerHTML = '<div class="card-box back">' + c.a + (c.ctx ? '<span class="ctx">💡 ' + c.ctx + '</span>' : '') + '</div>'
+        + '<div class="abts">'
+        + '<button class="ab hard" id="btn-hard">Difficile</button>'
+        + '<button class="ab medium" id="btn-med">Moyen</button>'
+        + '<button class="ab easy" id="btn-easy">Maitrise !</button>'
+        + '</div>'
+        + '<div class="nav"><button class="nb" id="btn-prev">Precedent</button><button class="nb" id="btn-skip">Passer</button></div>';
+      document.getElementById('btn-hard').onclick   = function() { rate('hard'); };
+      document.getElementById('btn-med').onclick    = function() { rate('medium'); };
+      document.getElementById('btn-easy').onclick   = function() { rate('easy'); };
     }
-    bodyH += '<div class="nav">'
-      + '<button class="nb" id="b-prev">Precedent</button>'
-      + '<button class="nb" id="b-skip">Passer</button>'
-      + '</div>';
+    document.getElementById('btn-prev').onclick = function() { if(qIdx>0){qIdx--;revealed=false;renderCards();} };
+    document.getElementById('btn-skip').onclick = function() { qIdx++;revealed=false;renderCards(); };
   }
+}
 
-  el.innerHTML = bcHtml + statsH + deckHtml + progH + bodyH;
-
-  // events
-  var homeBtn = document.getElementById('b-home');
-  if (homeBtn) homeBtn.onclick = function() { view = 'home'; activeSub = null; activeDeck = 'Tous'; renderHome(); };
-
-  var chipBtns = document.getElementById('deck-row') ? document.getElementById('deck-row').getElementsByClassName('chip') : [];
-  for (var ci = 0; ci < chipBtns.length; ci++) {
-    (function(btn, idx) {
-      btn.onclick = function() { activeDeck = deckNames[idx]; buildQueue(); renderCards(); };
-    })(chipBtns[ci], parseInt(chipBtns[ci].getAttribute('data-d'), 10));
+function rate(diff) {
+  for (var i = 0; i < cards.length; i++) {
+    if (cards[i].id === queue[qIdx].id) { cards[i].diff = diff; break; }
   }
-
-  var restart = document.getElementById('b-restart');
-  if (restart) restart.onclick = function() { buildQueue(); renderCards(); };
-
-  var cardWrap = document.getElementById('card-wrap');
-  if (cardWrap) cardWrap.onclick = function() { revealed = true; renderCards(); };
-
-  function rateCard(diff) {
-    for (var i = 0; i < cards.length; i++) {
-      if (cards[i].id === queue[qIdx].id) { cards[i].diff = diff; break; }
-    }
-    save(); sessionDone++; qIdx++; revealed = false; renderCards();
-  }
-  var bh = document.getElementById('b-hard');   if (bh) bh.onclick = function(e) { e.stopPropagation(); rateCard('hard'); };
-  var bm = document.getElementById('b-med');    if (bm) bm.onclick = function(e) { e.stopPropagation(); rateCard('medium'); };
-  var be = document.getElementById('b-easy');   if (be) be.onclick = function(e) { e.stopPropagation(); rateCard('easy'); };
-  var bp = document.getElementById('b-prev');   if (bp) bp.onclick = function() { if (qIdx > 0) { qIdx--; revealed = false; renderCards(); } };
-  var bs = document.getElementById('b-skip');   if (bs) bs.onclick = function() { qIdx++; revealed = false; renderCards(); };
+  persist(); sessionDone++; qIdx++; revealed=false; renderCards();
 }
 
 // ── ADD ──
 function renderAdd() {
-  var opts = '';
-  for (var i = 0; i < subjects.length; i++) opts += '<option value="' + subjects[i].id + '">' + subjects[i].icon + ' ' + subjects[i].name + '</option>';
-  document.getElementById('panel-add').innerHTML = '<div class="form-box">'
-    + '<h2>Nouvelle carte</h2>'
-    + '<div class="fr"><label>Dossier</label><select id="ns">' + opts + '</select></div>'
-    + '<div class="fr"><label>Theme</label><input id="nd" type="text" placeholder="Ex: Brexit"/></div>'
-    + '<div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was..."></textarea></div>'
-
-```
-+ '<div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964..."></textarea></div>'
-+ '<div class="fr"><label>Note</label><input id="nc" type="text" placeholder="Optionnel"/></div>'
-+ '<div class="fbtns"><button class="bpri" id="b-savecard">Ajouter</button><button class="bsec" id="b-cancelcard">Annuler</button></div>'
-+ '</div>';
-```
-
-document.getElementById(‘b-savecard’).onclick = function() {
-var sub = document.getElementById(‘ns’).value;
-var deck = document.getElementById(‘nd’).value.trim();
-var q = document.getElementById(‘nq’).value.trim();
-var a = document.getElementById(‘na’).value.trim();
-var ctx = document.getElementById(‘nc’).value.trim();
-if (!q || !a || !deck) { toast(‘Remplis tous les champs !’); return; }
-cards.push({ id: Date.now(), sub: sub, deck: deck, q: q, a: a, ctx: ctx, diff: ‘new’ });
-save(); toast(‘Carte ajoutee !’); view = ‘home’; renderHome();
-};
-document.getElementById(‘b-cancelcard’).onclick = function() { view = ‘home’; renderHome(); };
+  showPanel('add');
+  var sel = document.getElementById('ns');
+  sel.innerHTML = '';
+  for (var i = 0; i < subjects.length; i++) {
+    var opt = document.createElement('option');
+    opt.value = subjects[i].id;
+    opt.textContent = subjects[i].icon + ' ' + subjects[i].name;
+    sel.appendChild(opt);
+  }
 }
 
 // ── MANAGE ──
 function renderManage() {
-var el = document.getElementById(‘panel-manage’);
-if (!cards.length) { el.innerHTML = ‘<div class="empty-box"><p>Aucune carte.</p></div>’; return; }
-var html = ‘<div class="mlist">’;
-for (var i = 0; i < cards.length; i++) {
-var c = cards[i], s = findSub(c.sub);
-html += ‘<div class="mi">’
-+ ‘<div class="mq">’ + c.q + ‘</div>’
-+ (s ? ‘<span class="ms">’ + s.icon + ’ ’ + s.name + ‘</span>’ : ‘’)
-+ ‘<span class="mb">’ + c.deck + ‘</span>’
-+ ‘<button class="del" data-cid="' + c.id + '">✕</button>’
-+ ‘</div>’;
+  showPanel('manage');
+  var el = document.getElementById('manage-list');
+  if (!cards.length) { el.innerHTML = '<div class="empty">Aucune carte.</div>'; return; }
+  var html = '<div class="mlist">';
+  for (var i = 0; i < cards.length; i++) {
+    var c = cards[i], s = findSub(c.sub);
+    html += '<div class="mi">'
+      + '<div class="mq">' + c.q + '</div>'
+      + (s ? '<span class="ms">' + s.icon + '</span>' : '')
+      + '<span class="mb">' + c.deck + '</span>'
+      + '<button class="del" data-cid="' + c.id + '">x</button>'
+      + '</div>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
+  var dels = el.getElementsByClassName('del');
+  for (var d = 0; d < dels.length; d++) {
+    dels[d].onclick = (function(cid) {
+      return function() {
+        var nc = [];
+        for (var i = 0; i < cards.length; i++) if (cards[i].id !== cid) nc.push(cards[i]);
+        cards = nc; persist(); buildQueue(); renderManage(); toast('Supprimee !');
+      };
+    })(parseInt(dels[d].getAttribute('data-cid'), 10));
+  }
 }
-html += ‘</div>’;
-el.innerHTML = html;
-
-var dels = el.getElementsByClassName(‘del’);
-for (var d = 0; d < dels.length; d++) {
-(function(btn) {
-btn.onclick = function() {
-var cid = parseInt(this.getAttribute(‘data-cid’), 10);
-var nc = [];
-for (var i = 0; i < cards.length; i++) if (cards[i].id !== cid) nc.push(cards[i]);
-cards = nc;
-save(); buildQueue(); renderManage(); toast(‘Supprimee !’);
-};
-})(dels[d]);
-}
-}
-
-// ── MODAL ──
-document.getElementById(‘btn-ok-folder’).onclick = function() {
-var name = document.getElementById(‘fn’).value.trim();
-var icon = document.getElementById(‘fi’).value.trim() || ‘📁’;
-if (!name) { toast(‘Donne un nom !’); return; }
-subjects.push({ id: ‘s’ + Date.now(), name: name, icon: icon });
-save();
-document.getElementById(‘modal-bg’).className = ‘modal-bg’;
-document.getElementById(‘fn’).value = ‘’;
-document.getElementById(‘fi’).value = ‘’;
-renderHome(); toast(‘Dossier cree !’);
-};
-document.getElementById(‘btn-ko-folder’).onclick = function() {
-document.getElementById(‘modal-bg’).className = ‘modal-bg’;
-};
-
-// ── TAB BUTTONS ──
-document.getElementById(‘t-study’).onclick = function() { showTab(‘study’); view = ‘home’; renderHome(); };
-document.getElementById(‘t-add’).onclick    = function() { showTab(‘add’);   renderAdd(); };
-document.getElementById(‘t-manage’).onclick = function() { showTab(‘manage’); renderManage(); };
 
 // ── TOAST ──
 function toast(msg) {
-var el = document.getElementById(‘toast’);
-el.textContent = msg; el.className = ‘toast show’;
-setTimeout(function() { el.className = ‘toast’; }, 2400);
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast show';
+  setTimeout(function() { el.className = 'toast'; }, 2200);
 }
 
 // ── INIT ──
-initState();
-renderHome();
+loadData();
+activeSub = null; activeDeck = 'Tous';
+queue = []; qIdx = 0; revealed = false; sessionDone = 0;
 
-} catch(e) { showErr(e); }
+// tab buttons
+document.getElementById('t-study').onclick = function() { renderHome(); };
+document.getElementById('t-add').onclick   = function() { renderAdd(); };
+document.getElementById('t-manage').onclick= function() { renderManage(); };
+
+// study-all
+document.getElementById('btn-study-all').onclick = function() { goToAll(); };
+
+// back home
+document.getElementById('btn-back-home').onclick = function() { renderHome(); };
+
+// add card
+document.getElementById('btn-save-card').onclick = function() {
+  var sub  = document.getElementById('ns').value;
+  var deck = document.getElementById('nd').value.trim();
+  var q    = document.getElementById('nq').value.trim();
+  var a    = document.getElementById('na').value.trim();
+  var ctx  = document.getElementById('nc').value.trim();
+  if (!q || !a || !deck) { toast('Remplis tous les champs !'); return; }
+  cards.push({id:Date.now(), sub:sub, deck:deck, q:q, a:a, ctx:ctx, diff:'new'});
+  persist();
+  document.getElementById('nd').value = '';
+  document.getElementById('nq').value = '';
+  document.getElementById('na').value = '';
+  document.getElementById('nc').value = '';
+  toast('Carte ajoutee !'); renderHome();
+};
+document.getElementById('btn-cancel-card').onclick = function() { renderHome(); };
+
+// modal
+document.getElementById('btn-confirm-folder').onclick = function() {
+  var name = document.getElementById('folder-name').value.trim();
+  var icon = document.getElementById('folder-icon').value.trim() || '📁';
+  if (!name) { toast('Donne un nom !'); return; }
+  subjects.push({id:'s'+Date.now(), name:name, icon:icon});
+  persist();
+  document.getElementById('modal').className = 'overlay';
+  document.getElementById('folder-name').value = '';
+  document.getElementById('folder-icon').value = '';
+  renderHome(); toast('Dossier cree !');
+};
+document.getElementById('btn-cancel-folder').onclick = function() {
+  document.getElementById('modal').className = 'overlay';
+};
+
+// render home
+renderHome();
 </script>
 
 </body>

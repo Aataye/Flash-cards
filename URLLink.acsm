@@ -1,0 +1,30 @@
+<fulfillmentToken fulfillmentType="buy" auth="user" xmlns="http://ns.adobe.com/adept">
+  <distributor>urn:uuid:f0816700-f2d0-4b0e-b8e8-35ebb7768dee</distributor>
+  <operatorURL>http://entrepot2.numilog.com/fulfillment</operatorURL>
+  <transaction>E16-01181781-2370611-0001</transaction>
+  <purchase>2026-05-14T22:35:56+02:00</purchase>
+  <expiration>2026-08-22T22:35:56+02:00</expiration>
+  <resourceItemInfo>
+    <resource>urn:uuid:1c06424b-f4d1-4ada-8b07-09d8cf57e1fe</resource>
+    <resourceItem>0</resourceItem>
+    <metadata>
+      <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Fiches de civilisation américaine et britannique</dc:title>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Loubignac Claude, Loubignac Cécile</dc:creator>
+      <dc:publisher xmlns:dc="http://purl.org/dc/elements/1.1/">ELLIPSES</dc:publisher>
+      <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">2370611</dc:identifier>
+      <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">application/epub+zip</dc:format>
+      <dc:language xmlns:dc="http://purl.org/dc/elements/1.1/">fre</dc:language>
+    </metadata>
+    <licenseToken>
+      <resource>urn:uuid:1c06424b-f4d1-4ada-8b07-09d8cf57e1fe</resource>
+      <permissions>
+        <display/>
+        <print>
+          <count initial="43"/>
+        </print>
+        <play/>
+      </permissions>
+    </licenseToken>
+  </resourceItemInfo>
+  <hmac>XH3tM+y09SE1iVfLCL4sEgvjjDM=</hmac>
+</fulfillmentToken>

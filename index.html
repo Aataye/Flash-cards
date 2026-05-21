@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -8,466 +7,135 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', system-ui, sans-serif; background: #fdf7f0; color: #2d2320; min-height: 100vh; padding: 0 0 80px; }
+body::before, body::after { content: ''; position: fixed; border-radius: 50%; filter: blur(80px); opacity: .2; pointer-events: none; z-index: 0; }
+body::before { width: 500px; height: 500px; background: #f5b8cc; top: -150px; left: -150px; }
+body::after  { width: 400px; height: 400px; background: #a8d9b5; bottom: -100px; right: -100px; }
+.wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 28px 16px 0; }
+h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #d4607f; text-align: center; letter-spacing: -.5px; }
+.sub { text-align: center; color: #b09a94; font-size: .88rem; margin-top: 5px; margin-bottom: 24px; }
 
-body {
-font-family: ‘DM Sans’, system-ui, sans-serif;
-background: #fdf7f0;
-color: #2d2320;
-min-height: 100vh;
-padding: 0 0 80px;
-}
+/* tabs */
+.tabs { display: flex; gap: 5px; background: #fff; border-radius: 50px; padding: 5px; margin-bottom: 22px; box-shadow: 0 2px 16px rgba(212,96,127,.10); }
+.tab { flex: 1; padding: 11px; border: none; background: transparent; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: .85rem; cursor: pointer; color: #b09a94; font-weight: 500; transition: all .2s; }
+.tab.on { background: linear-gradient(135deg, #f5b8cc, #f9cdd9); color: #2d2320; font-weight: 600; }
 
-/* ── background blobs ── */
-body::before, body::after {
-content: ‘’;
-position: fixed;
-border-radius: 50%;
-filter: blur(80px);
-opacity: .22;
-pointer-events: none;
-z-index: 0;
-}
-body::before {
-width: 500px; height: 500px;
-background: #f5b8cc;
-top: -150px; left: -150px;
-}
-body::after {
-width: 400px; height: 400px;
-background: #a8d9b5;
-bottom: -100px; right: -100px;
-}
+/* stats */
+.stats { display: flex; gap: 10px; margin-bottom: 18px; }
+.sp { flex: 1; background: #fff; border-radius: 16px; padding: 13px 6px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.06); border: 1.5px solid #f5ebe8; }
+.sp .n { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 600; line-height: 1; }
+.sp.pk .n { color: #d4607f; } .sp.gn .n { color: #4a9962; } .sp.gr .n { color: #b09a94; }
+.sp .l { font-size: .7rem; color: #b09a94; margin-top: 3px; }
 
-.wrap {
-position: relative;
-z-index: 1;
-max-width: 680px;
-margin: 0 auto;
-padding: 32px 18px 0;
-}
+/* buttons */
+.btn-main { display: block; width: 100%; padding: 13px; background: linear-gradient(135deg, #f5b8cc, #a8d9b5); border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600; cursor: pointer; margin-bottom: 10px; color: #2d2320; box-shadow: 0 3px 14px rgba(212,96,127,.15); transition: opacity .2s; }
+.btn-main:active { opacity: .88; }
+.btn-sel { display: none; width: 100%; padding: 13px; background: #fff; border: 2px solid #d4607f; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600; cursor: pointer; margin-bottom: 14px; color: #d4607f; transition: all .2s; }
+.btn-sel.visible { display: block; }
+.btn-sel:hover { background: #fce8ef; }
 
-/* ── header ── */
-h1 {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 2.2rem;
-color: #d4607f;
-text-align: center;
-letter-spacing: -.5px;
-}
-.sub {
-text-align: center;
-color: #b09a94;
-font-size: .88rem;
-margin-top: 5px;
-margin-bottom: 26px;
-}
-
-/* ── tabs ── */
-.tabs {
-display: flex;
-gap: 5px;
-background: #fff;
-border-radius: 50px;
-padding: 5px;
-margin-bottom: 24px;
-box-shadow: 0 2px 16px rgba(212,96,127,.10);
-}
-.tab {
-flex: 1;
-padding: 11px;
-border: none;
-background: transparent;
-border-radius: 50px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .85rem;
-cursor: pointer;
-color: #b09a94;
-transition: all .2s;
-font-weight: 500;
-}
-.tab.on {
-background: linear-gradient(135deg, #f5b8cc, #f9cdd9);
-color: #2d2320;
-font-weight: 600;
-box-shadow: 0 2px 10px rgba(212,96,127,.2);
-}
-
-/* ── stats ── */
-.stats {
-display: flex;
-gap: 10px;
-margin-bottom: 20px;
-}
-.sp {
-flex: 1;
-background: #fff;
-border-radius: 16px;
-padding: 14px 6px;
-text-align: center;
-box-shadow: 0 2px 12px rgba(0,0,0,.06);
-border: 1.5px solid #f5ebe8;
-}
-.sp .n {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 1.6rem;
-font-weight: 600;
-line-height: 1;
-}
-.sp.pk .n { color: #d4607f; }
-.sp.gn .n { color: #4a9962; }
-.sp.gr .n { color: #b09a94; }
-.sp .l { font-size: .7rem; color: #b09a94; margin-top: 3px; letter-spacing: .03em; }
-
-/* ── study-all button ── */
-.btn-main {
-display: block;
-width: 100%;
-padding: 14px;
-background: linear-gradient(135deg, #f5b8cc 0%, #a8d9b5 100%);
-border: none;
-border-radius: 14px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .95rem;
-font-weight: 600;
-cursor: pointer;
-margin-bottom: 16px;
-color: #2d2320;
-box-shadow: 0 3px 14px rgba(212,96,127,.18);
-transition: opacity .2s, transform .1s;
-}
-.btn-main:active { opacity: .88; transform: scale(.99); }
-
-/* ── folder grid ── */
-.folder-grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 12px;
-margin-bottom: 16px;
-}
-.folder-card {
-background: #fff;
-border-radius: 18px;
-padding: 22px 14px 18px;
-text-align: center;
-cursor: pointer;
-border: 1.5px solid #f5ebe8;
-box-shadow: 0 2px 12px rgba(0,0,0,.06);
-transition: transform .18s, box-shadow .18s;
-}
-.folder-card:active {
-transform: scale(.97);
-box-shadow: 0 1px 6px rgba(0,0,0,.08);
-}
-.fi { font-size: 2rem; margin-bottom: 8px; }
-.fn {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: .95rem;
-font-weight: 600;
-color: #2d2320;
-}
+/* folder grid */
+.folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+.folder-card { background: #fff; border-radius: 18px; padding: 20px 14px 16px; text-align: center; cursor: pointer; border: 2px solid #f5ebe8; box-shadow: 0 2px 12px rgba(0,0,0,.06); transition: all .18s; position: relative; }
+.folder-card:active { transform: scale(.97); }
+.folder-card.checked { border-color: #d4607f; background: #fdf0f4; }
+.fcheck { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #f5b8cc; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; transition: all .18s; z-index: 2; }
+.fcheck.on { background: #d4607f; border-color: #d4607f; color: #fff; }
+.fi { font-size: 1.8rem; margin-bottom: 7px; }
+.fn { font-family: 'Playfair Display', Georgia, serif; font-size: .95rem; font-weight: 600; color: #2d2320; }
 .fc2 { font-size: .73rem; color: #b09a94; margin-top: 3px; }
-.fp { margin-top: 10px; height: 5px; background: #fce8ef; border-radius: 50px; overflow: hidden; }
+.fp { margin-top: 9px; height: 5px; background: #fce8ef; border-radius: 50px; overflow: hidden; }
 .fpf { height: 100%; background: linear-gradient(90deg, #f5b8cc, #a8d9b5); border-radius: 50px; }
-
-.add-folder-card {
-background: linear-gradient(135deg, #fce8ef, #ddf0e4);
-border: 2px dashed #f5b8cc;
-border-radius: 18px;
-padding: 22px 14px 18px;
-text-align: center;
-cursor: pointer;
-transition: opacity .18s;
-}
+.add-folder-card { background: linear-gradient(135deg, #fce8ef, #ddf0e4); border: 2px dashed #f5b8cc; border-radius: 18px; padding: 20px 14px 16px; text-align: center; cursor: pointer; transition: opacity .18s; }
 .add-folder-card:active { opacity: .8; }
-.add-folder-card .fi { color: #d4607f; font-size: 1.5rem; }
-.add-folder-card .fn { color: #d4607f; font-size: .9rem; font-family: ‘DM Sans’, sans-serif; font-weight: 600; margin-top: 4px; }
+.add-folder-card .fi { color: #d4607f; font-size: 1.4rem; }
+.add-folder-card .fn { color: #d4607f; font-size: .88rem; font-family: 'DM Sans', sans-serif; font-weight: 600; margin-top: 4px; }
 
-/* ── cards view ── */
-.bc {
-display: flex;
-gap: 6px;
-align-items: center;
-margin-bottom: 16px;
-font-size: .85rem;
-color: #b09a94;
-flex-wrap: wrap;
-}
-.bc-home {
-background: #fce8ef;
-border: none;
-cursor: pointer;
-color: #d4607f;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .82rem;
-font-weight: 600;
-padding: 5px 13px;
-border-radius: 50px;
-}
-
+/* cards view */
+.bc { display: flex; gap: 6px; align-items: center; margin-bottom: 14px; font-size: .85rem; color: #b09a94; flex-wrap: wrap; }
+.bc-home { background: #fce8ef; border: none; cursor: pointer; color: #d4607f; font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600; padding: 5px 13px; border-radius: 50px; }
 .deck-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
-.chip {
-padding: 6px 14px;
-border-radius: 50px;
-border: 1.5px solid #f5ebe8;
-background: #fff;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .82rem;
-cursor: pointer;
-color: #b09a94;
-transition: all .18s;
-font-weight: 500;
-}
-.chip.on {
-border-color: #d4607f;
-color: #d4607f;
-background: #fce8ef;
-font-weight: 600;
-}
-
-/* progress */
-.pbar { margin-bottom: 16px; }
-.plabel { display: flex; justify-content: space-between; font-size: .75rem; color: #b09a94; margin-bottom: 5px; }
+.chip { padding: 6px 14px; border-radius: 50px; border: 1.5px solid #f5ebe8; background: #fff; font-family: 'DM Sans', sans-serif; font-size: .82rem; cursor: pointer; color: #b09a94; font-weight: 500; transition: all .18s; }
+.chip.on { border-color: #d4607f; color: #d4607f; background: #fce8ef; font-weight: 600; }
+.pbar { margin-bottom: 14px; }
+.plabel { display: flex; justify-content: space-between; font-size: .75rem; color: #b09a94; margin-bottom: 4px; }
 .ptrack { background: #f5ebe8; border-radius: 50px; height: 7px; overflow: hidden; }
-.pfill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, #f5b8cc, #a8d9b5); transition: width .35s ease; }
+.pfill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, #f5b8cc, #a8d9b5); transition: width .35s; }
 
-/* ── flashcard ── */
-.card-box {
-background: #fff;
-border-radius: 20px;
-padding: 36px 24px;
-text-align: center;
-min-height: 200px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-margin-bottom: 14px;
-box-shadow: 0 4px 24px rgba(0,0,0,.08);
-border: 1.5px solid #f5ebe8;
-transition: transform .1s;
-}
+/* flashcard */
+.card-box { background: #fff; border-radius: 20px; padding: 34px 22px; text-align: center; min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 13px; box-shadow: 0 4px 24px rgba(0,0,0,.08); border: 1.5px solid #f5ebe8; transition: transform .1s; }
 .card-box:active { transform: scale(.99); }
-.card-box.back {
-background: linear-gradient(160deg, #ddf0e4, #edf8f1);
-border-color: #a8d9b5;
-}
-.cq {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 1.2rem;
-line-height: 1.5;
-margin-bottom: 10px;
-color: #2d2320;
-font-weight: 600;
-}
+.card-box.back { background: linear-gradient(160deg, #ddf0e4, #edf8f1); border-color: #a8d9b5; }
+.cq { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; line-height: 1.5; margin-bottom: 10px; font-weight: 600; }
 .chint { font-size: .78rem; color: #b09a94; }
-.ca { font-size: .97rem; line-height: 1.7; color: #2d2320; }
-.ctx {
-display: block;
-font-size: .78rem;
-color: #7aaa90;
-font-style: italic;
-margin-top: 10px;
-padding-top: 10px;
-border-top: 1px solid #a8d9b540;
-width: 100%;
-text-align: center;
-}
-
-/* answer buttons */
-.abts { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 13px; }
-.ab {
-padding: 12px 6px;
-border: none;
-border-radius: 14px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .85rem;
-font-weight: 600;
-cursor: pointer;
-transition: transform .1s, opacity .18s;
-}
-.ab:active { transform: scale(.96); opacity: .88; }
-.ab.hard   { background: #fce8ef; color: #d4607f; }
-.ab.medium { background: #fef3cc; color: #b38600; }
-.ab.easy   { background: #ddf0e4; color: #3d8a55; }
-
+.ca { font-size: .95rem; line-height: 1.7; }
+.ctx { display: block; font-size: .78rem; color: #7aaa90; font-style: italic; margin-top: 10px; padding-top: 10px; border-top: 1px solid #a8d9b540; width: 100%; text-align: center; }
+.abts { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 12px; }
+.ab { padding: 11px 6px; border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600; cursor: pointer; transition: transform .1s; }
+.ab:active { transform: scale(.96); }
+.ab.hard { background: #fce8ef; color: #d4607f; } .ab.medium { background: #fef3cc; color: #b38600; } .ab.easy { background: #ddf0e4; color: #3d8a55; }
 .nav { display: flex; gap: 9px; justify-content: center; }
-.nb {
-padding: 9px 20px;
-border-radius: 50px;
-border: 1.5px solid #f5b8cc;
-background: #fff;
-cursor: pointer;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .83rem;
-color: #2d2320;
-font-weight: 500;
-transition: background .18s;
-}
-.nb:hover { background: #fce8ef; }
-.nb.pri {
-background: linear-gradient(135deg, #f5b8cc, #a8d9b5);
-border-color: transparent;
-font-weight: 600;
-}
+.nb { padding: 9px 20px; border-radius: 50px; border: 1.5px solid #f5b8cc; background: #fff; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .83rem; color: #2d2320; font-weight: 500; }
+.nb.pri { background: linear-gradient(135deg, #f5b8cc, #a8d9b5); border-color: transparent; font-weight: 600; }
 
-/* ── add / manage ── */
-.panel {
-background: #fff;
-border-radius: 20px;
-padding: 24px 20px;
-box-shadow: 0 2px 16px rgba(0,0,0,.07);
-border: 1.5px solid #f5ebe8;
-}
-.panel h2 {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 1.2rem;
-color: #d4607f;
-margin-bottom: 16px;
-font-weight: 600;
-}
-.fr { margin-bottom: 13px; }
-.fr label {
-display: block;
-font-size: .72rem;
-font-weight: 600;
-color: #b09a94;
-margin-bottom: 5px;
-text-transform: uppercase;
-letter-spacing: .05em;
-}
-.fr input, .fr textarea, .fr select {
-width: 100%;
-padding: 11px 13px;
-border: 1.5px solid #f5ebe8;
-border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .9rem;
-color: #2d2320;
-background: #fdf7f0;
-resize: vertical;
-outline: none;
-transition: border-color .18s;
-}
+/* add / manage panels */
+.panel { background: #fff; border-radius: 20px; padding: 22px 18px; box-shadow: 0 2px 16px rgba(0,0,0,.07); border: 1.5px solid #f5ebe8; margin-bottom: 14px; }
+.panel h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; color: #d4607f; margin-bottom: 14px; }
+.fr { margin-bottom: 12px; }
+.fr label { display: block; font-size: .72rem; font-weight: 600; color: #b09a94; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
+.fr input, .fr textarea, .fr select { width: 100%; padding: 10px 12px; border: 1.5px solid #f5ebe8; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: #2d2320; background: #fdf7f0; resize: vertical; outline: none; transition: border-color .18s; }
 .fr input:focus, .fr textarea:focus, .fr select:focus { border-color: #f5b8cc; }
-.fr textarea { min-height: 76px; }
-.fbtns { display: flex; gap: 9px; margin-top: 16px; }
-.bpri {
-flex: 1;
-padding: 12px;
-background: linear-gradient(135deg, #f5b8cc, #a8d9b5);
-border: none;
-border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .92rem;
-font-weight: 600;
-cursor: pointer;
-transition: opacity .18s;
-}
+.fr textarea { min-height: 74px; }
+.search-input { width: 100%; padding: 10px 14px; border: 1.5px solid #f5ebe8; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: .88rem; color: #2d2320; background: #fff; outline: none; margin-bottom: 14px; }
+.search-input:focus { border-color: #f5b8cc; }
+.fbtns { display: flex; gap: 8px; margin-top: 14px; }
+.bpri { flex: 1; padding: 11px; background: linear-gradient(135deg, #f5b8cc, #a8d9b5); border: none; border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600; cursor: pointer; transition: opacity .18s; }
 .bpri:active { opacity: .88; }
-.bsec {
-padding: 12px 18px;
-background: #fff;
-border: 1.5px solid #f5ebe8;
-border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: .92rem;
-cursor: pointer;
-color: #b09a94;
-}
+.bsec { padding: 11px 16px; background: #fff; border: 1.5px solid #f5ebe8; border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; cursor: pointer; color: #b09a94; }
+.sect-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: #2d2320; margin-bottom: 10px; font-weight: 600; }
 
-/* manage list */
-.mlist { display: flex; flex-direction: column; gap: 9px; }
-.mi {
-background: #fff;
-border-radius: 14px;
-padding: 12px 14px;
-display: flex;
-align-items: center;
-gap: 10px;
-box-shadow: 0 1px 8px rgba(0,0,0,.06);
-border: 1.5px solid #f5ebe8;
-}
-.mq { flex: 1; font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mb { font-size: .68rem; background: #fce8ef; color: #d4607f; padding: 3px 8px; border-radius: 50px; white-space: nowrap; font-weight: 500; }
-.ms { font-size: .68rem; background: #ddf0e4; color: #3d8a55; padding: 3px 8px; border-radius: 50px; white-space: nowrap; }
-.del { background: none; border: none; cursor: pointer; color: #d4b4bc; font-size: 1rem; flex-shrink: 0; transition: color .18s; }
-.del:hover { color: #d4607f; }
+/* manage folders */
+.mfolder-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
+.mfolder { background: #fff; border-radius: 13px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; border: 1.5px solid #f5ebe8; }
+.mf-icon { font-size: 1.3rem; flex-shrink: 0; }
+.mf-name { flex: 1; font-weight: 600; font-size: .9rem; }
+.mf-count { font-size: .75rem; color: #b09a94; flex-shrink: 0; }
+
+/* manage cards */
+.mlist { display: flex; flex-direction: column; gap: 8px; }
+.mi { background: #fff; border-radius: 13px; padding: 11px 13px; display: flex; align-items: center; gap: 9px; box-shadow: 0 1px 8px rgba(0,0,0,.05); border: 1.5px solid #f5ebe8; }
+.mq { flex: 1; font-size: .84rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mb { font-size: .67rem; background: #fce8ef; color: #d4607f; padding: 2px 7px; border-radius: 50px; white-space: nowrap; font-weight: 500; flex-shrink: 0; }
+.ms { font-size: .67rem; background: #ddf0e4; color: #3d8a55; padding: 2px 7px; border-radius: 50px; white-space: nowrap; flex-shrink: 0; }
+.del { background: none; border: none; cursor: pointer; color: #d4b4bc; font-size: .95rem; flex-shrink: 0; padding: 2px 4px; }
+.del:active { color: #d4607f; }
+.edit-btn { background: none; border: none; cursor: pointer; color: #b09a94; font-size: .95rem; flex-shrink: 0; padding: 2px 4px; }
+.edit-btn:active { color: #d4607f; }
 
 /* done / empty */
-.empty { text-align: center; padding: 48px 16px; color: #b09a94; font-size: .95rem; }
-.done {
-text-align: center;
-background: #fff;
-border-radius: 20px;
-padding: 44px 24px;
-box-shadow: 0 4px 24px rgba(0,0,0,.08);
-}
-.done h2 {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 1.5rem;
-color: #3d8a55;
-margin-bottom: 8px;
-}
-.done p { color: #b09a94; margin-bottom: 20px; }
+.empty { text-align: center; padding: 44px 16px; color: #b09a94; font-size: .92rem; }
+.done { text-align: center; background: #fff; border-radius: 20px; padding: 42px 22px; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+.done h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.45rem; color: #3d8a55; margin-bottom: 7px; }
+.done p { color: #b09a94; margin-bottom: 18px; }
 
-/* ── modal ── */
-.overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(45,35,32,.45);
-z-index: 100;
-align-items: flex-start;
-justify-content: center;
-padding-top: 100px;
-}
+/* modal */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(45,35,32,.45); z-index: 100; align-items: flex-start; justify-content: center; padding-top: 80px; overflow-y: auto; }
 .overlay.open { display: flex; }
-.modal {
-background: #fff;
-border-radius: 20px;
-padding: 24px;
-width: 92%;
-max-width: 360px;
-box-shadow: 0 8px 40px rgba(0,0,0,.18);
-}
-.modal h3 {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: 1.15rem;
-color: #d4607f;
-margin-bottom: 14px;
-}
+.modal { background: #fff; border-radius: 20px; padding: 22px; width: 92%; max-width: 380px; box-shadow: 0 8px 40px rgba(0,0,0,.18); margin-bottom: 40px; }
+.modal h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; color: #d4607f; margin-bottom: 13px; }
 
-/* ── toast ── */
-.toast {
-position: fixed;
-bottom: 26px;
-left: 50%;
-transform: translateX(-50%) translateY(90px);
-background: #2d2320;
-color: #fff;
-padding: 9px 22px;
-border-radius: 50px;
-font-size: .84rem;
-transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-z-index: 200;
-pointer-events: none;
-font-family: ‘DM Sans’, sans-serif;
-box-shadow: 0 4px 20px rgba(0,0,0,.2);
-}
+/* toast */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(90px); background: #2d2320; color: #fff; padding: 9px 22px; border-radius: 50px; font-size: .84rem; transition: transform .3s cubic-bezier(.34,1.56,.64,1); z-index: 200; pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 420px) {
-h1 { font-size: 1.7rem; }
-.abts { grid-template-columns: 1fr; }
-.folder-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+  h1 { font-size: 1.65rem; }
+  .abts { grid-template-columns: 1fr; }
 }
 </style>
-
 </head>
 <body>
 <div class="wrap">
-
 <h1>✿ My Flashcards</h1>
 <p class="sub">Tous tes cours en un seul endroit</p>
 
@@ -478,7 +146,6 @@ h1 { font-size: 1.7rem; }
 </div>
 
 <!-- STUDY -->
-
 <div id="panel-study">
   <div class="stats">
     <div class="sp pk"><div class="n" id="stat-total">-</div><div class="l">Total</div></div>
@@ -486,18 +153,18 @@ h1 { font-size: 1.7rem; }
     <div class="sp gr"><div class="n" id="stat-due">-</div><div class="l">A revoir</div></div>
   </div>
   <button class="btn-main" id="btn-study-all">📖 Tout reviser</button>
+  <button class="btn-sel" id="btn-study-sel">✓ Etudier la selection (0)</button>
   <div class="folder-grid" id="folder-grid"></div>
 </div>
 
 <!-- ADD -->
-
 <div id="panel-add" style="display:none">
   <div class="panel">
     <h2>Nouvelle carte ✦</h2>
     <div class="fr"><label>Dossier</label><select id="ns"></select></div>
     <div class="fr"><label>Theme / Deck</label><input id="nd" type="text" placeholder="Ex: Brexit, Phonologie..."/></div>
-    <div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was..."></textarea></div>
-    <div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964 — outlawed..."></textarea></div>
+    <div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was the Civil Rights Act?"></textarea></div>
+    <div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964 — outlawed discrimination..."></textarea></div>
     <div class="fr"><label>Note (optionnel)</label><input id="nc" type="text" placeholder="Ex: Key date for oral prep"/></div>
     <div class="fbtns">
       <button class="bpri" id="btn-save-card">Ajouter ✦</button>
@@ -507,13 +174,20 @@ h1 { font-size: 1.7rem; }
 </div>
 
 <!-- MANAGE -->
-
 <div id="panel-manage" style="display:none">
-  <div id="manage-list"></div>
+  <div class="panel">
+    <p class="sect-title">🗂 Dossiers</p>
+    <div class="mfolder-list" id="manage-folders"></div>
+    <button class="bsec" id="btn-add-folder-manage" style="width:100%;margin-top:8px">+ Nouveau dossier</button>
+  </div>
+  <div class="panel">
+    <p class="sect-title">🃏 Cartes</p>
+    <input class="search-input" id="manage-search" type="text" placeholder="Rechercher une carte..."/>
+    <div id="manage-cards"></div>
+  </div>
 </div>
 
 <!-- CARDS VIEW -->
-
 <div id="panel-cards" style="display:none">
   <div class="bc">
     <button class="bc-home" id="btn-back-home">🏠 Accueil</button>
@@ -531,16 +205,14 @@ h1 { font-size: 1.7rem; }
   </div>
   <div id="card-content"></div>
 </div>
-
 </div><!-- end .wrap -->
 
-<!-- MODAL -->
-
+<!-- NEW FOLDER MODAL -->
 <div class="overlay" id="modal">
   <div class="modal">
     <h3>Nouveau dossier ✦</h3>
-    <div class="fr"><label>Nom</label><input id="folder-name" type="text" placeholder="Ex: Grammaire, Phonologie..."/></div>
-    <div class="fr"><label>Emoji (colle-en un)</label><input id="folder-icon" type="text" placeholder="🎯" maxlength="8"/></div>
+    <div class="fr"><label>Nom du dossier</label><input id="folder-name" type="text" placeholder="Ex: Grammaire, Phonologie..."/></div>
+    <div class="fr"><label>Emoji (colle-en un)</label><input id="folder-icon" type="text" placeholder="📖" maxlength="8"/></div>
     <div class="fbtns">
       <button class="bpri" id="btn-confirm-folder">Creer</button>
       <button class="bsec" id="btn-cancel-folder">Annuler</button>
@@ -548,62 +220,559 @@ h1 { font-size: 1.7rem; }
   </div>
 </div>
 
+<!-- EDIT CARD MODAL -->
+<div class="overlay" id="edit-modal">
+  <div class="modal">
+    <h3>Modifier la carte ✦</h3>
+    <input type="hidden" id="edit-id"/>
+    <div class="fr"><label>Dossier</label><select id="edit-sub"></select></div>
+    <div class="fr"><label>Theme / Deck</label><input id="edit-deck" type="text"/></div>
+    <div class="fr"><label>Question</label><textarea id="edit-q"></textarea></div>
+    <div class="fr"><label>Reponse</label><textarea id="edit-a"></textarea></div>
+    <div class="fr"><label>Note</label><input id="edit-ctx" type="text"/></div>
+    <div class="fbtns">
+      <button class="bpri" id="btn-save-edit">Enregistrer</button>
+      <button class="bsec" id="btn-cancel-edit">Annuler</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-var store=(function(){try{localStorage.setItem('_x','1');localStorage.removeItem('_x');return localStorage;}catch(e){var m={};return{getItem:function(k){return m.hasOwnProperty(k)?m[k]:null;},setItem:function(k,v){m[k]=String(v);}};}})();
-var SUBJECTS=[{id:'s1',name:'Civilisation',icon:'🌍'},{id:'s2',name:'Litterature',icon:'📚'}];
-var CARDS=[
-{id:1,sub:'s1',deck:'Brexit',q:'What date was the Brexit referendum?',a:'June 23, 2016. Result: 52% Leave vs 48% Remain.',ctx:'Core date — always know this.',diff:'new'},
-{id:2,sub:'s1',deck:'Brexit',q:'When did the UK officially leave the EU?',a:'January 31, 2020. Transition period until Dec 31, 2020.',ctx:'4 years between vote and exit.',diff:'new'},
-{id:3,sub:'s1',deck:'Brexit',q:'Who triggered Article 50 and when?',a:'Theresa May, March 2017 — starting the 2-year exit process.',ctx:'Article 50 = official notice to leave.',diff:'new'},
-{id:4,sub:'s1',deck:'Brexit',q:'How many times did Parliament reject the Withdrawal Agreement?',a:'Three times — led to May resigning, Johnson taking over in 2019.',ctx:'Shows the scale of the deadlock.',diff:'new'},
-{id:5,sub:'s1',deck:'Brexit',q:'What was the Leave campaign key slogan?',a:'Take Back Control — focused on sovereignty, immigration, identity.',ctx:'UKIP under Farage pushed this hard.',diff:'new'},
-{id:6,sub:'s1',deck:'Brexit',q:'How did Scotland vote and what did the SNP demand?',a:'62% Remain. SNP demanded a second independence referendum (indyref2).',ctx:'Key devolution tension post-Brexit.',diff:'new'},
-{id:7,sub:'s1',deck:'Brexit',q:'Why was Brexit a threat to the Good Friday Agreement?',a:'The 1998 Agreement made the Irish border invisible. Brexit risked reimposing a hard border.',ctx:'Most complex geopolitical dimension.',diff:'new'},
-{id:8,sub:'s1',deck:'Brexit',q:'What replaced the Northern Ireland Protocol?',a:'The Windsor Framework (2023) — N. Ireland stays aligned with EU rules, trade border in Irish Sea.',ctx:'Still controversial with Unionists.',diff:'new'},
-{id:9,sub:'s1',deck:'Brexit',q:'Name 4 fractures Brexit revealed.',a:'England+Wales (Leave) vs Scotland+N.Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.',ctx:'Brexit as identity crisis.',diff:'new'},
-{id:10,sub:'s1',deck:'Brexit',q:'Name 5 key Brexit vocabulary words.',a:'sovereignty, trade deal, hard/soft Brexit, devolution, border issue',ctx:'Use these naturally in your oral.',diff:'new'},
-{id:11,sub:'s1',deck:'Race in America',q:'What did the 1964 Civil Rights Act do?',a:'Outlawed discrimination based on race, colour, religion, sex. Signed by LBJ after years of activism.',ctx:'MLK was a key figure.',diff:'new'},
-{id:12,sub:'s1',deck:'Race in America',q:'What sparked the 2020 BLM protests?',a:'Murder of George Floyd by officer Derek Chauvin, May 25, 2020 in Minneapolis.',ctx:'Global reckoning on systemic racism.',diff:'new'},
-{id:13,sub:'s1',deck:'Race in America',q:'What is systemic racism?',a:'Racism in institutions, laws, systems — not just individual prejudice. Seen in policing, housing, healthcare, education.',ctx:'Distinguish from individual racism.',diff:'new'},
-{id:14,sub:'s1',deck:'Climate',q:'What is the Paris Agreement?',a:'UN accord signed in 2015, targeting max 1.5-2 degrees of warming above pre-industrial levels.',ctx:'US withdrew under Trump, rejoined under Biden.',diff:'new'},
-{id:15,sub:'s1',deck:'Climate',q:'Who started Fridays for Future?',a:'Greta Thunberg, 2018. Her "How dare you" UN speech in 2019 became iconic.',ctx:'Youth vs political inaction.',diff:'new'},
-{id:16,sub:'s1',deck:'Media',q:'What is fake news and why is it dangerous?',a:'Deliberately false info spread via media/social networks. Erodes trust in institutions.',ctx:'Trump weaponised the term.',diff:'new'},
-{id:17,sub:'s1',deck:'Media',q:'What is the BBC and how is it funded?',a:'UK public broadcaster, funded by licence fee (~169 GBP/year). Independent of government.',ctx:'Model of public service journalism.',diff:'new'},
-{id:18,sub:'s2',deck:'The Tempest',q:'Who wrote The Tempest and when?',a:'Shakespeare, around 1610-1611. Generally his last solo play.',ctx:'Often read as his farewell to theatre.',diff:'new'},
-{id:19,sub:'s2',deck:'The Tempest',q:'What does Caliban say about language?',a:'"You taught me language, and my profit on it is I know how to curse." Language as control — Caliban turns it into resistance.',ctx:'Core postcolonial reading.',diff:'new'}
+// ── storage ──
+var store = (function() {
+  try { localStorage.setItem('_x','1'); localStorage.removeItem('_x'); return localStorage; }
+  catch(e) { var m = {}; return { getItem: function(k) { return m.hasOwnProperty(k)?m[k]:null; }, setItem: function(k,v) { m[k]=String(v); } }; }
+}());
+
+// ── default subjects ──
+var SUBJECTS = [
+  { id:'s1', name:'Civi britannique',  icon:'🇬🇧' },
+  { id:'s2', name:'Civi americaine',   icon:'🇺🇸' },
+  { id:'s3', name:'Enjeux contemporains', icon:'🌱' },
+  { id:'s4', name:'Litterature',       icon:'📚' },
+  { id:'s5', name:'Langue',            icon:'✏️' }
 ];
-var subjects,cards,activeSub,activeDeck,queue,qIdx,revealed,sessionDone;
-function loadData(){var ss=store.getItem('fcs4'),sc=store.getItem('fcc4');subjects=ss?tryParse(ss,cloneArr(SUBJECTS)):cloneArr(SUBJECTS);cards=sc?tryParse(sc,cloneArr(CARDS)):cloneArr(CARDS);}
-function tryParse(s,fb){try{var v=JSON.parse(s);return(v&&typeof v==='object'&&v.length!==undefined)?v:fb;}catch(e){return fb;}}
-function cloneArr(a){var o=[];for(var i=0;i<a.length;i++){var n={},s=a[i];for(var k in s)n[k]=s[k];o.push(n);}return o;}
-function persist(){try{store.setItem('fcs4',JSON.stringify(subjects));}catch(e){}try{store.setItem('fcc4',JSON.stringify(cards));}catch(e){}}
-function findSub(id){for(var i=0;i<subjects.length;i++)if(subjects[i].id===id)return subjects[i];return null;}
-function countEasy(a){var n=0;for(var i=0;i<a.length;i++)if(a[i].diff==='easy')n++;return n;}
-function showPanel(name){var ps=['study','add','manage','cards'];for(var i=0;i<ps.length;i++){var el=document.getElementById('panel-'+ps[i]);if(el)el.style.display=ps[i]===name?'block':'none';}var ts=['study','add','manage'];for(var j=0;j<ts.length;j++){var t=document.getElementById('t-'+ts[j]);if(t)t.className='tab'+(ts[j]===name||(name==='cards'&&ts[j]==='study')?' on':'');}}
-function renderHome(){showPanel('study');var easy=countEasy(cards);document.getElementById('stat-total').textContent=cards.length;document.getElementById('stat-easy').textContent=easy;document.getElementById('stat-due').textContent=cards.length-easy;var grid=document.getElementById('folder-grid'),html='';for(var i=0;i<subjects.length;i++){var s=subjects[i],sc=0,se=0;for(var j=0;j<cards.length;j++){if(cards[j].sub===s.id){sc++;if(cards[j].diff==='easy')se++;}}var pct=sc?Math.round(se/sc*100):0;html+='<div class="folder-card" data-sid="'+s.id+'"><div class="fi">'+s.icon+'</div><div class="fn">'+s.name+'</div><div class="fc2">'+sc+' cartes</div><div class="fp"><div class="fpf" style="width:'+pct+'%"></div></div></div>';}html+='<div class="add-folder-card" id="btn-new-folder"><div class="fi">+</div><div class="fn">Nouveau dossier</div></div>';grid.innerHTML=html;var fcs=grid.getElementsByClassName('folder-card');for(var k=0;k<fcs.length;k++){fcs[k].onclick=(function(sid){return function(){goToSubject(sid);};})(fcs[k].getAttribute('data-sid'));}document.getElementById('btn-new-folder').onclick=function(){document.getElementById('modal').className='overlay open';};}
-function buildQueue(){var pool=[];for(var i=0;i<cards.length;i++){var c=cards[i];if(activeSub&&c.sub!==activeSub)continue;if(activeDeck!=='Tous'&&c.deck!==activeDeck)continue;pool.push(c);}pool.sort(function(a,b){var o={hard:0,medium:1,new:2,easy:3};return(o[a.diff]!==undefined?o[a.diff]:2)-(o[b.diff]!==undefined?o[b.diff]:2);});queue=pool;qIdx=0;revealed=false;sessionDone=0;}
-function goToSubject(sid){activeSub=sid;activeDeck='Tous';buildQueue();renderCards();}
-function goToAll(){activeSub=null;activeDeck='Tous';buildQueue();renderCards();}
-function renderCards(){showPanel('cards');var subj=activeSub?findSub(activeSub):null;document.getElementById('bc-sub').textContent=subj?(' › '+subj.icon+' '+subj.name):' › Tout';var pool=[];for(var i=0;i<cards.length;i++)if(!activeSub||cards[i].sub===activeSub)pool.push(cards[i]);var easy=countEasy(pool);document.getElementById('cstat-total').textContent=pool.length;document.getElementById('cstat-easy').textContent=easy;document.getElementById('cstat-due').textContent=pool.length-easy;var decks=['Tous'];for(var d=0;d<pool.length;d++){var found=false;for(var di=0;di<decks.length;di++){if(decks[di]===pool[d].deck){found=true;break;}}if(!found)decks.push(pool[d].deck);}var dr=document.getElementById('deck-row'),dhtml='';for(var dk=0;dk<decks.length;dk++){dhtml+='<button class="chip'+(decks[dk]===activeDeck?' on':'')+'" data-deck="'+decks[dk]+'">'+decks[dk]+'</button>';}dr.innerHTML=dhtml;var chips=dr.getElementsByTagName('button');for(var ci=0;ci<chips.length;ci++){chips[ci].onclick=(function(dn){return function(){activeDeck=dn;buildQueue();renderCards();};})(chips[ci].getAttribute('data-deck'));}var pct=queue.length?Math.round(sessionDone/queue.length*100):0;document.getElementById('prog-txt').textContent=sessionDone+' / '+queue.length;document.getElementById('prog-pct').textContent=pct+'%';document.getElementById('prog-fill').style.width=pct+'%';var cc=document.getElementById('card-content');if(!queue.length){cc.innerHTML='<div class="empty">Aucune carte ici. Ajoute-en depuis + !</div>';}else if(qIdx>=queue.length){cc.innerHTML='<div class="done"><h2>Session terminee !</h2><p>Tu as revu '+sessionDone+' cartes — bravo !</p><button class="nb pri" id="btn-restart">Recommencer</button></div>';document.getElementById('btn-restart').onclick=function(){buildQueue();renderCards();};}else{var c=queue[qIdx];if(!revealed){cc.innerHTML='<div class="card-box" id="card-box"><p class="cq">'+c.q+'</p><p class="chint">Appuie pour voir la reponse ✦</p></div><div class="nav"><button class="nb" id="btn-prev">← Precedent</button><button class="nb" id="btn-skip">Passer →</button></div>';document.getElementById('card-box').onclick=function(){revealed=true;renderCards();};}else{cc.innerHTML='<div class="card-box back">'+c.a+(c.ctx?'<span class="ctx">💡 '+c.ctx+'</span>':'')+'</div><div class="abts"><button class="ab hard" id="btn-hard">😬 Difficile</button><button class="ab medium" id="btn-med">🤔 Moyen</button><button class="ab easy" id="btn-easy">✅ Maitrise !</button></div><div class="nav"><button class="nb" id="btn-prev">← Precedent</button><button class="nb" id="btn-skip">Passer →</button></div>';document.getElementById('btn-hard').onclick=function(){rate('hard');};document.getElementById('btn-med').onclick=function(){rate('medium');};document.getElementById('btn-easy').onclick=function(){rate('easy');};}document.getElementById('btn-prev').onclick=function(){if(qIdx>0){qIdx--;revealed=false;renderCards();}};document.getElementById('btn-skip').onclick=function(){qIdx++;revealed=false;renderCards();};}}
-function rate(diff){for(var i=0;i<cards.length;i++){if(cards[i].id===queue[qIdx].id){cards[i].diff=diff;break;}}persist();sessionDone++;qIdx++;revealed=false;renderCards();}
-function renderAdd(){showPanel('add');var sel=document.getElementById('ns');sel.innerHTML='';for(var i=0;i<subjects.length;i++){var opt=document.createElement('option');opt.value=subjects[i].id;opt.textContent=subjects[i].icon+' '+subjects[i].name;sel.appendChild(opt);}}
-function renderManage(){showPanel('manage');var el=document.getElementById('manage-list');if(!cards.length){el.innerHTML='<div class="empty">Aucune carte.</div>';return;}var html='<div class="mlist">';for(var i=0;i<cards.length;i++){var c=cards[i],s=findSub(c.sub);html+='<div class="mi"><div class="mq">'+c.q+'</div>'+(s?'<span class="ms">'+s.icon+'</span>':'')+'<span class="mb">'+c.deck+'</span><button class="del" data-cid="'+c.id+'">✕</button></div>';}html+='</div>';el.innerHTML=html;var dels=el.getElementsByClassName('del');for(var d=0;d<dels.length;d++){dels[d].onclick=(function(cid){return function(){var nc=[];for(var i=0;i<cards.length;i++)if(cards[i].id!==cid)nc.push(cards[i]);cards=nc;persist();buildQueue();renderManage();toast('Supprimee !');};})( parseInt(dels[d].getAttribute('data-cid'),10));}}
-function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.className='toast show';setTimeout(function(){el.className='toast';},2200);}
+
+// ── default cards ──
+var CARDS = [
+  // ── Civi britannique — Brexit ──────────────────────────────
+  {id:1,  sub:'s1', deck:'Brexit', q:'What date was the Brexit referendum and what was the result?', a:'June 23, 2016. 52% Leave vs 48% Remain.', ctx:'Core date — always know this.', diff:'new'},
+  {id:2,  sub:'s1', deck:'Brexit', q:'When did the UK officially leave the EU?', a:'January 31, 2020. Transition period until December 31, 2020.', ctx:'4 years of chaos between vote and exit.', diff:'new'},
+  {id:3,  sub:'s1', deck:'Brexit', q:'Who triggered Article 50 and when?', a:'Theresa May in March 2017, starting the 2-year formal exit process.', ctx:'Article 50 = official notice to leave the EU.', diff:'new'},
+  {id:4,  sub:'s1', deck:'Brexit', q:'How many times did Parliament reject the Withdrawal Agreement?', a:'Three times — leading to May resigning and Boris Johnson taking over in 2019.', ctx:'Shows the scale of the political deadlock.', diff:'new'},
+  {id:5,  sub:'s1', deck:'Brexit', q:'What was the Leave campaign key slogan?', a:'Take Back Control — focused on sovereignty, immigration control and national identity.', ctx:'UKIP under Nigel Farage turbocharged this narrative.', diff:'new'},
+  {id:6,  sub:'s1', deck:'Brexit', q:'How did Scotland vote and what did the SNP demand afterwards?', a:'Scotland voted 62% Remain. The SNP argued this justified a second independence referendum (indyref2).', ctx:'Key devolution tension post-Brexit.', diff:'new'},
+  {id:7,  sub:'s1', deck:'Brexit', q:'What is the Good Friday Agreement and why was Brexit a threat to it?', a:'Signed in 1998, it ended conflict in Northern Ireland by making the Irish border invisible. Brexit risked reimposing a hard border.', ctx:'Most complex geopolitical dimension of Brexit.', diff:'new'},
+  {id:8,  sub:'s1', deck:'Brexit', q:'What replaced the Northern Ireland Protocol?', a:'The Windsor Framework (2023) — keeps N. Ireland aligned with EU single market rules, creating a de facto trade border in the Irish Sea.', ctx:'Still controversial with Unionist communities.', diff:'new'},
+  {id:9,  sub:'s1', deck:'Brexit', q:'Name 4 fractures Brexit revealed in British society.', a:'England and Wales (Leave) vs Scotland and N. Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.', ctx:'Brexit as identity crisis, not just politics.', diff:'new'},
+  {id:10, sub:'s1', deck:'Brexit', q:'Name 5 key vocabulary words for discussing Brexit.', a:'sovereignty — trade deal — hard/soft Brexit — devolution — border issue', ctx:'Use these naturally in your oral.', diff:'new'},
+
+  // ── Civi britannique — Monarchie ───────────────────────────
+  {id:11, sub:'s1', deck:'Monarchie', q:'What is a constitutional monarchy?', a:'The monarch reigns but does not govern. The Prime Minister governs in the monarch\'s name. Theoretical powers are vast but exercised by elected officials.', ctx:'Key distinction for the oral: power without authority.', diff:'new'},
+  {id:12, sub:'s1', deck:'Monarchie', q:'What are the theoretical powers of the British monarch?', a:'Dissolve Parliament, declare war, sign treaties, pardon criminals — but in practice all are exercised by the Prime Minister in the monarch\'s name.', ctx:'Called Royal Prerogative.', diff:'new'},
+  {id:13, sub:'s1', deck:'Monarchie', q:'When was the last time a monarch refused Royal Assent?', a:'Queen Anne in 1708, refusing the Scottish Militia Bill. The formula has not been used since.', ctx:'Royal Assent said in Norman French since 12th century.', diff:'new'},
+  {id:14, sub:'s1', deck:'Monarchie', q:'What are the Royal Assent formulas in Norman French?', a:'"La Reyne le veult" (the Queen wills it) to approve. "La Reyne s\'avisera" (the Queen will consider) to refuse — unused since 1708.', ctx:'French is still the language of royal ceremony.', diff:'new'},
+  {id:15, sub:'s1', deck:'Monarchie', q:'What is the Sovereign Grant and how much is it?', a:'25% of Crown Estate profits given to the monarchy. Around 86 million GBP in 2021-22, roughly 1.29 GBP per British citizen per year.', ctx:'Crown Estate = vast land portfolio ceded by George III in 1760.', diff:'new'},
+  {id:16, sub:'s1', deck:'Monarchie', q:'What is the Duchy of Lancaster?', a:'The monarch\'s personal estate — worth over 650 million GBP, generating around 24 million GBP per year. Separate from the Sovereign Grant.', ctx:'William inherits the Duchy of Cornwall as heir.', diff:'new'},
+  {id:17, sub:'s1', deck:'Monarchie', q:'How does a British MP formally resign?', a:'Since 1624, they must be appointed Crown Steward of the Chiltern Hundreds — a medieval fictional post — to vacate their seat and trigger a by-election.', ctx:'A constitutional quirk unique to the UK.', diff:'new'},
+  {id:18, sub:'s1', deck:'Monarchie', q:'Who is the current British monarch and since when?', a:'King Charles III, since September 8, 2022, following the death of Queen Elizabeth II after 70 years on the throne.', ctx:'Elizabeth II was the longest-reigning British monarch in history.', diff:'new'},
+  {id:19, sub:'s1', deck:'Monarchie', q:'What happened at the Barbados republic ceremony in 2021?', a:'Barbados became a republic, removing the Queen as head of state. Prince Charles acknowledged the abominable atrocity of slavery — without offering reparations.', ctx:'Part of a broader Caribbean push for post-colonial recognition.', diff:'new'},
+  {id:20, sub:'s1', deck:'Monarchie', q:'How does the UK participate in the Commonwealth Games?', a:'As four separate teams: England, Scotland, Wales, and Northern Ireland — unlike the Olympics where they compete as Team GB.', ctx:'Games held every 4 years. Reflects devolved national identities.', diff:'new'},
+
+  // ── Civi britannique — Commonwealth ────────────────────────
+  {id:21, sub:'s1', deck:'Commonwealth', q:'What is the Commonwealth of Nations?', a:'An association of 56 independent nations, most of them former British Empire territories. Founded 1931, modern form 1949.', ctx:'The King is head of the Commonwealth but it is not a political union.', diff:'new'},
+  {id:22, sub:'s1', deck:'Commonwealth', q:'Who were the Windrush Generation?', a:'Caribbean migrants invited to the UK between 1948 and 1971 on ships including the Empire Windrush. They came to fill post-war labor shortages.', ctx:'Named after HMT Empire Windrush, first ship, June 22, 1948.', diff:'new'},
+  {id:23, sub:'s1', deck:'Commonwealth', q:'What was the Hostile Environment Policy?', a:'A policy introduced by Theresa May as Home Secretary (2010-2016) making the UK unwelcoming to undocumented immigrants. It wrongly targeted the Windrush generation.', ctx:'Systematic and structural, not accidental — key term: institutional racism.', diff:'new'},
+  {id:24, sub:'s1', deck:'Commonwealth', q:'What was the Windrush Scandal?', a:'At least 83 people from the Windrush generation were wrongly deported. Many had lived in the UK for decades but were told to prove their right to remain. Some lost jobs, housing and NHS access.', ctx:'Compensation scheme later deemed inadequate.', diff:'new'},
+  {id:25, sub:'s1', deck:'Commonwealth', q:'What controversy surrounded William and Kate\'s Jamaica visit?', a:'CARICOM, representing 15 Caribbean states, presented a letter listing 60 reasons why Britain should pay reparations for slavery.', ctx:'Highlights ongoing tension between colonial legacy and the monarchy.', diff:'new'},
+  {id:26, sub:'s1', deck:'Commonwealth', q:'What is CARICOM?', a:'The Caribbean Community — an organization of 15 Caribbean nations promoting economic integration and regional cooperation.', ctx:'Active voice in reparations debate.', diff:'new'},
+
+  // ── Civi britannique — Devolution ──────────────────────────
+  {id:27, sub:'s1', deck:'Devolution', q:'What is devolution in the UK?', a:'The transfer of powers from Westminster to regional assemblies: the Scottish Parliament, the Senedd (Wales), and the Northern Ireland Assembly.', ctx:'Does not mean independence — Westminster retains sovereignty.', diff:'new'},
+  {id:28, sub:'s1', deck:'Devolution', q:'When was the Scottish Parliament created?', a:'1999, following a 1997 referendum. Holyrood has powers over education, health, justice and some taxes.', ctx:'The 1999 devolution acts transformed UK governance.', diff:'new'},
+  {id:29, sub:'s1', deck:'Devolution', q:'What was the result of the 2014 Scottish independence referendum?', a:'55% No (stay in UK) vs 45% Yes (independence). Turnout: 85% — the highest ever in a UK election.', ctx:'The SNP has called for a second referendum since Brexit.', diff:'new'},
+  {id:30, sub:'s1', deck:'Devolution', q:'What is the Senedd?', a:'The Welsh Parliament, created in 1999 as the National Assembly for Wales. Renamed Senedd Cymru in 2020. Has powers over health, education and local government.', ctx:'Wales has a distinct legal system but shares English law on many matters.', diff:'new'},
+
+  // ── Civi americaine — Race ─────────────────────────────────
+  {id:31, sub:'s2', deck:'Race & Civil Rights', q:'What did the Civil Rights Act of 1964 do?', a:'Outlawed discrimination based on race, colour, religion, sex, or national origin. Signed by President LBJ after years of activism.', ctx:'Preceded by the Civil Rights Act of 1957 (voting rights) under Eisenhower.', diff:'new'},
+  {id:32, sub:'s2', deck:'Race & Civil Rights', q:'What was Martin Luther King Jr\'s "I Have a Dream" speech?', a:'Delivered on August 28, 1963, at the March on Washington (250,000 people). A defining moment of the civil rights movement, calling for racial equality and an end to discrimination.', ctx:'King was assassinated on April 4, 1968 in Memphis.', diff:'new'},
+  {id:33, sub:'s2', deck:'Race & Civil Rights', q:'What sparked the 2020 Black Lives Matter protests?', a:'The murder of George Floyd by Minneapolis police officer Derek Chauvin on May 25, 2020. It triggered global protests in over 60 countries.', ctx:'Chauvin was convicted of murder in April 2021.', diff:'new'},
+  {id:34, sub:'s2', deck:'Race & Civil Rights', q:'What does systemic racism mean?', a:'Racism embedded in institutions, laws, and social systems — not just individual prejudice. Manifests in policing, housing, healthcare, and educational disparities.', ctx:'Distinguish from individual racism — systemic = structural.', diff:'new'},
+  {id:35, sub:'s2', deck:'Race & Civil Rights', q:'What is Jim Crow?', a:'Laws enforcing racial segregation in the Southern US from 1877 to the 1960s. Named after a minstrel caricature. Included separate schools, transport, and public spaces.', ctx:'Overturned by the Civil Rights Act 1964 and Voting Rights Act 1965.', diff:'new'},
+  {id:36, sub:'s2', deck:'Race & Civil Rights', q:'What was Brown v. Board of Education (1954)?', a:'A landmark Supreme Court ruling declaring racial segregation in public schools unconstitutional. Overturned Plessy v. Ferguson (1896), which had enshrined "separate but equal".', ctx:'Argued by NAACP lawyer Thurgood Marshall, later first Black Supreme Court justice.', diff:'new'},
+  {id:37, sub:'s2', deck:'Race & Civil Rights', q:'What is redlining?', a:'A discriminatory practice of denying services (mortgages, insurance) to residents of certain neighbourhoods based on race. Widespread until the Fair Housing Act of 1968.', ctx:'Its legacy: the racial wealth gap persists today.', diff:'new'},
+  {id:38, sub:'s2', deck:'Race & Civil Rights', q:'What is the 13th Amendment (1865)?', a:'Abolished slavery — except as punishment for crime. The exception clause has enabled prison labor, which critics call a continuation of slavery by other means.', ctx:'The exception clause is central to prison-industrial complex debates.', diff:'new'},
+  {id:39, sub:'s2', deck:'Race & Civil Rights', q:'What happened to affirmative action in 2023?', a:'The Supreme Court ruled race-conscious admissions unconstitutional at US universities, effectively ending affirmative action in higher education.', ctx:'Decided in SFFA v. Harvard. Reversed decades of precedent.', diff:'new'},
+
+  // ── Civi americaine — Democratie ───────────────────────────
+  {id:40, sub:'s2', deck:'Democratie americaine', q:'What are the three branches of US government?', a:'Legislative (Congress: Senate + House of Representatives), Executive (President and Cabinet), Judicial (Supreme Court and federal courts).', ctx:'Separation of powers + checks and balances — Madison\'s design.', diff:'new'},
+  {id:41, sub:'s2', deck:'Democratie americaine', q:'What is the Electoral College?', a:'A system of 538 electors who formally elect the President. A candidate needs 270 to win. Electors are allocated per state. Critics say it distorts popular will.', ctx:'In 2000 and 2016, the winner lost the popular vote.', diff:'new'},
+  {id:42, sub:'s2', deck:'Democratie americaine', q:'What is a filibuster?', a:'A Senate tactic of prolonged debate to delay or block legislation. Requires 60 votes to end (cloture). Regularly used to block civil rights legislation in the 20th century.', ctx:'Named after Dutch word for pirate. A uniquely American obstruction tool.', diff:'new'},
+  {id:43, sub:'s2', deck:'Democratie americaine', q:'What is gerrymandering?', a:'Manipulating electoral district boundaries to favour one party. Named after Governor Elbridge Gerry of Massachusetts (1812), whose district resembled a salamander.', ctx:'Both parties do it. Undermines electoral fairness.', diff:'new'},
+  {id:44, sub:'s2', deck:'Democratie americaine', q:'What is the Bill of Rights?', a:'The first 10 amendments to the US Constitution (1791). Includes freedom of speech, religion, press (1st), right to bear arms (2nd), protection against unreasonable searches (4th).', ctx:'Added to reassure anti-Federalists that individual rights would be protected.', diff:'new'},
+  {id:45, sub:'s2', deck:'Democratie americaine', q:'What is the impeachment process?', a:'The House of Representatives impeaches (simple majority vote). The Senate holds a trial. A 2/3 Senate majority is needed to convict and remove from office.', ctx:'Trump was impeached twice (2019, 2021) but not convicted by the Senate.', diff:'new'},
+
+  // ── Civi americaine — Gun Control ──────────────────────────
+  {id:46, sub:'s2', deck:'Gun Control', q:'What does the 2nd Amendment say?', a:'A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed. (1791)', ctx:'Debate: does it protect individual gun ownership or collective militia rights?', diff:'new'},
+  {id:47, sub:'s2', deck:'Gun Control', q:'What is the NRA?', a:'The National Rifle Association — the most powerful gun rights lobby in the US, with around 5 million members. Spends heavily on political donations to block gun control legislation.', ctx:'Founded 1871 for marksmanship; became a political force in the 1970s.', diff:'new'},
+  {id:48, sub:'s2', deck:'Gun Control', q:'Name 3 key mass shootings in US history.', a:'Columbine High School (1999, 13 dead). Sandy Hook Elementary (2012, 20 children dead). Uvalde, Texas (2022, 19 children dead). Las Vegas concert (2017, 60 dead).', ctx:'Each prompted calls for reform; each was followed by limited legislative action.', diff:'new'},
+  {id:49, sub:'s2', deck:'Gun Control', q:'How many guns are there per 100 people in the US?', a:'Around 120 guns per 100 people — the highest rate in the world by far. The US has 4% of the world\'s population but 46% of civilian-owned guns.', ctx:'Compare: Switzerland ~27, UK ~5, Japan ~0.3.', diff:'new'},
+
+  // ── Enjeux contemporains — Climat ──────────────────────────
+  {id:50, sub:'s3', deck:'Crise climatique', q:'What is the Paris Agreement?', a:'A UN climate accord signed in 2015 by 196 parties. Aims to limit global warming to 1.5-2 degrees Celsius above pre-industrial levels through nationally determined contributions.', ctx:'US withdrew under Trump (2020), rejoined under Biden (2021).', diff:'new'},
+  {id:51, sub:'s3', deck:'Crise climatique', q:'What is Fridays for Future?', a:'A global youth climate strike movement launched by Greta Thunberg in August 2018. Her "How dare you" speech at the UN General Assembly in 2019 became iconic.', ctx:'Over 4 million people struck in September 2019 across 161 countries.', diff:'new'},
+  {id:52, sub:'s3', deck:'Crise climatique', q:'What is COP and what was COP26?', a:'Conference of the Parties — the annual UN climate summit. COP26 was held in Glasgow in 2021, targeting coal phase-down and stronger national commitments.', ctx:'COP = the decision-making body of the UNFCCC (1992 climate framework).', diff:'new'},
+  {id:53, sub:'s3', deck:'Crise climatique', q:'What is net zero?', a:'Balancing the amount of greenhouse gases emitted with the amount removed from the atmosphere. The UK committed to net zero by 2050. Requires systemic change, not just offsets.', ctx:'Net zero by 2050 is UK law under the Climate Change Act 2008 (amended 2019).', diff:'new'},
+  {id:54, sub:'s3', deck:'Crise climatique', q:'What is greenwashing?', a:'Marketing that makes a company or product appear more environmentally friendly than it actually is. A form of deception that undermines genuine climate action.', ctx:'Ofcom and the Advertising Standards Authority are increasingly cracking down on it.', diff:'new'},
+  {id:55, sub:'s3', deck:'Crise climatique', q:'What is the IPCC?', a:'The Intergovernmental Panel on Climate Change — the UN body that assesses climate science. Founded 1988. Its reports (Assessment Reports) are the global scientific consensus on climate.', ctx:'IPCC reports drive the targets set at COP summits.', diff:'new'},
+
+  // ── Enjeux contemporains — Medias ──────────────────────────
+  {id:56, sub:'s3', deck:'Medias et democratie', q:'What is fake news and why is it dangerous?', a:'Deliberately false information spread via media and social networks. Dangerous because it erodes trust in institutions, distorts public debate, and can influence elections.', ctx:'Trump weaponised the term against mainstream media from 2016.', diff:'new'},
+  {id:57, sub:'s3', deck:'Medias et democratie', q:'What is the BBC and how is it funded?', a:'The British Broadcasting Corporation — the UK\'s public broadcaster, established in 1927. Funded by a licence fee (around 169 GBP per year). Independent of government.', ctx:'Mission: inform, educate, entertain. A global model of public service broadcasting.', diff:'new'},
+  {id:58, sub:'s3', deck:'Medias et democratie', q:'What is Ofcom?', a:'The Office of Communications — the UK\'s independent communications regulator. Oversees TV, radio, on-demand services, telecoms. Sets broadcasting standards and enforces impartiality rules.', ctx:'Broadcasters (BBC, ITV) must be impartial under Ofcom rules. Newspapers are not regulated.', diff:'new'},
+  {id:59, sub:'s3', deck:'Medias et democratie', q:'What is the Overton Window?', a:'The range of ideas deemed acceptable in mainstream public discourse at a given time. Shifting it — normalising fringe ideas — is a key political strategy.', ctx:'Named after policy analyst Joseph Overton. Brexit and Trump both shifted the window rightward.', diff:'new'},
+  {id:60, sub:'s3', deck:'Medias et democratie', q:'What was the Cambridge Analytica scandal?', a:'In 2018 it was revealed that Cambridge Analytica harvested Facebook data of 87 million users without consent. The data was used for targeted political advertising in the Brexit campaign and Trump\'s 2016 election.', ctx:'Led to Facebook\'s Mark Zuckerberg testifying before the US Congress.', diff:'new'},
+  {id:61, sub:'s3', deck:'Medias et democratie', q:'What is an echo chamber?', a:'A social environment where people only encounter information and opinions that reinforce their own. Social media algorithms amplify this by prioritising engaging content over diverse viewpoints.', ctx:'Echo chambers + confirmation bias = radicalisation pipeline.', diff:'new'},
+
+  // ── Litterature — The Tempest ─────────────────────────────
+  {id:62, sub:'s4', deck:'The Tempest', q:'Who wrote The Tempest and when?', a:'William Shakespeare, around 1610-1611. Generally considered his last solo play.', ctx:'First performed at the court of King James I in 1611.', diff:'new'},
+  {id:63, sub:'s4', deck:'The Tempest', q:'Who is Prospero and what does he represent?', a:'The exiled Duke of Milan who uses magic to control the island and its inhabitants. He represents colonial power — the European who claims civilising authority over others.', ctx:'His magic = European technology and knowledge used as domination.', diff:'new'},
+  {id:64, sub:'s4', deck:'The Tempest', q:'Who is Caliban and what does he represent?', a:'The native of the island, enslaved by Prospero. He represents the colonised subject — dispossessed of his land, forced to serve, but capable of resistance.', ctx:'Anagram of "Cannibal" — linking him to European fears of the Other.', diff:'new'},
+  {id:65, sub:'s4', deck:'The Tempest', q:'What does Caliban say about language and what does it mean?', a:'You taught me language, and my profit on it is I know how to curse. Language was given as a tool of control; Caliban turns it into an act of resistance.', ctx:'Central postcolonial reading: colonialism teaches language to impose order — but the colonised can subvert it.', diff:'new'},
+  {id:66, sub:'s4', deck:'The Tempest', q:'Who is Ariel and how does Ariel contrast with Caliban?', a:'A spirit servant of Prospero who obeys in exchange for freedom. Ariel represents the compliant colonial subject who works within the system; Caliban represents outright resistance.', ctx:'Two colonial responses: accommodation vs rebellion.', diff:'new'},
+  {id:67, sub:'s4', deck:'The Tempest', q:'What are the key themes of The Tempest?', a:'Colonialism and power, language as control, magic vs nature, forgiveness and reconciliation, the illusion of civilisation, master-servant relationships.', ctx:'A postcolonial lens is almost mandatory for the CAPES oral.', diff:'new'},
+  {id:68, sub:'s4', deck:'The Tempest', q:'What is the significance of the island in The Tempest?', a:'It is a space of colonial projection — a supposedly empty land claimed and controlled by Prospero. It symbolises the New World and the logic of Terra Nullius (empty land justifying colonisation).', ctx:'The island was already inhabited by Caliban\'s mother Sycorax before Prospero\'s arrival.', diff:'new'},
+
+  // ── Litterature — Poesie ──────────────────────────────────
+  {id:69, sub:'s4', deck:'Poesie', q:'What is iambic pentameter?', a:'A metrical pattern of 5 iambs per line (unstressed-STRESSED syllables, da-DUM). Shakespeare\'s default rhythm. Example: "Shall I compare THEE to a SUM-mer\'s DAY."', ctx:'10 syllables per line. Closest to natural English speech rhythm.', diff:'new'},
+  {id:70, sub:'s4', deck:'Poesie', q:'What is a Shakespearean sonnet?', a:'A 14-line poem in iambic pentameter. Structure: 3 quatrains (ABAB CDCD EFEF) + 1 couplet (GG). The couplet usually provides a twist or resolution.', ctx:'Compare with the Petrarchan sonnet: octave (ABBAABBA) + sestet (CDECDE).', diff:'new'},
+  {id:71, sub:'s4', deck:'Poesie', q:'What is the difference between a simile and a metaphor?', a:'A simile compares using "like" or "as" (My love is like a red, red rose). A metaphor states directly that one thing IS another (All the world\'s a stage — Shakespeare).', ctx:'Both are figurative language; metaphors are more direct and powerful.', diff:'new'},
+  {id:72, sub:'s4', deck:'Poesie', q:'What is enjambment?', a:'When a sentence or clause runs over from one line of poetry to the next without a pause. Creates momentum, mirrors natural speech, can build tension.', ctx:'Opposite of end-stopped line (where a line ends with a full stop or natural pause).', diff:'new'},
+
+  // ── Langue — Phonologie ───────────────────────────────────
+  {id:73, sub:'s5', deck:'Phonologie', q:'What is a phoneme?', a:'The smallest unit of sound that distinguishes meaning in a language. English has approximately 44 phonemes (20 vowel sounds + 24 consonant sounds).', ctx:'A phoneme is abstract; a phone is the actual sound produced.', diff:'new'},
+  {id:74, sub:'s5', deck:'Phonologie', q:'What is the schwa and why is it important?', a:'The schwa /schwa/ is the most common vowel sound in English. It appears in unstressed syllables: "about", "sofa", "banana". Essential for natural English rhythm and stress patterns.', ctx:'Mispronouncing stressed vowels instead of schwas is a key marker of foreign accent.', diff:'new'},
+  {id:75, sub:'s5', deck:'Phonologie', q:'What is assimilation in phonology?', a:'When a sound changes under the influence of a neighbouring sound. Example: "ten boys" becomes "tem boys" — the /n/ assimilates to /m/ before the bilabial /b/.', ctx:'Types: regressive (anticipatory) vs progressive assimilation.', diff:'new'},
+  {id:76, sub:'s5', deck:'Phonologie', q:'What is elision in phonology?', a:'The omission of a sound in connected speech. Example: "next day" can be pronounced "neks day" (the /t/ is elided). Common at word boundaries.', ctx:'Elision + assimilation + linking = key features of connected speech.', diff:'new'},
+  {id:77, sub:'s5', deck:'Phonologie', q:'What is linking in English connected speech?', a:'When a final consonant links smoothly to the following word\'s initial vowel. Example: "turn off" is pronounced "tur-noff". Makes speech flow more naturally.', ctx:'Intrusive /r/ is a related phenomenon: "law and order" becomes "law-r-and order".', diff:'new'},
+  {id:78, sub:'s5', deck:'Phonologie', q:'What is the difference between minimal pairs?', a:'Two words that differ by only one phoneme: "ship" vs "sheep", "bat" vs "bad", "pan" vs "ban". Used in phonological analysis and language teaching.', ctx:'Minimal pairs prove that two sounds are distinct phonemes in a language.', diff:'new'},
+
+  // ── Langue — Grammaire ────────────────────────────────────
+  {id:79, sub:'s5', deck:'Grammaire', q:'What is the difference between the present perfect and the preterite?', a:'Present perfect: past event with present relevance or unspecified time (I have seen it). Preterite: completed event at a specific past time (I saw it yesterday).', ctx:'Common error for French speakers who use passe compose for both functions.', diff:'new'},
+  {id:80, sub:'s5', deck:'Grammaire', q:'What is the difference between "must" and "have to"?', a:'Must: internal obligation or logical deduction (I must finish this / You must be tired). Have to: external obligation imposed by rules or circumstances (I have to work — it is the law).', ctx:'Epistemic must (deduction) vs deontic must (obligation). Key modal distinction.', diff:'new'},
+  {id:81, sub:'s5', deck:'Grammaire', q:'How is the passive voice formed and when is it used?', a:'Be + past participle. Used when the agent is unknown, unimportant, or deliberately withheld. Example: The bill was passed in 1964. Foregrounding the action, not the actor.', ctx:'Passive is more frequent in English than in French — important for translation.', diff:'new'},
+  {id:82, sub:'s5', deck:'Grammaire', q:'What are the rules of reported speech?', a:'Tense backshift (am becomes was, will becomes would), pronoun changes, and time expressions shift (today becomes that day, yesterday becomes the day before).', ctx:'Direct: She said "I am tired." Reported: She said she was tired.', diff:'new'},
+  {id:83, sub:'s5', deck:'Grammaire', q:'What is aspect in English grammar?', a:'Aspect expresses how an action unfolds in time: simple (I write), progressive (I am writing — ongoing), perfect (I have written — completed with present relevance).', ctx:'Tense = when. Aspect = how. English grammar separates these; French is less systematic.', diff:'new'}
+];
+
+// ── state ──
+var subjects, cards, checkedSubs, studyFilter, activeDeck, queue, qIdx, revealed, sessionDone;
+
+function loadData() {
+  var ss = store.getItem('fcs5'), sc = store.getItem('fcc5');
+  subjects = ss ? tryParse(ss, cloneArr(SUBJECTS)) : cloneArr(SUBJECTS);
+  cards    = sc ? tryParse(sc, cloneArr(CARDS))    : cloneArr(CARDS);
+}
+function tryParse(s, fb) { try { var v = JSON.parse(s); return (v && v.length !== undefined) ? v : fb; } catch(e) { return fb; } }
+function cloneArr(a) { var o = []; for (var i = 0; i < a.length; i++) { var n = {}, s = a[i]; for (var k in s) n[k] = s[k]; o.push(n); } return o; }
+function persist() {
+  try { store.setItem('fcs5', JSON.stringify(subjects)); } catch(e) {}
+  try { store.setItem('fcc5', JSON.stringify(cards));    } catch(e) {}
+}
+function findSub(id) { for (var i = 0; i < subjects.length; i++) if (subjects[i].id === id) return subjects[i]; return null; }
+function countEasy(arr) { var n = 0; for (var i = 0; i < arr.length; i++) if (arr[i].diff === 'easy') n++; return n; }
+
+// ── panels ──
+function showPanel(name) {
+  var ps = ['study','add','manage','cards'];
+  for (var i = 0; i < ps.length; i++) {
+    var el = document.getElementById('panel-' + ps[i]);
+    if (el) el.style.display = ps[i] === name ? 'block' : 'none';
+  }
+  var ts = ['study','add','manage'];
+  for (var j = 0; j < ts.length; j++) {
+    var t = document.getElementById('t-' + ts[j]);
+    if (t) t.className = 'tab' + ((ts[j] === name || (name === 'cards' && ts[j] === 'study')) ? ' on' : '');
+  }
+}
+
+// ── HOME ──
+function renderHome() {
+  showPanel('study');
+  var easy = countEasy(cards);
+  document.getElementById('stat-total').textContent = cards.length;
+  document.getElementById('stat-easy').textContent  = easy;
+  document.getElementById('stat-due').textContent   = cards.length - easy;
+
+  // study-sel button
+  var selBtn = document.getElementById('btn-study-sel');
+  if (checkedSubs.length > 0) {
+    selBtn.className = 'btn-sel visible';
+    selBtn.textContent = 'Etudier la selection (' + checkedSubs.length + ' dossier' + (checkedSubs.length > 1 ? 's' : '') + ')';
+  } else {
+    selBtn.className = 'btn-sel';
+  }
+
+  var grid = document.getElementById('folder-grid');
+  var html = '';
+  for (var i = 0; i < subjects.length; i++) {
+    var s = subjects[i], sc = 0, se = 0;
+    for (var j = 0; j < cards.length; j++) {
+      if (cards[j].sub === s.id) { sc++; if (cards[j].diff === 'easy') se++; }
+    }
+    var pct = sc ? Math.round(se / sc * 100) : 0;
+    var isChecked = checkedSubs.indexOf(s.id) !== -1;
+    html += '<div class="folder-card' + (isChecked ? ' checked' : '') + '" data-sid="' + s.id + '">'
+      + '<div class="fcheck' + (isChecked ? ' on' : '') + '" data-csid="' + s.id + '">' + (isChecked ? '✓' : '') + '</div>'
+      + '<div class="fi">' + s.icon + '</div>'
+      + '<div class="fn">' + s.name + '</div>'
+      + '<div class="fc2">' + sc + ' carte' + (sc !== 1 ? 's' : '') + '</div>'
+      + '<div class="fp"><div class="fpf" style="width:' + pct + '%"></div></div>'
+      + '</div>';
+  }
+  html += '<div class="add-folder-card" id="btn-new-folder"><div class="fi">+</div><div class="fn">Nouveau dossier</div></div>';
+  grid.innerHTML = html;
+
+  // folder card clicks → open subject
+  var fcs = grid.getElementsByClassName('folder-card');
+  for (var k = 0; k < fcs.length; k++) {
+    fcs[k].onclick = (function(sid) {
+      return function() { studyFilter = [sid]; checkedSubs = []; buildQueue(); renderCards(); };
+    })(fcs[k].getAttribute('data-sid'));
+  }
+
+  // checkbox clicks → toggle selection
+  var checks = grid.getElementsByClassName('fcheck');
+  for (var c = 0; c < checks.length; c++) {
+    checks[c].onclick = (function(sid) {
+      return function(e) {
+        e.stopPropagation();
+        var idx = checkedSubs.indexOf(sid);
+        if (idx === -1) checkedSubs.push(sid);
+        else checkedSubs.splice(idx, 1);
+        renderHome();
+      };
+    })(checks[c].getAttribute('data-csid'));
+  }
+
+  document.getElementById('btn-new-folder').onclick = function() {
+    document.getElementById('modal').className = 'overlay open';
+  };
+}
+
+// ── QUEUE ──
+function buildQueue() {
+  var pool = [];
+  for (var i = 0; i < cards.length; i++) {
+    var c = cards[i];
+    if (studyFilter.length > 0 && studyFilter.indexOf(c.sub) === -1) continue;
+    if (activeDeck !== 'Tous' && c.deck !== activeDeck) continue;
+    pool.push(c);
+  }
+  pool.sort(function(a, b) {
+    var o = {hard:0, medium:1, new:2, easy:3};
+    return (o[a.diff] !== undefined ? o[a.diff] : 2) - (o[b.diff] !== undefined ? o[b.diff] : 2);
+  });
+  queue = pool; qIdx = 0; revealed = false; sessionDone = 0;
+}
+
+// ── CARDS VIEW ──
+function renderCards() {
+  showPanel('cards');
+
+  // breadcrumb
+  var bcText = '';
+  if (studyFilter.length === 0) { bcText = ' › Tout'; }
+  else if (studyFilter.length === 1) {
+    var s = findSub(studyFilter[0]);
+    bcText = s ? (' › ' + s.icon + ' ' + s.name) : '';
+  } else { bcText = ' › ' + studyFilter.length + ' dossiers selectionnes'; }
+  document.getElementById('bc-sub').textContent = bcText;
+
+  // stats for the current filter
+  var pool = [];
+  for (var i = 0; i < cards.length; i++) {
+    if (studyFilter.length === 0 || studyFilter.indexOf(cards[i].sub) !== -1) pool.push(cards[i]);
+  }
+  var easy = countEasy(pool);
+  document.getElementById('cstat-total').textContent = pool.length;
+  document.getElementById('cstat-easy').textContent  = easy;
+  document.getElementById('cstat-due').textContent   = pool.length - easy;
+
+  // deck chips
+  var decks = ['Tous'];
+  for (var d = 0; d < pool.length; d++) {
+    var found = false;
+    for (var di = 0; di < decks.length; di++) { if (decks[di] === pool[d].deck) { found = true; break; } }
+    if (!found) decks.push(pool[d].deck);
+  }
+  var dr = document.getElementById('deck-row'), dhtml = '';
+  for (var dk = 0; dk < decks.length; dk++) {
+    dhtml += '<button class="chip' + (decks[dk] === activeDeck ? ' on' : '') + '" data-deck="' + dk + '">' + decks[dk] + '</button>';
+  }
+  dr.innerHTML = dhtml;
+  var chips = dr.getElementsByTagName('button');
+  for (var ci = 0; ci < chips.length; ci++) {
+    chips[ci].onclick = (function(dn) {
+      return function() { activeDeck = dn; buildQueue(); renderCards(); };
+    })(decks[parseInt(chips[ci].getAttribute('data-deck'), 10)]);
+  }
+
+  // progress
+  var pct = queue.length ? Math.round(sessionDone / queue.length * 100) : 0;
+  document.getElementById('prog-txt').textContent  = sessionDone + ' / ' + queue.length;
+  document.getElementById('prog-pct').textContent  = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  // card content
+  var cc = document.getElementById('card-content');
+  if (!queue.length) {
+    cc.innerHTML = '<div class="empty">Aucune carte ici. Ajoute-en depuis + !</div>';
+  } else if (qIdx >= queue.length) {
+    cc.innerHTML = '<div class="done"><h2>Session terminee !</h2><p>Tu as revu ' + sessionDone + ' carte' + (sessionDone > 1 ? 's' : '') + ' — bravo !</p><button class="nb pri" id="btn-restart">Recommencer</button></div>';
+    document.getElementById('btn-restart').onclick = function() { buildQueue(); renderCards(); };
+  } else {
+    var c = queue[qIdx];
+    if (!revealed) {
+      cc.innerHTML = '<div class="card-box" id="card-box"><p class="cq">' + c.q + '</p><p class="chint">Appuie pour voir la reponse ✦</p></div>'
+        + '<div class="nav"><button class="nb" id="btn-prev">← Precedent</button><button class="nb" id="btn-skip">Passer →</button></div>';
+      document.getElementById('card-box').onclick = function() { revealed = true; renderCards(); };
+    } else {
+      cc.innerHTML = '<div class="card-box back">' + c.a + (c.ctx ? '<span class="ctx">💡 ' + c.ctx + '</span>' : '') + '</div>'
+        + '<div class="abts"><button class="ab hard" id="btn-hard">😬 Difficile</button><button class="ab medium" id="btn-med">🤔 Moyen</button><button class="ab easy" id="btn-easy">✅ Maitrise !</button></div>'
+        + '<div class="nav"><button class="nb" id="btn-prev">← Precedent</button><button class="nb" id="btn-skip">Passer →</button></div>';
+      document.getElementById('btn-hard').onclick = function() { rate('hard'); };
+      document.getElementById('btn-med').onclick  = function() { rate('medium'); };
+      document.getElementById('btn-easy').onclick = function() { rate('easy'); };
+    }
+    document.getElementById('btn-prev').onclick = function() { if (qIdx > 0) { qIdx--; revealed = false; renderCards(); } };
+    document.getElementById('btn-skip').onclick = function() { qIdx++; revealed = false; renderCards(); };
+  }
+}
+
+function rate(diff) {
+  for (var i = 0; i < cards.length; i++) { if (cards[i].id === queue[qIdx].id) { cards[i].diff = diff; break; } }
+  persist(); sessionDone++; qIdx++; revealed = false; renderCards();
+}
+
+// ── ADD ──
+function renderAdd() {
+  showPanel('add');
+  var sel = document.getElementById('ns');
+  sel.innerHTML = '';
+  for (var i = 0; i < subjects.length; i++) {
+    var opt = document.createElement('option');
+    opt.value = subjects[i].id;
+    opt.textContent = subjects[i].icon + ' ' + subjects[i].name;
+    sel.appendChild(opt);
+  }
+}
+
+// ── MANAGE ──
+function renderManage() {
+  showPanel('manage');
+
+  // folders section
+  var fl = document.getElementById('manage-folders');
+  var fhtml = '';
+  for (var i = 0; i < subjects.length; i++) {
+    var s = subjects[i], sc = 0;
+    for (var j = 0; j < cards.length; j++) if (cards[j].sub === s.id) sc++;
+    fhtml += '<div class="mfolder">'
+      + '<span class="mf-icon">' + s.icon + '</span>'
+      + '<span class="mf-name">' + s.name + '</span>'
+      + '<span class="mf-count">' + sc + ' cartes</span>'
+      + '<button class="del" data-fid="' + s.id + '">✕</button>'
+      + '</div>';
+  }
+  fl.innerHTML = fhtml;
+  var fdels = fl.getElementsByClassName('del');
+  for (var fd = 0; fd < fdels.length; fd++) {
+    fdels[fd].onclick = (function(fid) {
+      return function() {
+        var s = findSub(fid);
+        var sc = 0;
+        for (var i = 0; i < cards.length; i++) if (cards[i].sub === fid) sc++;
+        var msg = sc > 0
+          ? 'Supprimer le dossier "' + (s ? s.name : fid) + '" et ses ' + sc + ' cartes ?'
+          : 'Supprimer le dossier "' + (s ? s.name : fid) + '" ?';
+        if (window.confirm(msg)) {
+          subjects = subjects.filter(function(x) { return x.id !== fid; });
+          cards    = cards.filter(function(x)    { return x.sub !== fid; });
+          persist(); renderManage(); toast('Dossier supprime !');
+        }
+      };
+    })(fdels[fd].getAttribute('data-fid'));
+  }
+
+  // cards section
+  renderManageCards('');
+}
+
+function renderManageCards(search) {
+  var el = document.getElementById('manage-cards');
+  var filtered = [];
+  var s = search.toLowerCase();
+  for (var i = 0; i < cards.length; i++) {
+    if (!s || cards[i].q.toLowerCase().indexOf(s) !== -1 || cards[i].a.toLowerCase().indexOf(s) !== -1) {
+      filtered.push(cards[i]);
+    }
+  }
+  if (!filtered.length) { el.innerHTML = '<div class="empty">Aucune carte trouvee.</div>'; return; }
+  var html = '<div class="mlist">';
+  for (var j = 0; j < filtered.length; j++) {
+    var c = filtered[j], sub = findSub(c.sub);
+    html += '<div class="mi">'
+      + '<div class="mq">' + c.q + '</div>'
+      + (sub ? '<span class="ms">' + sub.icon + '</span>' : '')
+      + '<span class="mb">' + c.deck + '</span>'
+      + '<button class="edit-btn" data-eid="' + c.id + '">✏️</button>'
+      + '<button class="del" data-did="' + c.id + '">✕</button>'
+      + '</div>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
+
+  // edit buttons
+  var ebtns = el.getElementsByClassName('edit-btn');
+  for (var e = 0; e < ebtns.length; e++) {
+    ebtns[e].onclick = (function(cid) {
+      return function() { openEditModal(cid); };
+    })(parseInt(ebtns[e].getAttribute('data-eid'), 10));
+  }
+  // delete buttons
+  var dbtns = el.getElementsByClassName('del');
+  for (var d = 0; d < dbtns.length; d++) {
+    dbtns[d].onclick = (function(cid) {
+      return function() {
+        if (window.confirm('Supprimer cette carte ?')) {
+          cards = cards.filter(function(x) { return x.id !== cid; });
+          persist(); renderManage(); toast('Carte supprimee !');
+        }
+      };
+    })(parseInt(dbtns[d].getAttribute('data-did'), 10));
+  }
+}
+
+// ── EDIT MODAL ──
+function openEditModal(cid) {
+  var c = null;
+  for (var i = 0; i < cards.length; i++) { if (cards[i].id === cid) { c = cards[i]; break; } }
+  if (!c) return;
+
+  // populate subject select
+  var esel = document.getElementById('edit-sub');
+  esel.innerHTML = '';
+  for (var j = 0; j < subjects.length; j++) {
+    var opt = document.createElement('option');
+    opt.value = subjects[j].id;
+    opt.textContent = subjects[j].icon + ' ' + subjects[j].name;
+    if (subjects[j].id === c.sub) opt.selected = true;
+    esel.appendChild(opt);
+  }
+  document.getElementById('edit-id').value    = c.id;
+  document.getElementById('edit-deck').value  = c.deck;
+  document.getElementById('edit-q').value     = c.q;
+  document.getElementById('edit-a').value     = c.a;
+  document.getElementById('edit-ctx').value   = c.ctx || '';
+  document.getElementById('edit-modal').className = 'overlay open';
+}
+
+// ── STATIC WIRING ──
+document.getElementById('t-study').onclick  = function() { renderHome(); };
+document.getElementById('t-add').onclick    = function() { renderAdd(); };
+document.getElementById('t-manage').onclick = function() { renderManage(); };
+
+document.getElementById('btn-study-all').onclick = function() {
+  studyFilter = []; checkedSubs = []; activeDeck = 'Tous'; buildQueue(); renderCards();
+};
+document.getElementById('btn-study-sel').onclick = function() {
+  studyFilter = checkedSubs.slice(); checkedSubs = []; activeDeck = 'Tous'; buildQueue(); renderCards();
+};
+document.getElementById('btn-back-home').onclick = function() { renderHome(); };
+
+// add card
+document.getElementById('btn-save-card').onclick = function() {
+  var sub  = document.getElementById('ns').value;
+  var deck = document.getElementById('nd').value.trim();
+  var q    = document.getElementById('nq').value.trim();
+  var a    = document.getElementById('na').value.trim();
+  var ctx  = document.getElementById('nc').value.trim();
+  if (!q || !a || !deck) { toast('Remplis tous les champs !'); return; }
+  cards.push({ id: Date.now(), sub: sub, deck: deck, q: q, a: a, ctx: ctx, diff: 'new' });
+  persist();
+  document.getElementById('nd').value = '';
+  document.getElementById('nq').value = '';
+  document.getElementById('na').value = '';
+  document.getElementById('nc').value = '';
+  toast('Carte ajoutee !'); renderHome();
+};
+document.getElementById('btn-cancel-card').onclick = function() { renderHome(); };
+
+// manage search
+document.getElementById('manage-search').oninput = function() {
+  renderManageCards(this.value);
+};
+
+// add folder button in manage
+document.getElementById('btn-add-folder-manage').onclick = function() {
+  document.getElementById('modal').className = 'overlay open';
+};
+
+// new folder modal
+document.getElementById('btn-confirm-folder').onclick = function() {
+  var name = document.getElementById('folder-name').value.trim();
+  var icon = document.getElementById('folder-icon').value.trim() || '📁';
+  if (!name) { toast('Donne un nom !'); return; }
+  subjects.push({ id: 's' + Date.now(), name: name, icon: icon });
+  persist();
+  document.getElementById('modal').className = 'overlay';
+  document.getElementById('folder-name').value = '';
+  document.getElementById('folder-icon').value = '';
+  renderHome(); toast('Dossier cree !');
+};
+document.getElementById('btn-cancel-folder').onclick = function() {
+  document.getElementById('modal').className = 'overlay';
+};
+
+// edit modal save
+document.getElementById('btn-save-edit').onclick = function() {
+  var cid  = parseInt(document.getElementById('edit-id').value, 10);
+  var sub  = document.getElementById('edit-sub').value;
+  var deck = document.getElementById('edit-deck').value.trim();
+  var q    = document.getElementById('edit-q').value.trim();
+  var a    = document.getElementById('edit-a').value.trim();
+  var ctx  = document.getElementById('edit-ctx').value.trim();
+  if (!q || !a || !deck) { toast('Remplis tous les champs !'); return; }
+  for (var i = 0; i < cards.length; i++) {
+    if (cards[i].id === cid) {
+      cards[i].sub = sub; cards[i].deck = deck;
+      cards[i].q = q; cards[i].a = a; cards[i].ctx = ctx;
+      break;
+    }
+  }
+  persist();
+  document.getElementById('edit-modal').className = 'overlay';
+  renderManage(); toast('Carte modifiee !');
+};
+document.getElementById('btn-cancel-edit').onclick = function() {
+  document.getElementById('edit-modal').className = 'overlay';
+};
+
+// toast
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast show';
+  setTimeout(function() { el.className = 'toast'; }, 2200);
+}
+
+// ── INIT ──
 loadData();
-activeSub=null;activeDeck='Tous';queue=[];qIdx=0;revealed=false;sessionDone=0;
-document.getElementById('t-study').onclick=function(){renderHome();};
-document.getElementById('t-add').onclick=function(){renderAdd();};
-document.getElementById('t-manage').onclick=function(){renderManage();};
-document.getElementById('btn-study-all').onclick=function(){goToAll();};
-document.getElementById('btn-back-home').onclick=function(){renderHome();};
-document.getElementById('btn-save-card').onclick=function(){var sub=document.getElementById('ns').value,deck=document.getElementById('nd').value.trim(),q=document.getElementById('nq').value.trim(),a=document.getElementById('na').value.trim(),ctx=document.getElementById('nc').value.trim();if(!q||!a||!deck){toast('Remplis tous les champs !');return;}cards.push({id:Date.now(),sub:sub,deck:deck,q:q,a:a,ctx:ctx,diff:'new'});persist();document.getElementById('nd').value='';document.getElementById('nq').value='';document.getElementById('na').value='';document.getElementById('nc').value='';toast('Carte ajoutee !');renderHome();};
-document.getElementById('btn-cancel-card').onclick=function(){renderHome();};
-document.getElementById('btn-confirm-folder').onclick=function(){var name=document.getElementById('folder-name').value.trim(),icon=document.getElementById('folder-icon').value.trim()||'📁';if(!name){toast('Donne un nom !');return;}subjects.push({id:'s'+Date.now(),name:name,icon:icon});persist();document.getElementById('modal').className='overlay';document.getElementById('folder-name').value='';document.getElementById('folder-icon').value='';renderHome();toast('Dossier cree !');};
-document.getElementById('btn-cancel-folder').onclick=function(){document.getElementById('modal').className='overlay';};
+checkedSubs = []; studyFilter = []; activeDeck = 'Tous';
+queue = []; qIdx = 0; revealed = false; sessionDone = 0;
 renderHome();
 </script>
-
 </body>
 </html>

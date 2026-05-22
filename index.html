@@ -3,158 +3,194 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>My Flashcards</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<title>My Flashcards — CAPES Anglais</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', system-ui, sans-serif; background: #fdf7f0; color: #2d2320; min-height: 100vh; padding: 0 0 80px; }
-body::before, body::after { content: ''; position: fixed; border-radius: 50%; filter: blur(80px); opacity: .2; pointer-events: none; z-index: 0; }
-body::before { width: 500px; height: 500px; background: #f5b8cc; top: -150px; left: -150px; }
-body::after  { width: 400px; height: 400px; background: #a8d9b5; bottom: -100px; right: -100px; }
-.wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 28px 16px 0; }
-h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #d4607f; text-align: center; letter-spacing: -.5px; }
-.sub { text-align: center; color: #b09a94; font-size: .88rem; margin-top: 5px; margin-bottom: 24px; }
-
-/* tabs */
-.tabs { display: flex; gap: 5px; background: #fff; border-radius: 50px; padding: 5px; margin-bottom: 22px; box-shadow: 0 2px 16px rgba(212,96,127,.10); }
-.tab { flex: 1; padding: 11px; border: none; background: transparent; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: .85rem; cursor: pointer; color: #b09a94; font-weight: 500; transition: all .2s; }
-.tab.on { background: linear-gradient(135deg, #f5b8cc, #f9cdd9); color: #2d2320; font-weight: 600; }
-
-/* stats */
-.stats { display: flex; gap: 10px; margin-bottom: 18px; }
-.sp { flex: 1; background: #fff; border-radius: 16px; padding: 13px 6px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.06); border: 1.5px solid #f5ebe8; }
-.sp .n { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 600; line-height: 1; }
-.sp.pk .n { color: #d4607f; } .sp.gn .n { color: #4a9962; } .sp.gr .n { color: #b09a94; }
-.sp .l { font-size: .7rem; color: #b09a94; margin-top: 3px; }
-
-/* buttons */
-.btn-main { display: block; width: 100%; padding: 13px; background: linear-gradient(135deg, #f5b8cc, #a8d9b5); border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600; cursor: pointer; margin-bottom: 10px; color: #2d2320; box-shadow: 0 3px 14px rgba(212,96,127,.15); transition: opacity .2s; }
-.btn-main:active { opacity: .88; }
-.btn-sel { display: none; width: 100%; padding: 13px; background: #fff; border: 2px solid #d4607f; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600; cursor: pointer; margin-bottom: 14px; color: #d4607f; transition: all .2s; }
-.btn-sel.visible { display: block; }
-.btn-sel:hover { background: #fce8ef; }
-
-/* folder grid */
-.folder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-.folder-card { background: #fff; border-radius: 18px; padding: 20px 14px 16px; text-align: center; cursor: pointer; border: 2px solid #f5ebe8; box-shadow: 0 2px 12px rgba(0,0,0,.06); transition: all .18s; position: relative; }
-.folder-card:active { transform: scale(.97); }
-.folder-card.checked { border-color: #d4607f; background: #fdf0f4; }
-.fcheck { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #f5b8cc; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; transition: all .18s; z-index: 2; }
-.fcheck.on { background: #d4607f; border-color: #d4607f; color: #fff; }
-.fi { font-size: 1.8rem; margin-bottom: 7px; }
-.fn { font-family: 'Playfair Display', Georgia, serif; font-size: .95rem; font-weight: 600; color: #2d2320; }
-.fc2 { font-size: .73rem; color: #b09a94; margin-top: 3px; }
-.fp { margin-top: 9px; height: 5px; background: #fce8ef; border-radius: 50px; overflow: hidden; }
-.fpf { height: 100%; background: linear-gradient(90deg, #f5b8cc, #a8d9b5); border-radius: 50px; }
-.add-folder-card { background: linear-gradient(135deg, #fce8ef, #ddf0e4); border: 2px dashed #f5b8cc; border-radius: 18px; padding: 20px 14px 16px; text-align: center; cursor: pointer; transition: opacity .18s; }
-.add-folder-card:active { opacity: .8; }
-.add-folder-card .fi { color: #d4607f; font-size: 1.4rem; }
-.add-folder-card .fn { color: #d4607f; font-size: .88rem; font-family: 'DM Sans', sans-serif; font-weight: 600; margin-top: 4px; }
-
-/* cards view */
-.bc { display: flex; gap: 6px; align-items: center; margin-bottom: 14px; font-size: .85rem; color: #b09a94; flex-wrap: wrap; }
-.bc-home { background: #fce8ef; border: none; cursor: pointer; color: #d4607f; font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600; padding: 5px 13px; border-radius: 50px; }
-.deck-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
-.chip { padding: 6px 14px; border-radius: 50px; border: 1.5px solid #f5ebe8; background: #fff; font-family: 'DM Sans', sans-serif; font-size: .82rem; cursor: pointer; color: #b09a94; font-weight: 500; transition: all .18s; }
-.chip.on { border-color: #d4607f; color: #d4607f; background: #fce8ef; font-weight: 600; }
-.pbar { margin-bottom: 14px; }
-.plabel { display: flex; justify-content: space-between; font-size: .75rem; color: #b09a94; margin-bottom: 4px; }
-.ptrack { background: #f5ebe8; border-radius: 50px; height: 7px; overflow: hidden; }
-.pfill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, #f5b8cc, #a8d9b5); transition: width .35s; }
-
-/* flashcard */
-.card-box { background: #fff; border-radius: 20px; padding: 34px 22px; text-align: center; min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 13px; box-shadow: 0 4px 24px rgba(0,0,0,.08); border: 1.5px solid #f5ebe8; transition: transform .1s; }
-.card-box:active { transform: scale(.99); }
-.card-box.back { background: linear-gradient(160deg, #ddf0e4, #edf8f1); border-color: #a8d9b5; }
-.cq { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; line-height: 1.5; margin-bottom: 10px; font-weight: 600; }
-.chint { font-size: .78rem; color: #b09a94; }
-.ca { font-size: .95rem; line-height: 1.7; }
-.ctx { display: block; font-size: .78rem; color: #7aaa90; font-style: italic; margin-top: 10px; padding-top: 10px; border-top: 1px solid #a8d9b540; width: 100%; text-align: center; }
-.abts { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 12px; }
-.ab { padding: 11px 6px; border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600; cursor: pointer; transition: transform .1s; }
-.ab:active { transform: scale(.96); }
-.ab.hard { background: #fce8ef; color: #d4607f; } .ab.medium { background: #fef3cc; color: #b38600; } .ab.easy { background: #ddf0e4; color: #3d8a55; }
-.nav { display: flex; gap: 9px; justify-content: center; }
-.nb { padding: 9px 20px; border-radius: 50px; border: 1.5px solid #f5b8cc; background: #fff; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .83rem; color: #2d2320; font-weight: 500; }
-.nb.pri { background: linear-gradient(135deg, #f5b8cc, #a8d9b5); border-color: transparent; font-weight: 600; }
-
-/* add / manage panels */
-.panel { background: #fff; border-radius: 20px; padding: 22px 18px; box-shadow: 0 2px 16px rgba(0,0,0,.07); border: 1.5px solid #f5ebe8; margin-bottom: 14px; }
-.panel h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; color: #d4607f; margin-bottom: 14px; }
-.fr { margin-bottom: 12px; }
-.fr label { display: block; font-size: .72rem; font-weight: 600; color: #b09a94; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
-.fr input, .fr textarea, .fr select { width: 100%; padding: 10px 12px; border: 1.5px solid #f5ebe8; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: #2d2320; background: #fdf7f0; resize: vertical; outline: none; transition: border-color .18s; }
-.fr input:focus, .fr textarea:focus, .fr select:focus { border-color: #f5b8cc; }
-.fr textarea { min-height: 74px; }
-.search-input { width: 100%; padding: 10px 14px; border: 1.5px solid #f5ebe8; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: .88rem; color: #2d2320; background: #fff; outline: none; margin-bottom: 14px; }
-.search-input:focus { border-color: #f5b8cc; }
-.fbtns { display: flex; gap: 8px; margin-top: 14px; }
-.bpri { flex: 1; padding: 11px; background: linear-gradient(135deg, #f5b8cc, #a8d9b5); border: none; border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600; cursor: pointer; transition: opacity .18s; }
-.bpri:active { opacity: .88; }
-.bsec { padding: 11px 16px; background: #fff; border: 1.5px solid #f5ebe8; border-radius: 11px; font-family: 'DM Sans', sans-serif; font-size: .9rem; cursor: pointer; color: #b09a94; }
-.sect-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: #2d2320; margin-bottom: 10px; font-weight: 600; }
-
-/* manage folders */
-.mfolder-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
-.mfolder { background: #fff; border-radius: 13px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; border: 1.5px solid #f5ebe8; }
-.mf-icon { font-size: 1.3rem; flex-shrink: 0; }
-.mf-name { flex: 1; font-weight: 600; font-size: .9rem; }
-.mf-count { font-size: .75rem; color: #b09a94; flex-shrink: 0; }
-
-/* manage cards */
-.mlist { display: flex; flex-direction: column; gap: 8px; }
-.mi { background: #fff; border-radius: 13px; padding: 11px 13px; display: flex; align-items: center; gap: 9px; box-shadow: 0 1px 8px rgba(0,0,0,.05); border: 1.5px solid #f5ebe8; }
-.mq { flex: 1; font-size: .84rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mb { font-size: .67rem; background: #fce8ef; color: #d4607f; padding: 2px 7px; border-radius: 50px; white-space: nowrap; font-weight: 500; flex-shrink: 0; }
-.ms { font-size: .67rem; background: #ddf0e4; color: #3d8a55; padding: 2px 7px; border-radius: 50px; white-space: nowrap; flex-shrink: 0; }
-.del { background: none; border: none; cursor: pointer; color: #d4b4bc; font-size: .95rem; flex-shrink: 0; padding: 2px 4px; }
-.del:active { color: #d4607f; }
-.edit-btn { background: none; border: none; cursor: pointer; color: #b09a94; font-size: .95rem; flex-shrink: 0; padding: 2px 4px; }
-.edit-btn:active { color: #d4607f; }
-
-/* done / empty */
-.empty { text-align: center; padding: 44px 16px; color: #b09a94; font-size: .92rem; }
-.done { text-align: center; background: #fff; border-radius: 20px; padding: 42px 22px; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
-.done h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.45rem; color: #3d8a55; margin-bottom: 7px; }
-.done p { color: #b09a94; margin-bottom: 18px; }
-
-/* modal */
-.overlay { display: none; position: fixed; inset: 0; background: rgba(45,35,32,.45); z-index: 100; align-items: flex-start; justify-content: center; padding-top: 80px; overflow-y: auto; }
-.overlay.open { display: flex; }
-.modal { background: #fff; border-radius: 20px; padding: 22px; width: 92%; max-width: 380px; box-shadow: 0 8px 40px rgba(0,0,0,.18); margin-bottom: 40px; }
-.modal h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; color: #d4607f; margin-bottom: 13px; }
-
-/* toast */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(90px); background: #2d2320; color: #fff; padding: 9px 22px; border-radius: 50px; font-size: .84rem; transition: transform .3s cubic-bezier(.34,1.56,.64,1); z-index: 200; pointer-events: none; }
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-@media (max-width: 420px) {
-  h1 { font-size: 1.65rem; }
-  .abts { grid-template-columns: 1fr; }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pk:#e8a0b4;--pkl:#fbeef3;--pkd:#c75075;
+  --gn:#8ecba0;--gnl:#e4f5ea;--gnd:#3d8a55;
+  --ye:#f5d06e;--yel:#fdf6e3;--yed:#b8860b;
+  --bg:#faf8f5;--srf:#ffffff;--txt:#1e1a18;--sub:#8a7f79;
+  --bdr:#ede8e5;--r:16px;
 }
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding-bottom:100px}
+.wrap{max-width:660px;margin:0 auto;padding:24px 14px 0}
+
+/* ─ header */
+.hdr{text-align:center;margin-bottom:20px}
+.hdr h1{font-family:'Lora',Georgia,serif;font-size:1.85rem;color:var(--pkd);letter-spacing:-.3px}
+.hdr p{font-size:.82rem;color:var(--sub);margin-top:4px}
+
+/* ─ tabs */
+.tabs{display:flex;gap:4px;background:var(--srf);border-radius:50px;padding:4px;margin-bottom:20px;box-shadow:0 2px 12px rgba(199,80,117,.1);border:1px solid var(--bdr)}
+.tab{flex:1;padding:10px 6px;border:none;background:transparent;border-radius:50px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;cursor:pointer;color:var(--sub);font-weight:500;transition:all .2s}
+.tab.on{background:linear-gradient(135deg,var(--pk),#f7c3d5);color:var(--txt);font-weight:600;box-shadow:0 2px 8px rgba(199,80,117,.2)}
+
+/* ─ stats bar */
+.stats{display:flex;gap:8px;margin-bottom:16px}
+.sp{flex:1;background:var(--srf);border-radius:14px;padding:11px 6px;text-align:center;border:1px solid var(--bdr)}
+.sp .n{font-family:'Lora',serif;font-size:1.4rem;line-height:1}
+.sp.pk .n{color:var(--pkd)}.sp.gn .n{color:var(--gnd)}.sp.gr .n{color:var(--sub)}
+.sp .l{font-size:.68rem;color:var(--sub);margin-top:2px}
+
+/* ─ buttons */
+.btn-main{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--pk),var(--gn));border:none;border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;margin-bottom:9px;color:var(--txt);box-shadow:0 3px 12px rgba(199,80,117,.15);transition:opacity .15s}
+.btn-main:active{opacity:.88}
+.btn-sel{display:none;width:100%;padding:12px;background:var(--srf);border:2px solid var(--pkd);border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;margin-bottom:12px;color:var(--pkd)}
+.btn-sel.vis{display:block}
+
+/* ─ mode picker */
+.mode-row{display:flex;gap:7px;margin-bottom:16px}
+.mchip{flex:1;padding:9px 4px;border-radius:12px;border:2px solid var(--bdr);background:var(--srf);font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;cursor:pointer;color:var(--sub);font-weight:500;text-align:center;transition:all .18s}
+.mchip.on{border-color:var(--pkd);color:var(--pkd);background:var(--pkl);font-weight:600}
+.mchip .mi{font-size:1.1rem;display:block;margin-bottom:2px}
+
+/* ─ folder grid */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.fc{background:var(--srf);border-radius:var(--r);padding:18px 12px 14px;text-align:center;cursor:pointer;border:2px solid var(--bdr);transition:all .16s;position:relative}
+.fc:active{transform:scale(.97)}
+.fc.ck{border-color:var(--pkd);background:var(--pkl)}
+.fch{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;border:2px solid var(--pk);background:var(--srf);display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent;transition:all .16s}
+.fch.on{background:var(--pkd);border-color:var(--pkd);color:#fff}
+.fi{font-size:1.7rem;margin-bottom:5px}
+.fn{font-family:'Lora',serif;font-size:.88rem;color:var(--txt)}
+.fc2{font-size:.7rem;color:var(--sub);margin-top:2px}
+.fp{margin-top:7px;height:4px;background:var(--pkl);border-radius:50px;overflow:hidden}
+.fpf{height:100%;background:linear-gradient(90deg,var(--pk),var(--gn));border-radius:50px}
+.add-fc{background:linear-gradient(135deg,var(--pkl),var(--gnl));border:2px dashed var(--pk);border-radius:var(--r);padding:18px 12px 14px;text-align:center;cursor:pointer}
+.add-fc .fi{color:var(--pkd);font-size:1.2rem}
+.add-fc .fn{color:var(--pkd);font-size:.82rem;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;margin-top:3px}
+
+/* ─ deck chips */
+.deck-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{padding:5px 12px;border-radius:50px;border:1.5px solid var(--bdr);background:var(--srf);font-size:.78rem;cursor:pointer;color:var(--sub);font-weight:500;transition:all .16s}
+.chip.on{border-color:var(--pkd);color:var(--pkd);background:var(--pkl);font-weight:600}
+
+/* ─ progress */
+.pbar{margin-bottom:12px}
+.plbl{display:flex;justify-content:space-between;font-size:.72rem;color:var(--sub);margin-bottom:3px}
+.ptr{background:var(--bdr);border-radius:50px;height:6px;overflow:hidden}
+.pfl{height:100%;background:linear-gradient(90deg,var(--pk),var(--gn));border-radius:50px;transition:width .35s}
+
+/* ─ breadcrumb */
+.bc{display:flex;gap:6px;align-items:center;margin-bottom:12px;font-size:.82rem;color:var(--sub);flex-wrap:wrap}
+.bch{background:var(--pkl);border:none;cursor:pointer;color:var(--pkd);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;padding:5px 12px;border-radius:50px}
+
+/* ─ FLASHCARD mode */
+.card-box{background:var(--srf);border-radius:20px;padding:30px 20px;text-align:center;min-height:175px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;margin-bottom:12px;border:1.5px solid var(--bdr);box-shadow:0 3px 20px rgba(0,0,0,.06);transition:transform .1s}
+.card-box:active{transform:scale(.99)}
+.card-box.back{background:linear-gradient(160deg,var(--gnl),#edf8f1);border-color:var(--gn)}
+.cq{font-family:'Lora',serif;font-size:1.08rem;line-height:1.55;margin-bottom:8px;font-weight:600}
+.chint{font-size:.75rem;color:var(--sub)}
+.ca{font-size:.9rem;line-height:1.7}
+.ctx{display:block;font-size:.74rem;color:#6aaa7e;font-style:italic;margin-top:10px;padding-top:10px;border-top:1px solid rgba(142,203,160,.4);text-align:center;width:100%}
+.abts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:11px}
+.ab{padding:10px 4px;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:transform .1s}
+.ab:active{transform:scale(.96)}
+.ab.hard{background:var(--pkl);color:var(--pkd)}.ab.medium{background:var(--yel);color:var(--yed)}.ab.easy{background:var(--gnl);color:var(--gnd)}
+.nav{display:flex;gap:8px;justify-content:center;margin-top:4px}
+.nb{padding:8px 18px;border-radius:50px;border:1.5px solid var(--pk);background:var(--srf);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--txt);font-weight:500}
+.nb.pri{background:linear-gradient(135deg,var(--pk),var(--gn));border-color:transparent;font-weight:600}
+
+/* ─ QCM mode */
+.qcm-q{font-family:'Lora',serif;font-size:1.05rem;line-height:1.55;text-align:center;padding:22px 16px;background:var(--srf);border-radius:18px;margin-bottom:13px;border:1.5px solid var(--bdr);font-weight:600}
+.qcm-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.qcm-opt{padding:13px 16px;background:var(--srf);border:2px solid var(--bdr);border-radius:14px;cursor:pointer;font-size:.88rem;line-height:1.45;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s}
+.qcm-opt:active{transform:scale(.99)}
+.qcm-opt.correct{border-color:var(--gnd);background:var(--gnl);color:var(--gnd);font-weight:600}
+.qcm-opt.wrong{border-color:var(--pkd);background:var(--pkl);color:var(--pkd)}
+.qcm-opt.reveal{border-color:var(--gnd);background:var(--gnl)}
+.qcm-score{text-align:center;background:var(--srf);border-radius:20px;padding:38px 20px;border:1.5px solid var(--bdr)}
+.qcm-score h2{font-family:'Lora',serif;font-size:1.5rem;margin-bottom:6px}
+.score-ring{width:90px;height:90px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:1.6rem;font-weight:600;border:4px solid var(--gnd);color:var(--gnd)}
+
+/* ─ MATCHING mode */
+.match-wrap{margin-bottom:12px}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.match-side{display:flex;flex-direction:column;gap:8px}
+.match-card{padding:11px 10px;border-radius:13px;border:2px solid var(--bdr);background:var(--srf);font-size:.78rem;line-height:1.4;cursor:pointer;transition:all .2s;min-height:54px;display:flex;align-items:center;font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden}
+.match-card.q-card{background:linear-gradient(135deg,#fdf2f6,#fff);border-color:var(--pk);font-weight:600;font-family:'Lora',serif;font-size:.8rem}
+.match-card.selected{border-color:var(--pkd);background:var(--pkl);transform:scale(1.02)}
+.match-card.matched{border-color:var(--gnd);background:var(--gnl);color:var(--gnd);opacity:.7;cursor:default}
+.match-card.error{border-color:var(--pkd);background:var(--pkl);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.match-score{text-align:center;padding:8px 0;font-size:.82rem;color:var(--sub)}
+
+/* ─ done screen */
+.done{text-align:center;background:var(--srf);border-radius:20px;padding:40px 20px;border:1.5px solid var(--bdr)}
+.done h2{font-family:'Lora',serif;font-size:1.4rem;color:var(--gnd);margin-bottom:6px}
+.done p{color:var(--sub);margin-bottom:16px;font-size:.88rem}
+
+/* ─ ADD panel */
+.panel{background:var(--srf);border-radius:var(--r);padding:20px 16px;border:1px solid var(--bdr);margin-bottom:12px}
+.panel h2{font-family:'Lora',serif;font-size:1.1rem;color:var(--pkd);margin-bottom:13px}
+.fr{margin-bottom:10px}
+.fr label{display:block;font-size:.7rem;font-weight:600;color:var(--sub);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.fr input,.fr textarea,.fr select{width:100%;padding:9px 11px;border:1.5px solid var(--bdr);border-radius:11px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;color:var(--txt);background:var(--bg);resize:vertical;outline:none}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--pk)}
+.fr textarea{min-height:68px}
+.si{width:100%;padding:9px 13px;border:1.5px solid var(--bdr);border-radius:50px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;color:var(--txt);background:var(--srf);outline:none;margin-bottom:12px}
+.si:focus{border-color:var(--pk)}
+.fbtns{display:flex;gap:7px;margin-top:12px}
+.bpri{flex:1;padding:11px;background:linear-gradient(135deg,var(--pk),var(--gn));border:none;border-radius:11px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:opacity .15s}
+.bpri:active{opacity:.88}
+.bsec{padding:11px 14px;background:var(--srf);border:1.5px solid var(--bdr);border-radius:11px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;cursor:pointer;color:var(--sub)}
+
+/* ─ MANAGE panel */
+.mfolder{background:var(--srf);border-radius:12px;padding:10px 13px;display:flex;align-items:center;gap:9px;border:1px solid var(--bdr);margin-bottom:7px}
+.mf-icon{font-size:1.2rem;flex-shrink:0}
+.mf-name{flex:1;font-weight:600;font-size:.87rem}
+.mf-ct{font-size:.72rem;color:var(--sub);flex-shrink:0}
+.mlist{display:flex;flex-direction:column;gap:7px}
+.mi{background:var(--srf);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;border:1px solid var(--bdr)}
+.mq{flex:1;font-size:.81rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mb{font-size:.64rem;background:var(--pkl);color:var(--pkd);padding:2px 7px;border-radius:50px;white-space:nowrap;font-weight:500;flex-shrink:0}
+.ms{font-size:.64rem;background:var(--gnl);color:var(--gnd);padding:2px 7px;border-radius:50px;white-space:nowrap;flex-shrink:0}
+.del{background:none;border:none;cursor:pointer;color:#d4b4bc;font-size:.9rem;flex-shrink:0;padding:2px}
+.del:active{color:var(--pkd)}
+.edbtn{background:none;border:none;cursor:pointer;color:var(--sub);font-size:.9rem;flex-shrink:0;padding:2px}
+
+/* ─ modals */
+.overlay{display:none;position:fixed;inset:0;background:rgba(30,26,24,.45);z-index:100;align-items:flex-start;justify-content:center;padding-top:70px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--srf);border-radius:20px;padding:22px;width:92%;max-width:370px;box-shadow:0 8px 40px rgba(0,0,0,.16);margin-bottom:40px}
+.modal h3{font-family:'Lora',serif;font-size:1.05rem;color:var(--pkd);margin-bottom:12px}
+
+/* ─ toast */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--txt);color:#fff;padding:8px 20px;border-radius:50px;font-size:.81rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:200;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:400px){.abts{grid-template-columns:1fr}.hdr h1{font-size:1.55rem}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>✿ My Flashcards</h1>
-<p class="sub">Tous tes cours en un seul endroit</p>
+<div class="hdr"><h1>✿ My Flashcards</h1><p>CAPES Anglais · Tous tes cours</p></div>
 
 <div class="tabs">
-  <button class="tab on" id="t-study">📖 Reviser</button>
+  <button class="tab on" id="t-study">📖 Réviser</button>
   <button class="tab" id="t-add">＋ Ajouter</button>
-  <button class="tab" id="t-manage">⊞ Gerer</button>
+  <button class="tab" id="t-manage">⊞ Gérer</button>
 </div>
 
-<!-- STUDY -->
+<!-- STUDY HOME -->
 <div id="panel-study">
   <div class="stats">
-    <div class="sp pk"><div class="n" id="stat-total">-</div><div class="l">Total</div></div>
-    <div class="sp gn"><div class="n" id="stat-easy">-</div><div class="l">Maitrisees</div></div>
-    <div class="sp gr"><div class="n" id="stat-due">-</div><div class="l">A revoir</div></div>
+    <div class="sp pk"><div class="n" id="st-tot">-</div><div class="l">Total</div></div>
+    <div class="sp gn"><div class="n" id="st-ok">-</div><div class="l">Maîtrisées</div></div>
+    <div class="sp gr"><div class="n" id="st-due">-</div><div class="l">À revoir</div></div>
   </div>
-  <button class="btn-main" id="btn-study-all">📖 Tout reviser</button>
-  <button class="btn-sel" id="btn-study-sel">✓ Etudier la selection (0)</button>
-  <div class="folder-grid" id="folder-grid"></div>
+
+  <!-- mode picker -->
+  <div class="mode-row">
+    <button class="mchip on" data-mode="flash"><span class="mi">🃏</span>Flashcards</button>
+    <button class="mchip" data-mode="qcm"><span class="mi">🎯</span>QCM</button>
+    <button class="mchip" data-mode="match"><span class="mi">🔗</span>Associer</button>
+  </div>
+
+  <button class="btn-main" id="btn-all">Tout réviser</button>
+  <button class="btn-sel" id="btn-sel">✓ Étudier la sélection (0)</button>
+  <div class="fg" id="fg"></div>
 </div>
 
 <!-- ADD -->
@@ -162,13 +198,13 @@ h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #d
   <div class="panel">
     <h2>Nouvelle carte ✦</h2>
     <div class="fr"><label>Dossier</label><select id="ns"></select></div>
-    <div class="fr"><label>Theme / Deck</label><input id="nd" type="text" placeholder="Ex: Brexit, Phonologie..."/></div>
-    <div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was the Civil Rights Act?"></textarea></div>
-    <div class="fr"><label>Reponse</label><textarea id="na" placeholder="Ex: 1964 — outlawed discrimination..."></textarea></div>
-    <div class="fr"><label>Note (optionnel)</label><input id="nc" type="text" placeholder="Ex: Key date for oral prep"/></div>
+    <div class="fr"><label>Deck / Thème</label><input id="nd" type="text" placeholder="Ex: Brexit, Phonologie…"/></div>
+    <div class="fr"><label>Question</label><textarea id="nq" placeholder="Ex: What year was the Good Friday Agreement?"></textarea></div>
+    <div class="fr"><label>Réponse</label><textarea id="na" placeholder="Ex: 1998 — signed April 10th…"></textarea></div>
+    <div class="fr"><label>Note (optionnel)</label><input id="nc" type="text" placeholder="Ex: Key for Part 2 oral"/></div>
     <div class="fbtns">
-      <button class="bpri" id="btn-save-card">Ajouter ✦</button>
-      <button class="bsec" id="btn-cancel-card">Annuler</button>
+      <button class="bpri" id="btn-save">Ajouter</button>
+      <button class="bsec" id="btn-cancel-add">Annuler</button>
     </div>
   </div>
 </div>
@@ -176,63 +212,60 @@ h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #d
 <!-- MANAGE -->
 <div id="panel-manage" style="display:none">
   <div class="panel">
-    <p class="sect-title">🗂 Dossiers</p>
-    <div class="mfolder-list" id="manage-folders"></div>
-    <button class="bsec" id="btn-add-folder-manage" style="width:100%;margin-top:8px">+ Nouveau dossier</button>
+    <p style="font-family:'Lora',serif;font-size:1rem;font-weight:600;margin-bottom:10px">🗂 Dossiers</p>
+    <div id="mf-list"></div>
+    <button class="bsec" id="btn-new-f-m" style="width:100%;margin-top:6px">+ Nouveau dossier</button>
   </div>
   <div class="panel">
-    <p class="sect-title">🃏 Cartes</p>
-    <input class="search-input" id="manage-search" type="text" placeholder="Rechercher une carte..."/>
-    <div id="manage-cards"></div>
+    <p style="font-family:'Lora',serif;font-size:1rem;font-weight:600;margin-bottom:10px">🃏 Cartes</p>
+    <input class="si" id="msearch" type="text" placeholder="Rechercher une carte…"/>
+    <div id="mc-list"></div>
   </div>
 </div>
 
 <!-- CARDS VIEW -->
 <div id="panel-cards" style="display:none">
   <div class="bc">
-    <button class="bc-home" id="btn-back-home">🏠 Accueil</button>
+    <button class="bch" id="btn-back">🏠 Accueil</button>
     <span id="bc-sub"></span>
   </div>
   <div class="stats">
-    <div class="sp pk"><div class="n" id="cstat-total">0</div><div class="l">Cartes</div></div>
-    <div class="sp gn"><div class="n" id="cstat-easy">0</div><div class="l">Maitrisees</div></div>
-    <div class="sp gr"><div class="n" id="cstat-due">0</div><div class="l">A revoir</div></div>
+    <div class="sp pk"><div class="n" id="cs-tot">0</div><div class="l">Cartes</div></div>
+    <div class="sp gn"><div class="n" id="cs-ok">0</div><div class="l">Maîtrisées</div></div>
+    <div class="sp gr"><div class="n" id="cs-due">0</div><div class="l">À revoir</div></div>
   </div>
   <div class="deck-row" id="deck-row"></div>
-  <div class="pbar">
-    <div class="plabel"><span id="prog-txt">0 / 0</span><span id="prog-pct">0%</span></div>
-    <div class="ptrack"><div class="pfill" id="prog-fill" style="width:0%"></div></div>
-  </div>
+  <div class="pbar"><div class="plbl"><span id="pg-txt">0 / 0</span><span id="pg-pct">0%</span></div><div class="ptr"><div class="pfl" id="pg-fl" style="width:0%"></div></div></div>
   <div id="card-content"></div>
 </div>
-</div><!-- end .wrap -->
+</div>
 
 <!-- NEW FOLDER MODAL -->
-<div class="overlay" id="modal">
+<div class="overlay" id="modal-folder">
   <div class="modal">
-    <h3>Nouveau dossier ✦</h3>
-    <div class="fr"><label>Nom du dossier</label><input id="folder-name" type="text" placeholder="Ex: Grammaire, Phonologie..."/></div>
-    <div class="fr"><label>Emoji (colle-en un)</label><input id="folder-icon" type="text" placeholder="📖" maxlength="8"/></div>
+    <h3>Nouveau dossier</h3>
+    <div class="fr"><label>Nom</label><input id="fn" type="text" placeholder="Ex: Grammaire…"/></div>
+    <div class="fr"><label>Emoji</label><input id="fi" type="text" placeholder="📖" maxlength="8"/></div>
     <div class="fbtns">
-      <button class="bpri" id="btn-confirm-folder">Creer</button>
-      <button class="bsec" id="btn-cancel-folder">Annuler</button>
+      <button class="bpri" id="btn-cf">Créer</button>
+      <button class="bsec" id="btn-xf">Annuler</button>
     </div>
   </div>
 </div>
 
 <!-- EDIT CARD MODAL -->
-<div class="overlay" id="edit-modal">
+<div class="overlay" id="modal-edit">
   <div class="modal">
-    <h3>Modifier la carte ✦</h3>
-    <input type="hidden" id="edit-id"/>
-    <div class="fr"><label>Dossier</label><select id="edit-sub"></select></div>
-    <div class="fr"><label>Theme / Deck</label><input id="edit-deck" type="text"/></div>
-    <div class="fr"><label>Question</label><textarea id="edit-q"></textarea></div>
-    <div class="fr"><label>Reponse</label><textarea id="edit-a"></textarea></div>
-    <div class="fr"><label>Note</label><input id="edit-ctx" type="text"/></div>
+    <h3>Modifier la carte</h3>
+    <input type="hidden" id="eid"/>
+    <div class="fr"><label>Dossier</label><select id="es"></select></div>
+    <div class="fr"><label>Deck</label><input id="ed" type="text"/></div>
+    <div class="fr"><label>Question</label><textarea id="eq"></textarea></div>
+    <div class="fr"><label>Réponse</label><textarea id="ea"></textarea></div>
+    <div class="fr"><label>Note</label><input id="ec" type="text"/></div>
     <div class="fbtns">
-      <button class="bpri" id="btn-save-edit">Enregistrer</button>
-      <button class="bsec" id="btn-cancel-edit">Annuler</button>
+      <button class="bpri" id="btn-se">Enregistrer</button>
+      <button class="bsec" id="btn-xe">Annuler</button>
     </div>
   </div>
 </div>
@@ -240,540 +273,594 @@ h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #d
 <div class="toast" id="toast"></div>
 
 <script>
-// ── storage ──
-var store = (function() {
-  try { localStorage.setItem('_x','1'); localStorage.removeItem('_x'); return localStorage; }
-  catch(e) { var m = {}; return { getItem: function(k) { return m.hasOwnProperty(k)?m[k]:null; }, setItem: function(k,v) { m[k]=String(v); } }; }
-}());
+// ── DATA ──────────────────────────────────────────────────
+var SUBJECTS=[
+  {id:'s1',name:'Civi britannique',icon:'🇬🇧'},
+  {id:'s2',name:'Civi américaine',icon:'🇺🇸'},
+  {id:'s3',name:'Enjeux contemporains',icon:'🌱'},
+  {id:'s4',name:'Littérature',icon:'📚'},
+  {id:'s5',name:'Langue',icon:'✏️'}
+];
+var CARDS=[
+{id:1,sub:'s1',deck:'Brexit',q:'What date was the Brexit referendum and what was the result?',a:'June 23, 2016. 51.9% Leave vs 48.1% Remain. Cameron resigned the next morning.',ctx:'Core date — always know this.',diff:'new'},
+{id:2,sub:'s1',deck:'Brexit',q:'When did the UK officially leave the EU and under whose slogan?',a:'January 31, 2020. Transition period until December 31, 2020. Johnson\'s slogan: "Get Brexit Done".',ctx:'4 years of political chaos between the vote and exit.',diff:'new'},
+{id:3,sub:'s1',deck:'Brexit',q:'Why did people vote Leave? Give 4 reasons.',a:'Sovereignty ("Take Back Control" — 55% of UK laws came from Brussels). Immigration fears post-2004 EU enlargement. Economic frustration after 2008 recession. Identity: nostalgia for British independence.',ctx:'Understanding motivations matters more than just the result.',diff:'new'},
+{id:4,sub:'s1',deck:'Brexit',q:'What was the "£350 million per week" claim and why is it the most documented lie of the campaign?',a:'The Leave red bus claimed the UK sent £350m/week to the EU and that money would fund the NHS. False — real net figure was ~£180m (Thatcher\'s rebate wasn\'t deducted). The UK Statistics Authority called it misleading. Farage admitted it was wrong the morning after the vote.',ctx:'Key example for "Bregret" — a deliberate lie, not just an error.',diff:'new'},
+{id:5,sub:'s1',deck:'Brexit',q:'What is Article 50 and what happened when May tried to use Royal Prerogative to trigger it?',a:'Article 50 (added by Lisbon Treaty 2007) is the EU exit mechanism — a 2-year countdown once triggered. May wanted to invoke it without Parliament. Supreme Court ruled 8-3 (January 2017): she could not — rights given by Parliament can only be removed by Parliament.',ctx:'May finally triggered Article 50 in March 2017 after Parliament approved.',diff:'new'},
+{id:6,sub:'s1',deck:'Brexit',q:'Why did Parliament reject May\'s Withdrawal Agreement three times?',a:'Three incompatible factions: Remainers found it too harsh. Hard Brexiteers found it too soft. DUP rejected it because it kept Northern Ireland aligned with EU rules, creating a de facto Irish Sea border.',ctx:'May survived an internal Conservative confidence vote (200 vs 117) but resigned in tears May 2019.',diff:'new'},
+{id:7,sub:'s1',deck:'Brexit',q:'What is the Windsor Framework (2023)?',a:'Sunak\'s renegotiation of the Northern Ireland Protocol. Keeps NI aligned with EU single market (avoiding a land border with the Republic). Creates a green lane (goods staying in NI, light checks) and red lane (goods going to Republic/EU, full checks) at Irish Sea ports.',ctx:'DUP still opposed it as it symbolically separates NI from the rest of the UK.',diff:'new'},
+{id:8,sub:'s1',deck:'Brexit',q:'What are the main economic consequences of Brexit?',a:'GDP fell 5.5%, investment 11%, trade with EU 15-16%. Labour shortage: 330,000 missing agricultural workers, $27m of unharvested crops (2022). Car production fell to 40% of pre-Covid levels. UK lost access to SIS II anti-terrorism database.',ctx:'Recession + inflation + wage freezes = the conditions for "Bregret".',diff:'new'},
+{id:9,sub:'s1',deck:'Brexit',q:'What is "Bregret" and what statistic illustrates it?',a:'"Bregret" = Brexit + Regret. 79% of young voters entering the electorate would vote to rejoin Europe. Dissatisfied Britons jumped from 21% (June 2021) to 45% quickly. Former "Leavers" becoming "Rejoiners".',ctx:'The title of Fiche 60 — the central concept for the oral.',diff:'new'},
+{id:10,sub:'s1',deck:'Brexit',q:'What is the Lisbon Treaty (2007) and what crucial clause did it add?',a:'Signed 2007, entered force 2009. Reformed EU governance after 2004 enlargement (15 → 25 members). Crucially added Article 50 — the EU exit mechanism. Without Lisbon, Brexit would have had no legal framework. Chain: Lisbon → Cameron promises referendum → 2016 vote → Brexit.',ctx:'Cameron\'s promise of a referendum was partly a response to Labour signing Lisbon without asking the people.',diff:'new'},
+{id:11,sub:'s1',deck:'Histoire GB',q:'What was the Witenagemot and what were the key constitutional milestones to 1689?',a:'Witenagemot: Anglo-Saxon "meeting of wise men" — ancestor of Parliament. Magna Carta (1215): king not above the law, taxes need Parliament\'s approval, free men judged by peers. Provisions of Oxford (1258): Parliament meets 3x/year without royal summons — first independent legislature. Habeas Corpus (1679): no detention without court appearance in 3 days. Bill of Rights (1689): Parliament supreme, free elections, free speech.',ctx:'Golden thread: power gradually transferred from monarch → Parliament → people.',diff:'new'},
+{id:12,sub:'s1',deck:'Histoire GB',q:'What were cottage industries and why did the Luddites revolt?',a:'Cottage industries: families making goods by hand at home (wool, fabric, shoes). Industrial Revolution made factory machines 100× more productive — millions lost income overnight. Luddites were desperate workers who destroyed machines. The government made industrial sabotage a capital crime — 24 men executed.',ctx:'Chain: cottage industry → Industrial Revolution → urbanisation → poverty → workers\' rights.',diff:'new'},
+{id:13,sub:'s1',deck:'Histoire GB',q:'What was the Blitz (1940-41) and what national identity did it forge?',a:'German Luftwaffe bombing campaign, Sept 1940 – May 1941. London bombed 57 consecutive nights. 43,000 civilians killed, 1.1 million homes destroyed. Completely backfired — instead of breaking morale, it united the population. The "Blitz spirit" — British resilience and defiance — became a foundational national myth still invoked today.',ctx:'"Blitz" from German "Blitzkrieg" (lightning war). Churchill\'s speeches embodied this spirit.',diff:'new'},
+{id:14,sub:'s1',deck:'Histoire GB',q:'What did the Reform Acts (1832-1928) progressively expand?',a:'1832: wealthy middle-class men. 1867: working men who owned or rented property and paid local rates. 1884: near-universal male suffrage. 1918: women over 30. 1928: Equal Franchise Act — all women over 21. 1969: voting age lowered from 21 to 18.',ctx:'Democracy in Britain was handed out in tiny pieces, grudgingly, each time only when pressure from below became impossible to ignore.',diff:'new'},
+{id:15,sub:'s1',deck:'Monarchie',q:'What are the monarch\'s theoretical powers vs real powers?',a:'Theory: dissolve Parliament, declare war, appoint PM, veto laws, appoint judges, grant pardons, sign treaties. Reality: ALL exercised by the PM in the king\'s name. Bagehot: the monarch has three rights — "to be consulted, to encourage, to warn". Not to rule.',ctx:'The last monarch to refuse Royal Assent was Queen Anne in 1708 (Scottish Militia Bill).',diff:'new'},
+{id:16,sub:'s1',deck:'Monarchie',q:'What are the Royal Assent formulas and the Sovereign Grant?',a:'Royal Assent in Norman French: "La Reyne le veult" (approved) / "La Reyne s\'avisera" (veto — unused since 1708). Sovereign Grant: 25% of Crown Estate profits, totalling £86.3m for 2021-22 = £1.29/British person/year. Crown Estate ceded by George III in 1760. Duchy of Lancaster = king\'s private income, £650m+ worth, ~£24m/year.',ctx:'Two income streams: public (Sovereign Grant from Crown Estate) and private (Duchy of Lancaster).',diff:'new'},
+{id:17,sub:'s1',deck:'Monarchie',q:'How does a British MP formally resign and what is the Fountain of Justice?',a:'An MP cannot simply resign. Must request appointment as Crown Steward of the Chiltern Hundreds — a medieval fictional post — which creates legal incompatibility with being an MP, triggering a by-election. Fountain of Justice: all courts are "The King\'s courts", cases are "The King versus…", the king holds the personal prerogative of pardon — but follows the Home Secretary\'s advice.',ctx:'Pure legal fiction from 1624 — nobody has ever abolished the rule.',diff:'new'},
+{id:18,sub:'s1',deck:'Monarchie',q:'What is the Privy Council and what are Orders in Council?',a:'743-member council of royal advisers (all current + former ministers, archbishops, Speaker). Meets monthly. Orders in Council = legally binding decisions made without Parliament — a legal shortcut via royal prerogative. NOT secret — reported daily in the Court Circular. When a monarch dies, an Accession Council meets at St James\'s Palace in two parts.',ctx:'Heath used royal prerogative to join the EEC in 1973 without Parliament. Thatcher for the Falklands 1982.',diff:'new'},
+{id:19,sub:'s1',deck:'Systeme politique UK',q:'What is the first-past-the-post system and why does the shape of the Commons chamber matter?',a:'First-past-the-post: the candidate with the most votes wins — even without absolute majority. Structurally advantages large parties. The rectangular Commons chamber (government vs opposition face-to-face) physically reinforces the two-party system. Compare with French hemicycle which favours coalitions.',ctx:'Result: UK politics dominated by two parties even when the country is deeply divided (as in Brexit).',diff:'new'},
+{id:20,sub:'s1',deck:'Systeme politique UK',q:'What is the Shadow Cabinet and how does an MP resign?',a:'Shadow Cabinet: the "phantom government" of the opposition — each minister has a shadow counterpart. Shadow PM = Leader of the Opposition, paid extra salary. An MP cannot simply resign since 1624 — must request appointment as Crown Steward of the Chiltern Hundreds (medieval fictional post) from the Chancellor of the Exchequer to trigger a by-election.',ctx:'Once an MP always an MP — until you take on a fictional medieval appointment.',diff:'new'},
+{id:21,sub:'s1',deck:'Systeme politique UK',q:'What are the Blair reforms to the House of Lords (1999 and 2005/2009)?',a:'1999 House of Lords Act: stripped 750 hereditary peers of automatic right to sit. A compromise left 92 elected by their peers temporarily. 2005 Constitutional Reform Act (effective 2009): created UK Supreme Court, separating judiciary from Parliament. Also reformed the Lord Chancellor who had previously held legislative + executive + judicial roles simultaneously.',ctx:'Before 2009: Law Lords both made laws AND judged cases — a fundamental violation of separation of powers.',diff:'new'},
+{id:22,sub:'s1',deck:'Systeme politique UK',q:'What is the Parliament Act 1911 and what are Life Peers?',a:'Parliament Act 1911 (under Asquith): Lords can only delay a bill by 2 years max, after which it passes automatically. Life Peerages Act 1958: PM nominates ~20 Lords/year for life — title does not pass to children. Currently 781 Lords (92 hereditary, ~670 life peers, 2 archbishops + 24 bishops).',ctx:'Lords are appointed by the PM — a democratic problem that Blair never fully resolved.',diff:'new'},
+{id:23,sub:'s1',deck:'Ecosse',q:'Key Scottish dates: Bannockburn, Act of Union, Scotland Act, indyref.',a:'1314 Battle of Bannockburn: Robert the Bruce crushes English — decisive Scottish independence. 1328 Treaty of Northampton: England formally recognises independence. 1603: James VI of Scotland becomes James I of England — personal union only. 1707 Act of Union: parliaments merge at Westminster — Scotland keeps its Church, legal system, banknotes. 1998 Scotland Act: Holyrood Parliament (129 MSPs) created. 2014: indyref — 55% No.',ctx:'Scottish banknotes are in pounds sterling, but English shops can legally refuse them.',diff:'new'},
+{id:24,sub:'s1',deck:'Ecosse',q:'The Stone of Scone — what happened in 1296, 1950 and 1996?',a:'Edward I stole it in 1296 and placed it under Westminster Abbey\'s coronation throne. In 1950, four Scottish nationalist students broke in and took it back — it was recovered 4 months later. John Major returned it officially in 1996 — 700 years after the theft. It was temporarily brought to London for Charles III\'s coronation.',ctx:'A physical symbol of 400 years of Anglo-Scottish tension, in one sandstone block.',diff:'new'},
+{id:25,sub:'s1',deck:'Ecosse',q:'Why did Brexit turbocharge Scottish independence demands?',a:'In 2016, 62% of Scots voted Remain — but were taken out of the EU against their will. SNP argument: "In 2014 you said independence meant leaving the EU. We voted No to stay in the EU. Now we\'re out anyway." Supreme Court ruled November 2022: Scotland cannot hold a referendum without Westminster\'s agreement. Nicola Sturgeon resigned February 2023.',ctx:'The 2014 No vote was partly won on the EU membership argument — Brexit made it collapse.',diff:'new'},
+{id:26,sub:'s1',deck:'Commonwealth',q:'What are the Balfour Report (1926), Statute of Westminster (1931), Singapore Declaration (1971) and Harare Declaration (1991)?',a:'Balfour Report (1926): UK and Dominions declared equal in status. Statute of Westminster (1931): formal autonomy to Dominions. Singapore Declaration (1971): first rulebook — voluntary, consensual, anti-colonialism. Harare Declaration (1991/1995): added democracy, human rights, gender equality — AND a suspension mechanism (teeth).',ctx:'Before 1995: no consequences for violations. After 1995: Nigeria suspended 1995, Pakistan 1999, Zimbabwe 2002.',diff:'new'},
+{id:27,sub:'s1',deck:'Commonwealth',q:'What was the Windrush Generation and the Windrush Scandal?',a:'Windrush Generation: Caribbean migrants 1948-1971. Empire Windrush arrived June 1948 with 492 passengers. Many never received proper paperwork. 2010: Home Office destroyed their landing cards. Under May\'s "hostile environment" policy, at least 83 people wrongly deported. They had lived and worked legally for decades but were told to "prove" their right to stay.',ctx:'The hostile environment policy was created by May as Home Secretary — before she became PM.',diff:'new'},
+{id:28,sub:'s1',deck:'Irlande',q:'What was the Plantation of Ulster (1609) and why does it still define Irish politics?',a:'English king sent Protestant settlers from England and Scotland to colonize six Ulster counties while Irish Catholics were expelled from their land. This artificially created the fundamental North (Protestant/British) vs South (Catholic/Irish) divide that still exists. One act in 1609 created 400 years of conflict.',ctx:'The six counties that became Northern Ireland are the legacy of this 1609 plantation.',diff:'new'},
+{id:29,sub:'s1',deck:'Irlande',q:'What was the Easter Rising (1916) and why was the British response catastrophic?',a:'Easter Monday 1916: ~1200 Irish Volunteers occupied key Dublin buildings. Patrick Pearse proclaimed the Irish Republic from the General Post Office. After 5 days, surrender. 15 leaders executed — including wounded James Connolly, shot tied to a chair. This transformed unpopular rebels into martyrs and radicalized Irish opinion. Sinn Fein ("We Ourselves") won 73 parliamentary seats in 1918.',ctx:'The execution was the British government\'s biggest political mistake in Ireland.',diff:'new'},
+{id:30,sub:'s1',deck:'Irlande',q:'Bloody Sunday 1920 vs Bloody Sunday 1972 — what happened?',a:'Bloody Sunday 1920 (Nov 21): IRA killed 14 British intelligence agents. Black and Tans retaliated by firing into a Gaelic football crowd at Croke Park — 12 spectators killed. Bloody Sunday 1972 (Jan 30): British paratroopers killed 13 Catholic civilians during a peaceful civil rights march in Londonderry. 1972 saw 468 deaths total — peak of the Troubles.',ctx:'Two traumatic days, 52 years apart — both emblematic of the cycle of violence.',diff:'new'},
+{id:31,sub:'s1',deck:'Irlande',q:'What did the Good Friday Agreement (1998) create?',a:'Signed April 10, 1998 — Good Friday — mediated by US Senator George Mitchell. Stormont Assembly with mandatory power-sharing: unionists and nationalists MUST govern together. If one First Minister resigns, the Deputy must also resign. Invisible border guaranteed. 71% Yes in NI, 94% Yes in Republic. IRA ended armed activities 2005.',ctx:'3600 dead, 30,000+ injured over 30 years of Troubles — the GFA was an extraordinary achievement.',diff:'new'},
+{id:32,sub:'s1',deck:'Irlande',q:'How did Brexit threaten the Good Friday Agreement and what is the Sinn Fein/DUP situation today?',a:'Brexit created EU/non-UK border in middle of Ireland. Northern Ireland Protocol: NI stays in EU single market (invisible land border), but creates Irish Sea trade barrier — green lanes and red lanes. May 2022: Sinn Fein won NI elections for FIRST TIME since 1921 (27 vs 25 DUP). Fine Gael and Fianna Fail born from the 1921-23 Irish civil war over the partition treaty.',ctx:'Fine Gael = pro-treaty descendants. Fianna Fail = anti-treaty. They allied in 2020 to exclude Sinn Fein from power.',diff:'new'},
+{id:33,sub:'s1',deck:'Figures cles GB',q:'William the Conqueror — key facts.',a:'Battle of Hastings, October 14, 1066 — last successful invasion of England. Crowned Westminster Abbey, Christmas Day 1066. Domesday Book (1086): complete land census for taxation — first of its kind. Created the Exchequer (accounting on a checkered board — still the title of Chancellor of the Exchequer). French words entered English: beef/ox, pork/pig, mutton/sheep.',ctx:'The Norman Conquest reset British history — monarchy numbering restarts from 1 with William.',diff:'new'},
+{id:34,sub:'s1',deck:'Figures cles GB',q:'Henry VIII and Oliver Cromwell — key paradoxes.',a:'Henry VIII: named "Fidei Defensor" (FD on British coins today) by the Pope for defending Catholicism — then broke with Rome in 1534 to divorce Catherine of Aragon. Created the Church of England for personal reasons, not religious conviction. Cromwell: killed the king for tyranny, then became a tyrant himself — theatres closed, Christmas banned, Ireland brutally suppressed.',ctx:'Both men are walking paradoxes — perfect examples for the oral.',diff:'new'},
+{id:35,sub:'s1',deck:'Figures cles GB',q:'Nelson and Churchill — key facts.',a:'Nelson: lost right eye 1794 (Toulon), lost right arm 1797 (Canaries). Trafalgar Oct 21, 1805: with 27 ships defeated 33 Franco-Spanish ships — saved Britain from Napoleonic invasion, died in battle on HMS Victory. Churchill: 60 years as MP, directed WWII from Cabinet War Rooms, lost 1945 election, "Iron curtain" speech 1946, Nobel Prize in Literature 1953, resigned 1955 after a stroke.',ctx:'Both iconic symbols of British resilience — central to the "Blitz spirit" national identity.',diff:'new'},
+{id:36,sub:'s1',deck:'Figures cles GB',q:'Elizabeth I and Queen Victoria — key facts.',a:'Elizabeth I: last Tudor, Religious Settlement 1559, Elizabethan Golden Age (Shakespeare), Spanish Armada destroyed 1588, "Virgin Queen", executed Mary Queen of Scots 1587 — whose son became James I. Victoria: reigned 63 years, Albert died 1861, isolated for decades → triggered only republican sentiment since Cromwell, Empress of India 1876, Great Exhibition 1851.',ctx:'Victoria\'s isolation taught the monarchy that public visibility is essential for survival.',diff:'new'},
+{id:37,sub:'s1',deck:'Figures cles GB',q:'Florence Nightingale and the Suffragettes — key facts.',a:'Nightingale: "Lady with the Lamp" in Crimea (1854), but also produced a 1000-page statistical report — practically invented epidemiology. Founded Nightingale Training School 1860. First woman to receive Order of Merit (1907). Suffragettes: Pankhurst founded WSPU 1903 ("Deeds not Words"). Emily Davison threw herself under the king\'s horse at Epsom Derby 1913. Women over 30 got vote 1918. Equal Franchise Act 1928.',ctx:'2000 suffragettes escorted Davison\'s coffin draped in purple, white and green.',diff:'new'},
+{id:38,sub:'s1',deck:'Figures cles GB',q:'Margaret Thatcher — policy and divided legacy.',a:'Oxford chemistry → barrister → Conservative MP 1959 → first woman to lead a British political party (1975) → PM 1979. Thatcherism: privatisation, union-busting (miners\' strike 1984-85), Falklands War 1982, sold council housing, poll tax 1990 → riots → forced to resign. Won 3 consecutive elections. Death in 2013: state mourning AND street parties in mining towns.',ctx:'No British politician divides opinion as much — except perhaps Cromwell.',diff:'new'},
+{id:39,sub:'s1',deck:'Peinture GB',q:'Hogarth and the Reynolds vs Gainsborough rivalry.',a:'Hogarth (1697-1764): first great British painter — rejected portraits of the rich to paint the sordid reality of London. A Harlot\'s Progress (6 paintings: girl becomes prostitute) and A Rake\'s Progress (8 paintings: heir ends in asylum). Every detail symbolic. Reynolds (1723-1792): Royal Academy president (1768), said blue was too cold. Gainsborough (1727-1788): painted The Blue Boy — an artistic middle finger to Reynolds.',ctx:'A rivalry between two egos produced one of the most famous British paintings in history.',diff:'new'},
+{id:40,sub:'s1',deck:'Peinture GB',q:'Constable vs Turner — what makes each revolutionary?',a:'Constable (1776-1837): painted en plein air (in nature) when everyone used studios. The Haywain. His obsession with clouds (father owned windmills) inspired Monet — precursor of Impressionism. Turner (1775-1851): genius of light and abstraction. Rain Steam and Speed, The Fighting Temeraire. Incomprehensible to contemporaries. Bequeathed all works to the nation on condition they stay together (now Tate Britain).',ctx:'Constable = earth, landscape, reality. Turner = light, chaos, proto-abstraction.',diff:'new'},
+{id:41,sub:'s1',deck:'Peinture GB',q:'Pre-Raphaelites (1848) and the Young British Artists.',a:'Pre-Raphaelite Brotherhood 1848: wanted to return to sincerity of painters before Raphael — vibrant colors, obsessive detail. Rossetti: wife died of laudanum overdose, he buried his manuscripts with her then had them dug up. Burne-Jones worked with William Morris (Arts and Crafts). YBAs: Tracey Emin — My Bed (unmade bed with detritus as art). Damien Hirst — shark in formaldehyde, For the Love of God (skull with 8601 diamonds).',ctx:'"The hipsters of 1848" vs the provocateurs of the 1980s — both rejecting the mainstream.',diff:'new'},
+{id:42,sub:'s1',deck:'Peinture GB',q:'Key 20th century British artists and sculptors.',a:'Francis Bacon (1909-1992): tortured figures in confined spaces, crucifixion triptychs, anxiety of modernity. Lucian Freud (1922-2011): grandson of Sigmund, hyper-realist portraits — controversial portrait of Queen Elizabeth II. David Hockney (1937-): Pop Art swimming pools, Yorkshire landscapes, A Year in Normandie (90m iPad frieze inspired by Bayeux Tapestry). Gormley: Angel of the North (20m high, 54m wingspan). Kapoor: Cloud Gate Chicago.',ctx:'British art: tension between tradition and transgression, from Hogarth to Hirst.',diff:'new'},
+{id:43,sub:'s1',deck:'Medias GB',q:'Broadsheets vs tabloids — key newspapers and Murdoch\'s empire.',a:'Quality: The Times (1785, "The Thunderer", Murdoch 1981, 495K, pro-Conservative), Financial Times (1888, salmon pink paper, pro-European, 189K), The Guardian (Scott Trust — no shareholders, 112K). Tabloids: Daily Mail (910K, anti-immigration). Red-tops: The Sun (Murdoch, 1.3M, Page Three Girl 1970-2015, anti-EU). Murdoch owns: The Times, Sunday Times, The Sun, BSkyB — vast influence over British opinion.',ctx:'Fleet Street was the hub of British press — all newspapers have now relocated to East London.',diff:'new'},
+{id:44,sub:'s1',deck:'Medias GB',q:'BBC funding and the phone-hacking scandal.',a:'BBC funded by licence fee: £159/year for anyone with a TV-capable device. Free for 75+, 50% off for blind. Budget: £5.1bn, of which £3.7bn from licence fee. 2022: fee frozen → BBC World Service cut 382 jobs and 10 language services. News of the World (Murdoch, founded 1843): closed 2011 after journalists hacked celebrities\', politicians\', and crime victims\' phones — 168-year-old institution destroyed.',ctx:'BBC English = Received Pronunciation until the 1980s, when regional accents became acceptable.',diff:'new'},
+{id:45,sub:'s1',deck:'Gun Control GB',q:'Hungerford (1987) and Dunblane (1996) — UK response.',a:'Hungerford 1987: gunman with 3 legal semi-automatic rifles killed 16 → Parliament immediately banned all semi-automatic rifles (1988). Dunblane 1996: gunman entered a primary school gym, killed 16 children aged 4-5 and their teacher → 1997 Firearms Act banned virtually ALL handguns. 162,000 weapons and 700 tonnes of ammunition collected in buyback programme costing £168m.',ctx:'The UK\'s response to mass shootings: immediate, comprehensive legislation.',diff:'new'},
+{id:46,sub:'s2',deck:'Race et Civil Rights',q:'Plessy v. Ferguson (1896) vs Brown v. Board (1954) — what changed?',a:'Plessy v. Ferguson (1896): Supreme Court upheld "separate but equal" — legalizing racial segregation. Brown v. Board of Education (1954): overturned Plessy — school segregation declared unconstitutional. Argued by NAACP lawyer Thurgood Marshall (later first Black Supreme Court justice). Civil Rights Act (1964): outlawed discrimination based on race, color, religion, sex, national origin. Voting Rights Act (1965). Fair Housing Act (1968) banned redlining.',ctx:'Redlining: denying mortgages to people in racially defined neighborhoods — its legacy is today\'s racial wealth gap.',diff:'new'},
+{id:47,sub:'s2',deck:'Race et Civil Rights',q:'MLK\'s "I Have a Dream" — date, context, significance.',a:'August 28, 1963. March on Washington: 250,000 people. King used the LANGUAGE of the American Dream to expose its hypocrisy — claiming it for those it excluded. MLK assassinated April 4, 1968 in Memphis. The 13th Amendment (1865) abolished slavery EXCEPT as punishment for crime — enabling prison labor, the cornerstone of the prison-industrial complex debate.',ctx:'George Floyd murdered May 25, 2020 → global BLM protests in 60+ countries. Chauvin convicted April 2021.',diff:'new'},
+{id:48,sub:'s2',deck:'Race et Civil Rights',q:'What is systemic racism and what happened in 2023 with affirmative action?',a:'Systemic racism = racism embedded in institutions, laws, social systems — not just individual prejudice. Manifests in policing, housing, healthcare, education. SFFA v. Harvard (2023): Supreme Court ruled race-conscious admissions unconstitutional, effectively ending affirmative action in higher education — reversing decades of precedent.',ctx:'Distinguish individual racism (person-level) from systemic/structural racism.',diff:'new'},
+{id:49,sub:'s2',deck:'Democratie US',q:'The three branches of US government and checks and balances.',a:'Legislative: Congress (100-seat Senate + 435-seat House of Representatives). Executive: President + Cabinet. Judicial: Supreme Court + federal courts. Impeachment: House votes by simple majority; Senate needs 2/3 to convict. Trump was impeached twice (2019, 2021) but not convicted.',ctx:'Madison\'s design: separation of powers + checks and balances — prevent tyranny.',diff:'new'},
+{id:50,sub:'s2',deck:'Democratie US',q:'What is the Electoral College and why is it controversial?',a:'538 electors formally elect the President (270 needed). Allocated per state. Winner-takes-all in most states. In 2000 (Bush over Gore) and 2016 (Trump over Clinton), the popular vote winner LOST the Electoral College. Critics argue it distorts democratic will.',ctx:'A candidate can win the presidency while losing the popular vote by millions.',diff:'new'},
+{id:51,sub:'s2',deck:'Democratie US',q:'Filibuster and gerrymandering — what are they?',a:'Filibuster: prolonged Senate debate to delay/block legislation. Requires 60 votes (cloture) to end. Named after Dutch "vrijbuiter" (pirate). Used to block civil rights bills for decades. Gerrymandering: manipulating district boundaries to favor a party. Named after Governor Elbridge Gerry of Massachusetts (1812) whose district looked like a salamander.',ctx:'Both parties gerrymander. Both mechanisms undermine democratic fairness.',diff:'new'},
+{id:52,sub:'s2',deck:'Democratie US',q:'The Bill of Rights (1791) — key amendments.',a:'First 10 amendments to the Constitution. 1st: freedom of speech, religion, press, assembly. 2nd: right to bear arms. 4th: protection against unreasonable searches. 5th: right to not self-incriminate. 6th: right to jury trial. Added to reassure anti-Federalists that individual rights would be protected.',ctx:'All inspired by English precedents: Magna Carta, Habeas Corpus, Bill of Rights 1689.',diff:'new'},
+{id:53,sub:'s2',deck:'Gun Control US',q:'What does the 2nd Amendment say and why is it so difficult to overturn?',a:'"A well regulated Militia…the right of the people to keep and bear Arms, shall not be infringed." (1791). To amend it: 2/3 majority in BOTH chambers of Congress AND ratification by 38 of 50 states. Only 13 states need to say No to block it — many more than 13 are deeply pro-gun. 276 out of 535 Congress members have accepted NRA funding.',ctx:'Mathematically possible to change. Politically near-impossible.',diff:'new'},
+{id:54,sub:'s2',deck:'Gun Control US',q:'Key US mass shootings and the legislative non-response.',a:'Columbine 1999: 12 students, 1 teacher. Virginia Tech 2007: 32 dead. Sandy Hook 2012: 20 children aged 6-7, 6 adults. After Sandy Hook: 1500 gun laws proposed, 109 passed — but 70 of those 109 RELAXED existing restrictions. Uvalde 2022: 19 children. NRA (founded 1871, political force since 1970s): 5+ million members, dominates Congress.',ctx:'Brady Act (1993): first mandatory background checks. But private sales remain exempt.',diff:'new'},
+{id:55,sub:'s2',deck:'Reve Americain',q:'What is the philosophical foundation of the American Dream?',a:'Declaration of Independence (Thomas Jefferson, 1776): "Life, liberty and the pursuit of happiness." Note: the RIGHT TO PURSUE happiness — not the guarantee of it. The state ensures freedom to try, not the result. The Puritans first: John Winthrop\'s "City upon a Hill" (1630) — America as the world\'s perfect model.',ctx:'Protestant work ethic: hard work = honoring God = material success = divine blessing.',diff:'new'},
+{id:56,sub:'s2',deck:'Reve Americain',q:'Key self-made men — what were their trajectories?',a:'Vanderbilt: quit school at 11, bought ferry with borrowed money, built railroad empire. Carnegie: emigrated from Scotland at 13, cotton mill → Carnegie Steel. Rockefeller: bookkeeper at 16 → Standard Oil monopoly. Lincoln: born in log cabin, less than 1 year of formal education → President of the United States.',ctx:'Benjamin Franklin: "Early to bed and early to rise makes a Man healthy, wealthy, and wise."',diff:'new'},
+{id:57,sub:'s2',deck:'Reve Americain',q:'What are the main critiques of the American Dream?',a:'Great Depression (1929): millions worked hard and lost everything through systemic failure — not individual failure. Black Americans were legally excluded from the Dream (Jim Crow, redlining, educational barriers). MLK\'s speech used the Dream\'s language to expose its hypocrisy. 59% of Americans now believe their children will struggle to climb the social ladder. Life expectancy: 76 years (lowest since 1990s).',ctx:'Jeremy Rifkin (The European Dream): the European model of social safety nets is now more attractive.',diff:'new'},
+{id:58,sub:'s2',deck:'Immigration US',q:'The Melting Pot vs the Salad Bowl — what is the difference?',a:'Melting Pot: immigrants abandon their original identity and assimilate into a single American identity — the 19th-century ideal. Salad Bowl (Cultural Mosaic): immigrants retain their culture while coexisting — a multicultural society. The US today is closer to the Salad Bowl. The Statue of Liberty (1886, gift from France): "Give me your tired, your poor, your huddled masses yearning to be free."',ctx:'Legal immigration: 1 million/year. Millions more try to enter illegally.',diff:'new'},
+{id:59,sub:'s2',deck:'Histoire US',q:'What was 9/11 and its main political consequences?',a:'September 11, 2001: Al-Qaeda hijacked 4 planes — two hit the World Trade Center, one the Pentagon, one crashed in Pennsylvania. ~3000 deaths. Led to: USA PATRIOT Act (expanded surveillance), Department of Homeland Security created, wars in Afghanistan (2001) and Iraq (2003), the "War on Terror" reshaping US foreign and domestic policy for decades.',ctx:'The defining event of the early 21st century — the consequences are still felt today.',diff:'new'},
+{id:60,sub:'s3',deck:'Crise climatique',q:'Paris Agreement (2015), COP26 (2021) and Net Zero.',a:'Paris Agreement: 196 parties, limit warming to 1.5-2°C above pre-industrial levels via nationally determined contributions. US withdrew under Trump (2020), rejoined under Biden (2021). COP26: Glasgow 2021, targeted coal phase-down. Net Zero: balancing emissions emitted with those removed. UK committed to net zero by 2050 (Climate Change Act, amended 2019).',ctx:'IPCC (founded 1988): assesses global climate science — its reports drive COP targets.',diff:'new'},
+{id:61,sub:'s3',deck:'Crise climatique',q:'What is greenwashing and what was Fridays for Future?',a:'Greenwashing: marketing that makes a company appear more environmentally friendly than it is. A form of deception undermining genuine climate action. Fridays for Future: launched by Greta Thunberg in August 2018 — striking every Friday from school. "How dare you" speech at UN General Assembly 2019. 4 million people struck in September 2019 across 161 countries.',ctx:'Ofcom and Advertising Standards Authority increasingly cracking down on greenwashing in the UK.',diff:'new'},
+{id:62,sub:'s3',deck:'Medias et democratie',q:'Echo chambers, the Overton Window and Cambridge Analytica.',a:'Echo chamber: people only encounter views confirming their own — algorithms amplify this. Overton Window: range of ideas deemed acceptable in mainstream discourse — shifting it normalizes fringe ideas. Cambridge Analytica (2018): harvested 87 million Facebook users\' data without consent for targeted political ads in Brexit campaign and Trump\'s 2016 election. Zuckerberg testified before Congress.',ctx:'Echo chambers + confirmation bias = radicalization pipeline. Central to "Fictions et réalités".',diff:'new'},
+{id:63,sub:'s4',deck:'The Tempest',q:'Prospero, Caliban and Ariel — colonial reading.',a:'Prospero: exiled Duke of Milan, uses magic to control island — represents colonial power, the European claiming "civilising" authority. Caliban: island\'s native, enslaved, dispossessed — the colonised subject, capable of resistance. His name = anagram of "Cannibal". "You taught me language, and my profit on it is I know how to curse." Ariel: compliant colonial subject (accommodation vs Caliban\'s rebellion).',ctx:'Terra Nullius: Prospero treats the island as empty — but Caliban\'s mother Sycorax was already there.',diff:'new'},
+{id:64,sub:'s4',deck:'Poesie',q:'Iambic pentameter — what is it and what\'s the difference between Shakespearean and Petrarchan sonnets?',a:'Iambic pentameter: 5 iambs per line (da-DUM × 5), 10 syllables, closest to natural English speech. Shakespearean sonnet: 14 lines, ABAB CDCD EFEF GG — 3 quatrains + a couplet that provides a twist. Petrarchan sonnet: octave (ABBAABBA) + sestet (CDECDE) — the turn comes at the 9th line.',ctx:'"Shall I compare THEE to a SUM-mer\'s DAY" — 5 iambs, 10 syllables.',diff:'new'},
+{id:65,sub:'s5',deck:'Phonologie',q:'What is assimilation and elision in connected speech?',a:'Assimilation: a sound changes under influence of a neighbour. "Ten boys" → "tem boys" (n → m before bilabial b). Elision: omission of a sound. "Next day" → "neks day" (t dropped). Linking: consonant links to following vowel ("turn off" → "tur-noff"). Intrusive r: "law and order" → "law-r-and order".',ctx:'These three processes make connected speech sound natural — key for English phonology exam.',diff:'new'},
+{id:66,sub:'s5',deck:'Grammaire',q:'Present perfect vs preterite and "must" vs "have to".',a:'Present perfect: past event with present relevance or unspecified time ("I have seen it"). Preterite: completed event at a specific past time ("I saw it yesterday"). Must: internal obligation or logical deduction ("You must be tired"). Have to: external obligation from rules ("I have to work — it\'s the law"). Epistemic must = deduction; deontic must = obligation.',ctx:'Common French speaker error: using passé composé where English requires the preterite.',diff:'new'},
+{id:67,sub:'s1',deck:'Irlande',q:'What was the Grande Famine (1845-1848) and the Fenian Brotherhood?',a:'Potato blight destroyed the staple food. 1 million died. Millions emigrated (population: 8m → 4m). British government accused of criminal inaction while food continued being exported from Ireland. The famine fueled nationalism. Fenian Brotherhood (1848, James Stephens): committed to independence by force — named after legendary Irish warriors.',ctx:'The famine is seen as proof that British rule = death for Ireland.',diff:'new'},
+{id:68,sub:'s1',deck:'Ecosse',q:'Mary Queen of Scots and the Act of Union (1707) — what was the deal?',a:'Mary Queen of Scots: Catholic queen, 6 days old when she became queen. Sent to France, married the dauphin (briefly Queen of France). Returned to Scotland, forced to abdicate, fled to England, imprisoned 19 years by Elizabeth I, beheaded 1587. Her son became James I of England. Act of Union 1707: Scotland kept its Church (Presbyterian, not Anglican), legal system, and the right to print its own banknotes.',ctx:'Scottish banknotes today: Bank of Scotland, Royal Bank of Scotland, Clydesdale Bank — all technically refusable in England.',diff:'new'},
+{id:69,sub:'s2',deck:'Democratie US',q:'US healthcare and the political parties\' coalitions.',a:'US is one of few wealthy nations without universal healthcare. Based on private insurance — millions uninsured. Obamacare (Affordable Care Act 2010) expanded coverage but was bitterly contested. Democrats: urban voters, minorities, educated whites, young people — support healthcare, climate action. Republicans: rural, white working class, evangelicals — lower taxes, less regulation, 2nd Amendment.',ctx:'Life expectancy: 76 years (US) vs 81+ (UK, France, Germany) — healthcare system partly to blame.',diff:'new'},
+{id:70,sub:'s1',deck:'Monarchie',q:'What happened when Barbados became a republic (2021) and what is the Commonwealth Games quirk?',a:'Barbados removed the Queen as head of state in 2021. Prince Charles acknowledged "the appalling atrocity of slavery" — without reparations. Many Caribbean nations began questioning Commonwealth membership. Commonwealth Games quirk: although the UK is one Commonwealth member, it competes as FOUR separate teams (England, Scotland, Wales, Northern Ireland) — unlike the Olympics.',ctx:'The death of Elizabeth II (2022) raised serious questions about the Commonwealth\'s future under Charles III.',diff:'new'},
 
-// ── default subjects ──
-var SUBJECTS = [
-  { id:'s1', name:'Civi britannique',  icon:'🇬🇧' },
-  { id:'s2', name:'Civi americaine',   icon:'🇺🇸' },
-  { id:'s3', name:'Enjeux contemporains', icon:'🌱' },
-  { id:'s4', name:'Litterature',       icon:'📚' },
-  { id:'s5', name:'Langue',            icon:'✏️' }
+// ── CHRONOLOGIE BRETAGNE — Dates clés (Fiche 41) ──────────
+{id:71,sub:'s1',deck:'Dates cles GB',q:'55 BC / 43 AD / 122 AD — what happened?',a:'55 BC: Julius Caesar first arrives in Britain. 43 AD: Emperor Claudius completes the Roman conquest — Romans build Londinium (London). 122 AD: Emperor Hadrian orders construction of Hadrian\'s Wall across northern England to keep Scottish (Pictish) tribes out.',ctx:'Britain\'s first experience of centralised power — the Roman model of roads, towns, and administration.',diff:'new'},
+{id:72,sub:'s1',deck:'Dates cles GB',q:'1066 — what three things did William the Conqueror do?',a:'October 14, 1066: Battle of Hastings — last successful invasion of England. Christmas Day 1066: crowned at Westminster Abbey. 1086: commissioned the Domesday Book (complete land census for taxation). Also created the Exchequer (tax accounts kept on a chequered board — still the title of the Chancellor today).',ctx:'Anglo-Norman French became the language of the nobility for 300 years.',diff:'new'},
+{id:73,sub:'s1',deck:'Dates cles GB',q:'1215, 1258, 1628 — what are these three constitutional documents?',a:'1215 Magna Carta: King John Lackland forced to sign at Runnymede — king not above law, taxes need Parliament\'s approval, free men judged by peers. Pope Innocent III annulled it, but the ideas survived. 1258 Provisions of Oxford: Henry III forced by barons (led by Simon de Montfort) — Parliament meets 3×/year without royal summons. 1628 Petition of Rights: Charles I forbidden to imprison without cause or levy taxes without Parliament.',ctx:'Three documents, three centuries — each one clipping royal power a little more.',diff:'new'},
+{id:74,sub:'s1',deck:'Dates cles GB',q:'1642-1660 — the Civil War and its aftermath.',a:'1642: Civil War begins — Cavaliers (Charles I) vs Roundheads (Cromwell\'s Parliament). Cromwell\'s Ironsides cavalry win at Marston Moor (1644) and Naseby (1645). 1649: Charles I captured, tried, executed — the ONLY time the British monarchy was broken. Cromwell becomes Lord Protector. 1658: Cromwell dies. 1660: monarchy restored under Charles II.',ctx:'Cromwell\'s republic was called the "Commonwealth" — nothing to do with today\'s Commonwealth of Nations.',diff:'new'},
+{id:75,sub:'s1',deck:'Dates cles GB',q:'1679, 1689 — Habeas Corpus and the Bill of Rights.',a:'1679 Habeas Corpus Act (under Charles II): no one can be detained without being brought before a court within 3 days. 1689 Bill of Rights (William III and Mary II): limits sovereign power, establishes free elections, freedom of speech, bans cruel punishment — the monarch cannot rule without Parliament. Both directly inspired the American Constitution.',ctx:'William III became king as a gift of Parliament — the first time Parliament chose its monarch.',diff:'new'},
+{id:76,sub:'s1',deck:'Dates cles GB',q:'1832 / 1867 / 1884 / 1918 / 1928 / 1969 — what is the Reform Acts timeline?',a:'1832: wealthy middle-class men. 1867: working men who owned or rented and paid local taxes (rates). 1884: near-universal male suffrage. 1918: women over 30. 1928 Equal Franchise Act: women over 21 (all women). 1969 Representation of the People Act: voting age lowered from 21 to 18.',ctx:'"Democracy handed out in tiny pieces, grudgingly, each time only when pressure from below was irresistible."',diff:'new'},
+
+// ── CHRONOLOGIE MONARCHIE — Dates clés (Fiche 40) ─────────
+{id:77,sub:'s1',deck:'Dates cles GB',q:'1534, 1536-40, 1760, 1708 — monarchie et lois clés.',a:'1534 Act of Supremacy: Henry VIII breaks with Rome, becomes head of Church of England. 1536-40: Dissolution of the Monasteries — their wealth enriched the Crown. 1760: George III cedes Crown Estate to Parliament in exchange for annual Civil List allowance. 1708: Queen Anne last uses Royal Assent veto (Scottish Militia Bill) — never used since.',ctx:'The Church of England was created for a divorce, not theological conviction.',diff:'new'},
+{id:78,sub:'s1',deck:'Dates cles GB',q:'1911 Parliament Act — what did it change about the House of Lords?',a:'Under PM Asquith: the Lords can no longer block legislation indefinitely — they can only DELAY a bill by 2 years. After 2 years, the bill passes automatically without Lords\' approval. This ended the Lords\' absolute veto. Previously, the Lords had repeatedly blocked the Irish Home Rule Bill (1893, 1913). Also established that the Parliament lasts maximum 5 years.',ctx:'This reform was triggered by the Lords blocking Lloyd George\'s "People\'s Budget" of 1909.',diff:'new'},
+{id:79,sub:'s1',deck:'Dates cles GB',q:'1958, 1999, 2005/2009 — the three key reforms of the House of Lords.',a:'1958 Life Peerages Act: PM can now nominate ~20 Lords/year for life — title does not pass to children. 1999 House of Lords Act (Blair): stripped 750 hereditary peers of their automatic right to sit — only 92 remain, elected by their peers. 2005/2009 Constitutional Reform Act (Blair): created UK Supreme Court, separating judiciary from Parliament. Lord Chancellor\'s triple role split.',ctx:'Before 2009: Law Lords both made laws AND judged cases — fundamental violation of separation of powers.',diff:'new'},
+
+// ── CHRONOLOGIE ÉCOSSE — Dates clés (Fiche 61) ─────────────
+{id:80,sub:'s1',deck:'Dates cles Ecosse',q:'80 AD to 1413 — the Scottish timeline, key dates.',a:'80 AD: Romans try to conquer Scotland but fail. 122 AD: Hadrian\'s Wall built to contain the Picts. 6th century: Irish Celts called "Scots" invade — giving Scotland its name. 1296: Edward I steals the Stone of Scone. 1305: William Wallace executed. 1306: Robert the Bruce crowned King of Scotland. 1314 Battle of Bannockburn: Bruce crushes the English. 1328 Treaty of Northampton: England formally recognises Scottish independence. 1413: St Andrews University founded (oldest in Scotland).',ctx:'Scotland was fully independent from 1328 to 1603.',diff:'new'},
+{id:81,sub:'s1',deck:'Dates cles Ecosse',q:'1542 to 1707 — Mary Queen of Scots to the Act of Union.',a:'1542: Mary Queen of Scots becomes queen at 6 days old. She marries the French Dauphin (briefly Queen of France). 1567: forced to abdicate. 1587: Elizabeth I has her executed after 19 years of imprisonment. 1603: Mary\'s son James VI of Scotland inherits the English throne = James I (personal union only). 1707 Act of Union: parliaments merge at Westminster — Scotland loses its parliament but keeps its Church, legal system, and banknotes.',ctx:'Irony: Elizabeth killed the mother; the mother\'s line won the throne.',diff:'new'},
+{id:82,sub:'s1',deck:'Dates cles Ecosse',q:'1746, 1950, 1996, 1998, 2014, 2015, 2016, 2022, 2023 — modern Scottish dates.',a:'1746 Culloden: Jacobite cause crushed — last pitched battle on British soil. 1950: students steal Stone of Scone from Westminster. 1996: John Major returns it officially. 1998 Scotland Act: Holyrood Parliament (129 MSPs) created. 2004: inaugurated by Elizabeth II. 2014: independence referendum — 55% No. 2015: voting age lowered to 16 for Scottish elections. 2016: 62% Scots vote Remain. 2022: Supreme Court blocks indyref2. 2023: Nicola Sturgeon resigns.',ctx:'The 2014 No vote was partly won by arguing independence meant leaving the EU. Brexit collapsed that argument.',diff:'new'},
+
+// ── CHRONOLOGIE COMMONWEALTH — Dates clés (Fiche 53) ───────
+{id:83,sub:'s1',deck:'Dates cles Commonwealth',q:'1884 to 1948 — Commonwealth origins timeline.',a:'1884: Lord Rosebury first uses "Commonwealth of Nations" to describe the British Empire. 1917: Jan Smuts (South Africa) formally suggests the name. 1926 Balfour Report: UK and Dominions declared equal in status — not subordinate. 1931 Statute of Westminster: grants full autonomy to Dominions (Australia, Canada, Ireland, New Zealand, South Africa). 1932: Commonwealth Preference trade system established. June 22, 1948: Empire Windrush arrives with 492 Caribbean passengers — start of Windrush Generation.',ctx:'The Balfour Report is the birth certificate of the modern Commonwealth.',diff:'new'},
+{id:84,sub:'s1',deck:'Dates cles Commonwealth',q:'1965 to 2022 — the Commonwealth\'s modern milestones.',a:'1965: Commonwealth Secretariat established at Marlborough House, London. 1971 Singapore Declaration: first official rulebook — voluntary, consensual, anti-colonialist. 1991/1995 Harare Declaration: adds democracy, human rights, gender equality + suspension mechanism. 2010: Home Office destroys Windrush landing cards. 2018: Windrush Scandal exposed (83+ wrongly deported). 2021: Barbados becomes republic. September 8, 2022: Elizabeth II dies — 70 years as Commonwealth head.',ctx:'Nigeria suspended 1995-99. Pakistan 1999-2004. Zimbabwe 2002.',diff:'new'},
+
+// ── CHRONOLOGIE IRLANDE — Dates clés (Fiche 58) ────────────
+{id:85,sub:'s1',deck:'Dates cles Irlande',q:'12th century to 1800 — Irish history key dates.',a:'12th century: Henry II sends Anglo-Norman troops — first English colonisation around Dublin. 1609 Plantation of Ulster: Protestant settlers from England and Scotland replace Catholic Irish landowners — creates the North/South divide. 1641: 12,000 Protestant settlers killed in Catholic uprising. 1649: Cromwell massacres Irish — deportations, land confiscation. 1690 Battle of the Boyne: William III defeats Catholic James II — Protestant supremacy established. 1695 Penal Laws: Catholics cannot vote, own land, practice their religion. 1795: Orange Order founded. 1800 Act of Union: Ireland\'s Parliament abolished, becomes part of the UK.',ctx:'One policy — the Plantation of Ulster — created 400 years of conflict.',diff:'new'},
+{id:86,sub:'s1',deck:'Dates cles Irlande',q:'1845-1916 — Famine, Home Rule, Easter Rising.',a:'1845-1848 Grande Famine: potato blight kills 1 million, population falls from 8M to 4M, millions emigrate. 1848: Fenian Brotherhood founded (independence by force). 1893 and 1913: Home Rule Bill passed by Commons but vetoed by Lords twice. Easter Monday 1916: Irish Volunteers occupy the General Post Office in Dublin. After 5 days, 15 leaders executed (including James Connolly, shot in a chair).',ctx:'The executions transformed unpopular rebels into martyrs — the British\'s worst political mistake in Ireland.',diff:'new'},
+{id:87,sub:'s1',deck:'Dates cles Irlande',q:'1918-1937 — from independence war to the Irish Free State.',a:'1918: Sinn Fein wins 73 seats, forms the Dail Eireann (own parliament), declares independence. 1919-1921: War of Independence — IRA vs Black and Tans. November 21, 1920 Bloody Sunday: IRA kills 14 British agents; Black and Tans retaliate, kill 12 spectators at Croke Park. 1921 Anglo-Irish Treaty: partition — 26 counties (Irish Free State) + 6 counties (Ulster stays British). 1922-23: Irish Civil War (pro- vs anti-Treaty). 1922: Irish Free State. 1937: De Valera renames it Éire with a new constitution.',ctx:'Fine Gael = pro-Treaty. Fianna Fáil = anti-Treaty. Rivals for 100 years.',diff:'new'},
+{id:88,sub:'s1',deck:'Dates cles Irlande',q:'1949-1972 — from Republic to the start of the Troubles.',a:'Easter Monday 1949: Republic of Ireland officially proclaimed — leaves the Commonwealth. 1968: First civil rights march in Derry violently dispersed by the RUC — Troubles begin. 1969: British Army deployed in Northern Ireland after anti-Catholic violence. January 30, 1972 Bloody Sunday: British paratroopers kill 13 Catholic civilians during a peaceful march in Londonderry. 1972: 468 deaths — peak of the Troubles. Direct Rule from London: Stormont suspended.',ctx:'The Troubles were inspired by the US civil rights movement — Catholics demanding equal rights.',diff:'new'},
+{id:89,sub:'s1',deck:'Dates cles Irlande',q:'1973-1993 — peace attempts and atrocities.',a:'1973 Sunningdale Agreement: first attempt at power-sharing — fails in 1974 due to Protestant workers\' strike. 1979: IRA assassinates Lord Mountbatten (uncle of Prince Philip) AND Airey Neave (killed in the House of Commons car park). 1981: Bobby Sands — first of 10 IRA hunger strikers to die at Maze Prison. 1984: Brighton bomb narrowly misses Thatcher. 1993 Downing Street Declaration: Major + Irish Taoiseach Reynolds — opens door to Sinn Fein participation in talks. 1994: IRA ceasefire declared.',ctx:'3600 dead, 30,000+ injured over 30 years of conflict.',diff:'new'},
+{id:90,sub:'s1',deck:'Dates cles Irlande',q:'1998-2023 — the Good Friday Agreement and Brexit.',a:'April 10, 1998 Good Friday Agreement: power-sharing at Stormont, invisible border, mediated by US Senator George Mitchell — 71% Yes NI, 94% Yes Republic. August 15, 1998 Omagh bombing: Real IRA car bomb kills 29 (9 children) — the worst single atrocity of the Troubles. 2005: IRA formally ends armed activities. 2007: British military operations end. 2020: Northern Ireland Protocol. February 2022: DUP quits power-sharing. May 2022: Sinn Fein wins NI elections for first time since 1921 (27 vs 25 seats). February 2023: Windsor Framework.',ctx:'Sinn Fein\'s first electoral victory since 1921 — a historic shift.',diff:'new'},
+
+// ── FIGURES CLÉS — Dates précises (Fiches 48/49) ───────────
+{id:91,sub:'s1',deck:'Figures cles GB dates',q:'William the Conqueror (1027-1087) — key dates.',a:'1066 Oct 14: Battle of Hastings. 1066 Dec 25: crowned Westminster Abbey. 1086: Domesday Book commissioned. Created the Exchequer. Introduced feudalism and French language into England.',ctx:'Last successful invasion of England — no foreign power has conquered Britain since.',diff:'new'},
+{id:92,sub:'s1',deck:'Figures cles GB dates',q:'Henry VIII (1491-1547) — key dates.',a:'1509: becomes king. 1534 Act of Supremacy: becomes head of Church of England (breaks with Rome over divorce from Catherine of Aragon). 1536-40: dissolution of all monasteries — wealth enriched the Crown. 1536 and 1542 Acts of Union: Wales united with England. The Pope had named him "Fidei Defensor" (FD still on British coins).',ctx:'Created the Church of England for personal reasons — one of history\'s greatest institutional consequences of a marital dispute.',diff:'new'},
+{id:93,sub:'s1',deck:'Figures cles GB dates',q:'Oliver Cromwell (1599-1658) — key dates.',a:'1640: elected to Parliament. 1644 Marston Moor, 1645 Naseby: decisive Roundhead victories. 1649: Charles I executed — Cromwell becomes Lord Protector of the Commonwealth. 1649-50: brutally suppresses Irish resistance. 1658: dies. 1660: monarchy restored under Charles II — his son Richard had no political authority.',ctx:'The man who killed the king for tyranny became a dictator himself — the paradox of revolution.',diff:'new'},
+{id:94,sub:'s1',deck:'Figures cles GB dates',q:'Horatio Nelson (1758-1805) — key dates.',a:'1794: loses right eye at Toulon. 1797: loses right arm at the Canaries — same year beats Franco-Spanish fleet at Cape St Vincent. 1798 Battle of the Nile (Abukir Bay): destroys French fleet, stops Napoleon in Egypt. October 21, 1805 Battle of Trafalgar: with 27 ships defeats 33 Franco-Spanish ships — saves Britain from Napoleonic invasion, dies on HMS Victory. 1849: Nelson\'s Column erected at Trafalgar Square.',ctx:'He fought and won with one eye and one arm — the ultimate British resilience symbol.',diff:'new'},
+{id:95,sub:'s1',deck:'Figures cles GB dates',q:'Winston Churchill (1874-1965) — key dates.',a:'1900: elected Conservative MP. 1940 May: replaces Chamberlain as PM — directs war from Cabinet War Rooms. 1941: warns of "iron curtain" dividing Europe (full speech 1946). 1945: LOSES election to Labour despite winning WWII. 1951: returns to power. 1953: Nobel Prize in Literature. 1955: resigns after a stroke. 1965: death — state funeral, global event.',ctx:'"Never in the field of human conflict was so much owed by so many to so few" — Battle of Britain speech.',diff:'new'},
+{id:96,sub:'s1',deck:'Figures cles GB dates',q:'Elizabeth I (1533-1603) — key dates.',a:'1533: born (daughter of Henry VIII and Anne Boleyn). 1558: becomes queen after "Bloody Mary"\'s reign. 1559 Religious Settlement + Act of Supremacy: re-establishes Church of England. 1587: has Mary Queen of Scots executed. 1588: Spanish Armada destroyed — Britain becomes a major maritime power. 1603: dies without an heir — James VI of Scotland inherits the throne.',ctx:'She killed the mother; the mother\'s son won the throne — the ultimate irony.',diff:'new'},
+{id:97,sub:'s1',deck:'Figures cles GB dates',q:'Queen Victoria (1819-1901) — key dates.',a:'1837: becomes queen at 18. 1840: marries Prince Albert. 1851 Great Exhibition: Albert\'s triumph — Britain = "workshop of the world". 1861: Albert dies — Victoria mourns for 40 years, triggering republican sentiment. 1876: proclaimed Empress of India. 1899-1902: Boer War. 1901: dies after 63-year reign (longest until Elizabeth II).',ctx:'Her isolation after Albert\'s death taught the monarchy that public visibility is essential for survival.',diff:'new'},
+{id:98,sub:'s1',deck:'Figures cles GB dates',q:'Florence Nightingale (1820-1910) — key dates.',a:'1853: directs a London hospital for women. 1854: goes to Crimea — transforms hospital hygiene, visits wounded nightly with a lamp. 1857: her 1000-page statistical report leads to Royal Commission on Army Health. 1859: publishes Notes on Nursing — first nursing manual. 1860: founds Nightingale Training School at St Thomas\'s Hospital. 1907: first woman to receive the Order of Merit.',ctx:'She was as much a pioneering statistician as a nurse — practically invented modern epidemiology.',diff:'new'},
+{id:99,sub:'s1',deck:'Figures cles GB dates',q:'The Suffragettes — key dates (Pankhurst, Davison, 1918, 1928).',a:'1889: Emmeline Pankhurst founds Women\'s Franchise League. 1903: Women\'s Social and Political Union (WSPU) founded — motto "Deeds, not Words". 1913: Emily Davison throws herself under the king\'s horse at Epsom Derby — dies. 2000 suffragettes escort her coffin. January 1918: women over 30 get the vote. 1928 Equal Franchise Act: women over 21 get the vote. Colors: purple, white, green.',ctx:'6 million women worked during WWI — impossible to deny the vote after.',diff:'new'},
+{id:100,sub:'s1',deck:'Figures cles GB dates',q:'Margaret Thatcher (1925-2013) — key dates.',a:'1947: chemistry degree from Oxford. 1953: becomes barrister. 1959: elected Conservative MP. 1975: first woman to lead a British political party. 1979: becomes PM — wins 3 consecutive elections (1979, 1983, 1987). 1982: Falklands War. 1984-85: miners\' strike. 1990: poll tax riots — own colleagues force her out. 2013: death — state mourning AND street parties in mining towns.',ctx:'No British politician has divided opinion more since Cromwell.',diff:'new'},
+
+// ── PEINTURE GB — Dates clés (Fiches 56/57) ────────────────
+{id:101,sub:'s1',deck:'Peinture GB dates',q:'18th century painters — birth/death dates and key works.',a:'William Hogarth (1697-1764): A Harlot\'s Progress, A Rake\'s Progress. Joshua Reynolds (1723-1792): founded Royal Academy 1768. Thomas Gainsborough (1727-1788): The Blue Boy (reaction to Reynolds\'s claim that blue was too cold). John Constable (1776-1837): The Haywain, paintings en plein air — precursor of Impressionism.',ctx:'Reynolds and Gainsborough: a rivalry of egos produced one of Britain\'s most famous paintings.',diff:'new'},
+{id:102,sub:'s1',deck:'Peinture GB dates',q:'Turner, Blake, Fuseli and the Pre-Raphaelites — dates.',a:'J.M.W. Turner (1775-1851): The Fighting Temeraire, Rain Steam and Speed — incomprehensible to contemporaries, now seen as precursor of abstraction. Henry Fuseli (1741-1825): The Nightmare. William Blake (1757-1827): poet-painter-engraver with mystical visions. Pre-Raphaelite Brotherhood founded 1848: Rossetti (1828-1882) and Burne-Jones (1833-1898). Arts and Crafts movement (Morris + Burne-Jones).',ctx:'Turner left all his works to the nation on condition they stay together — now at Tate Britain.',diff:'new'},
+{id:103,sub:'s1',deck:'Peinture GB dates',q:'20th century British artists — key dates.',a:'Francis Bacon (1909-1992): tortured figures, crucifixion triptychs. Lucian Freud (1922-2011): grandson of Sigmund, hyper-realist — controversial portrait of Elizabeth II. Bridget Riley (1931-): Op Art, geometric illusions causing vertigo. David Hockney (1937-): Pop Art swimmer pools, A Bigger Splash, A Year in Normandie (2020, 90m painted on iPad). YBAs founded late 1980s: Tracey Emin (My Bed), Damien Hirst (For the Love of God, 2007 — skull with 8601 diamonds).',ctx:'Angel of the North (Gormley, 1998): 20m high, 54m wingspan, near Gateshead.',diff:'new'},
+
+// ── MÉDIAS GB — Dates clés (Fiche 51) ──────────────────────
+{id:104,sub:'s1',deck:'Medias GB dates',q:'Key dates in British press history.',a:'1622: Weekly News — first British newspaper. 1644: Milton\'s Areopagitica — first major argument for press freedom. 1785: The Times founded ("The Thunderer"). 1821: The Guardian founded in Manchester (as Manchester Guardian). 1843: News of the World founded. 1888: Financial Times founded (salmon pink paper). 1981: Rupert Murdoch buys The Times.',ctx:'Fleet Street was the hub of British journalism — all papers have since moved to East London.',diff:'new'},
+{id:105,sub:'s1',deck:'Medias GB dates',q:'Key dates in BBC and British broadcasting history.',a:'November 14, 1922: BBC (British Broadcasting Company) begins daily broadcasting. 1927: Royal Charter transforms it into the BBC Corporation. 1932: Broadcasting House opens at Portland Place, London. 1936: regular TV begins. 1955: ITV launched (first commercial channel, opposed by Labour). 1982: Channel 4 launched. 1990: BSkyB (Murdoch). 2003: Ofcom created. 2011: News of the World closed (phone-hacking scandal). 2022: BBC licence fee frozen.',ctx:'BBC motto: "Nation Shall Speak Peace Unto Nation". Founder: John Reith (1922).',diff:'new'},
+
+// ── GUN CONTROL — Dates clés (Fiche 59) ───────────────────
+{id:106,sub:'s1',deck:'Gun Control dates',q:'UK gun control timeline — key laws and massacres.',a:'1870: first gun licence required in UK. 1920 Firearms Act: first attempt to prevent criminals from using guns. 1968 Firearms Act: still in force today — distinguishes shotguns (light criteria) from firearms (strict criteria). August 19, 1987 Hungerford massacre: 16 dead → 1988 Firearms (Amendment) Act banning semi-automatic rifles. March 13, 1996 Dunblane: 16 children aged 4-5 + teacher → 1997 Firearms Act banning virtually all handguns. 1997-98 buyback: 162,000 weapons + 700 tonnes of ammunition collected.',ctx:'Compare UK (immediate comprehensive legislation) with US (Congress failed to act after Sandy Hook).',diff:'new'},
+{id:107,sub:'s2',deck:'Gun Control dates',q:'US gun control timeline — key laws and massacres.',a:'1791: Second Amendment. 1934 + 1986: laws restricting automatic weapons and machine guns. 1990 Crime Control Act: school gun-free zones (1000 feet radius, up to $5000 fine and 5 years prison). 1993 Brady Handgun Violence Prevention Act: mandatory background checks. April 20, 1999 Columbine: 12 students + 1 teacher. December 14, 2012 Sandy Hook: 20 children aged 6-7 + 6 adults. May 24, 2022 Uvalde: 19 children.',ctx:'After Sandy Hook: 1500 bills proposed, 109 passed — but 70 of those 109 RELAXED existing restrictions.',diff:'new'},
+
+// ── BREXIT — Chronologie complète ─────────────────────────
+{id:108,sub:'s1',deck:'Brexit dates',q:'Brexit timeline 1957 to 2009 — the pre-history.',a:'1957: EEC created by Treaty of Rome — Britain refuses to join. 1963 + 1967: De Gaulle vetoes British membership twice. 1973: Britain joins the EEC under Heath (who uses royal prerogative — no Parliament vote). 1992: Maastricht Treaty — EEC becomes the European Union (John Major signs but refuses euro and social protocol). 2007 Lisbon Treaty (in force 2009): crucially adds Article 50 (the exit mechanism). Without Lisbon, Brexit would have had no legal framework.',ctx:'Chain: Lisbon → Cameron promises referendum → 2016 → Brexit.',diff:'new'},
+{id:109,sub:'s1',deck:'Brexit dates',q:'Brexit timeline 2013 to 2020 — referendum to exit.',a:'January 2013: Cameron promises an in/out referendum if Conservatives win 2015 election. May 2015: Conservatives win. June 23, 2016: 51.9% vote Leave — Cameron resigns next morning. March 2017: May triggers Article 50 (after Supreme Court ruled 8-3 she needed Parliament\'s approval). January 2019, March 2019, March 2019: May\'s deal rejected THREE times. December 2018: May survives confidence vote (200 for, 117 against). May 2019: May resigns in tears. January 31, 2020: UK officially leaves the EU. December 31, 2020: transition period ends.',ctx:'Cameron called the referendum and walked away. May tried and failed. Johnson got it done.',diff:'new'},
+
+// ── DÉMOCRATIE US — Dates clés ─────────────────────────────
+{id:110,sub:'s2',deck:'Histoire US dates',q:'Key US constitutional dates — 1776 to 1791.',a:'1776 July 4: Declaration of Independence (Thomas Jefferson) — "life, liberty and the pursuit of happiness". 1787: Constitution drafted in Philadelphia — three branches of government, separation of powers. 1788: Constitution ratified. 1789: George Washington becomes first President. 1791: Bill of Rights — first 10 amendments (freedom of speech, religion, press; right to bear arms; jury trial, etc.).',ctx:'The Bill of Rights was added to reassure anti-Federalists that individual rights would be protected.',diff:'new'},
+{id:111,sub:'s2',deck:'Histoire US dates',q:'Civil War to Civil Rights — key dates 1861-1965.',a:'1861-65: Civil War. 1865 13th Amendment: abolished slavery EXCEPT as punishment for crime. 1868 14th Amendment: equal protection under law. 1877-1960s: Jim Crow laws (racial segregation in the South). 1896 Plessy v Ferguson: "separate but equal" constitutional — legalizes segregation. 1954 Brown v Board of Education: school segregation unconstitutional. 1963 March on Washington (250,000), MLK\'s "I Have a Dream". 1964 Civil Rights Act. 1965 Voting Rights Act.',ctx:'MLK assassinated April 4, 1968, in Memphis. George Floyd killed May 25, 2020.',diff:'new'},
+
+// ── RÊVE AMÉRICAIN — Dates clés (Fiche 9) ──────────────────
+{id:112,sub:'s2',deck:'Reve Americain dates',q:'American Dream key dates — from Puritans to today.',a:'1630: John Winthrop\'s "City upon a Hill" (Puritan vision of America as the world\'s perfect model). 1642/1647 Old Deluder Satan Acts (Massachusetts): first compulsory education laws in the world — every town of 50+ families must have a teacher. 1776: Declaration of Independence — "pursuit of happiness". 1886: Statue of Liberty installed (gift from France) — "Give me your tired, your poor..." 1929: Great Depression exposes the myth — hard work alone cannot protect against systemic failure.',ctx:'The Protestant work ethic: success = sign of God\'s blessing. Poverty = lack of effort.',diff:'new'},
+
+// ── CAUSES IRLANDAISES / RÉSUMÉS ESSENTIELS ────────────────
+{id:113,sub:'s1',deck:'Dates cles Irlande',q:'Bobby Sands 1981, Brighton 1984, Downing Street Declaration 1993 — what happened?',a:'1981: Bobby Sands is the first of 10 IRA prisoners to die on hunger strike at the Maze Prison in Belfast. They demanded prisoner-of-war status. 1984: IRA bomb at the Grand Hotel in Brighton narrowly misses Thatcher during the Conservative Party Conference. 1993 Downing Street Declaration: John Major + Irish Taoiseach Albert Reynolds — Sinn Fein may participate in talks if IRA ends violence. 1994: IRA ceasefire declared.',ctx:'The hunger strikers galvanized republican support internationally, especially in the US.',diff:'new'},
+{id:114,sub:'s1',deck:'Dates cles Irlande',q:'Sunningdale 1973 vs Good Friday Agreement 1998 — what is the difference?',a:'Both created power-sharing assemblies in Northern Ireland. Sunningdale (December 1973): collapsed in May 1974 due to a Protestant workers\' general strike. Good Friday Agreement (April 10, 1998): survived because the IRA ceasefire held, the US was involved (Senator George Mitchell mediated), and both communities voted for it (71% Yes NI, 94% Yes Republic). IRA formally ended armed activities July 2005.',ctx:'"Sunningdale for slow learners" — the GFA was essentially what Sunningdale proposed 25 years earlier.',diff:'new'},
+
+// ── SYSTÈME POLITIQUE UK — Dates supplémentaires ───────────
+{id:115,sub:'s1',deck:'Systeme politique UK',q:'1715, 1917, 1969, 2022 — four political milestones.',a:'1715: convention established that the PM chooses all ministers from the same party (started by William III in 1689, became the rule in 1715). 1917: first official use of the title "Prime Minister" in a law concerning Chequers (the PM\'s country residence). 1969 Representation of the People Act: voting age lowered from 21 to 18. 2022 Dissolution and Calling of Parliament Act: Parliament automatically dissolves after 5 years (or earlier on PM\'s request or if government loses a confidence vote).',ctx:'Before 2022, the Fixed-term Parliaments Act 2011 had complicated dissolution. 2022 reverted to simpler rules.',diff:'new'},
+
+// ── MEDIAS US ─────────────────────────────────────────────
+{id:116,sub:'s2',deck:'Medias US',q:'What is fake news and what was Cambridge Analytica (2018)?',a:'Fake news: deliberately false information spread to deceive and influence. Trump weaponized the term against mainstream media from 2016, turning it into a political weapon. Cambridge Analytica (2018): harvested data of 87 million Facebook users WITHOUT consent. Used for targeted political advertising in: the Brexit campaign AND Trump\'s 2016 presidential campaign. Zuckerberg testified before the US Congress.',ctx:'Echo chambers + confirmation bias + Cambridge Analytica-style targeting = radicalization at scale.',diff:'new'},
+
+// ── GFA DÉTAILS / IRA ─────────────────────────────────────
+{id:117,sub:'s1',deck:'Irlande',q:'What is the Sinn Fein / IRA relationship and who is Mary Lou McDonald?',a:'Historically: Sinn Fein (political wing) + IRA (military wing) = two arms of the same republican movement. Gerry Adams: Sinn Fein leader, suspected IRA member. IRA formally ended armed activities 2005. Mary Lou McDonald (born 1969 Dublin, joined SF 1999): represents the post-Troubles generation. Became leader in 2018 (replacing Adams), led SF to historic first-place victory in 2020 Republic elections.',ctx:'The coalition of Fianna Fáil + Fine Gael + Greens excluded SF from government despite their electoral win.',diff:'new'},
+
+// ── PEINTURE US (Fiche 29) ────────────────────────────────
+{id:118,sub:'s2',deck:'Culture US',q:'What is Hollywood\'s role in American soft power?',a:'Hollywood became the global center of film production in the early 20th century. American cinema exported American values, consumerism, the English language, and the "American Dream" worldwide. "Soft power" = cultural influence without military coercion. The Hollywood studio system became a global template. Today, streaming (Netflix, Disney+, Amazon) extends this dominance into every home.',ctx:'Some argue American cultural influence is more powerful and lasting than military power.',diff:'new'},
+
+// ── AFFIRMATIVE ACTION / RACE ─────────────────────────────
+{id:119,sub:'s2',deck:'Race et Civil Rights',q:'What is redlining and what is the 13th Amendment\'s controversial exception?',a:'Redlining: denying mortgages and insurance to residents of racially defined neighborhoods — widespread until the Fair Housing Act 1968. Its legacy is the racial wealth gap. 13th Amendment (1865): abolished slavery EXCEPT as punishment for crime. This exception clause has enabled prison labor — which critics describe as "slavery by other means" and is central to the prison-industrial complex debate.',ctx:'The US has more people in prison per capita than almost any other country. The 13th Amendment exception is why.',diff:'new'},
+
+// ── COMMONWEALTH — Détails clés ───────────────────────────
+{id:120,sub:'s1',deck:'Commonwealth',q:'What is a High Commissioner and how does CHOGM work?',a:'High Commissioner: the Commonwealth equivalent of an ambassador. The title signals EQUAL status between members (not diplomatic hierarchy). CHOGM (Commonwealth Heads of Government Meeting): held since 1944. After a public opening, meetings happen in PRIVATE to encourage candid exchange. Include a "Retreat" where leaders meet completely alone — no advisers. Decisions by consensus (not majority vote).',ctx:'The Commonwealth Secretariat is at Marlborough House, London. Currently ~56 member states.',diff:'new'}
 ];
 
-// ── default cards ──
-var CARDS = [
-  // ── Civi britannique — Brexit ──────────────────────────────
-  {id:1,  sub:'s1', deck:'Brexit', q:'What date was the Brexit referendum and what was the result?', a:'June 23, 2016. 52% Leave vs 48% Remain.', ctx:'Core date — always know this.', diff:'new'},
-  {id:2,  sub:'s1', deck:'Brexit', q:'When did the UK officially leave the EU?', a:'January 31, 2020. Transition period until December 31, 2020.', ctx:'4 years of chaos between vote and exit.', diff:'new'},
-  {id:3,  sub:'s1', deck:'Brexit', q:'Who triggered Article 50 and when?', a:'Theresa May in March 2017, starting the 2-year formal exit process.', ctx:'Article 50 = official notice to leave the EU.', diff:'new'},
-  {id:4,  sub:'s1', deck:'Brexit', q:'How many times did Parliament reject the Withdrawal Agreement?', a:'Three times — leading to May resigning and Boris Johnson taking over in 2019.', ctx:'Shows the scale of the political deadlock.', diff:'new'},
-  {id:5,  sub:'s1', deck:'Brexit', q:'What was the Leave campaign key slogan?', a:'Take Back Control — focused on sovereignty, immigration control and national identity.', ctx:'UKIP under Nigel Farage turbocharged this narrative.', diff:'new'},
-  {id:6,  sub:'s1', deck:'Brexit', q:'How did Scotland vote and what did the SNP demand afterwards?', a:'Scotland voted 62% Remain. The SNP argued this justified a second independence referendum (indyref2).', ctx:'Key devolution tension post-Brexit.', diff:'new'},
-  {id:7,  sub:'s1', deck:'Brexit', q:'What is the Good Friday Agreement and why was Brexit a threat to it?', a:'Signed in 1998, it ended conflict in Northern Ireland by making the Irish border invisible. Brexit risked reimposing a hard border.', ctx:'Most complex geopolitical dimension of Brexit.', diff:'new'},
-  {id:8,  sub:'s1', deck:'Brexit', q:'What replaced the Northern Ireland Protocol?', a:'The Windsor Framework (2023) — keeps N. Ireland aligned with EU single market rules, creating a de facto trade border in the Irish Sea.', ctx:'Still controversial with Unionist communities.', diff:'new'},
-  {id:9,  sub:'s1', deck:'Brexit', q:'Name 4 fractures Brexit revealed in British society.', a:'England and Wales (Leave) vs Scotland and N. Ireland (Remain). Urban vs Rural. Young vs Old. Graduates vs Non-graduates.', ctx:'Brexit as identity crisis, not just politics.', diff:'new'},
-  {id:10, sub:'s1', deck:'Brexit', q:'Name 5 key vocabulary words for discussing Brexit.', a:'sovereignty — trade deal — hard/soft Brexit — devolution — border issue', ctx:'Use these naturally in your oral.', diff:'new'},
-  {id:11, sub:'s1', deck:'Brexit', q:'What is the treaty of Lisbonne', a:'The Treaty of Lisbon (2007) is the reform treaty that modernized the European Union’s institutions and decision-making. It created a permanent EU President, strengthened the European Parliament, made the Charter of Fundamental Rights legally binding, and notably introduced Article 50.', ctx:'Use these naturally in your oral.', diff:'new'},
 
+// ── STATE ──────────────────────────────────────────────────
+var store=(function(){try{localStorage.setItem('_x','1');localStorage.removeItem('_x');return localStorage;}catch(e){var m={};return{getItem:function(k){return m.hasOwnProperty(k)?m[k]:null;},setItem:function(k,v){m[k]=String(v);}};}})();
+var subjects,cards,checkedSubs,studyFilter,activeDeck,mode,queue,qIdx,revealed,done;
+var qcmIdx,qcmScore,matchQs,matchAs,selQ,selA,matchDone;
 
-  // ── Civi britannique — Monarchie ───────────────────────────
-  {id:11, sub:'s1', deck:'Monarchie', q:'What is a constitutional monarchy?', a:'The monarch reigns but does not govern. The Prime Minister governs in the monarch\'s name. Theoretical powers are vast but exercised by elected officials.', ctx:'Key distinction for the oral: power without authority.', diff:'new'},
-  {id:12, sub:'s1', deck:'Monarchie', q:'What are the theoretical powers of the British monarch?', a:'Dissolve Parliament, declare war, sign treaties, pardon criminals — but in practice all are exercised by the Prime Minister in the monarch\'s name.', ctx:'Called Royal Prerogative.', diff:'new'},
-  {id:13, sub:'s1', deck:'Monarchie', q:'When was the last time a monarch refused Royal Assent?', a:'Queen Anne in 1708, refusing the Scottish Militia Bill. The formula has not been used since.', ctx:'Royal Assent said in Norman French since 12th century.', diff:'new'},
-  {id:14, sub:'s1', deck:'Monarchie', q:'What are the Royal Assent formulas in Norman French?', a:'"La Reyne le veult" (the Queen wills it) to approve. "La Reyne s\'avisera" (the Queen will consider) to refuse — unused since 1708.', ctx:'French is still the language of royal ceremony.', diff:'new'},
-  {id:15, sub:'s1', deck:'Monarchie', q:'What is the Sovereign Grant and how much is it?', a:'25% of Crown Estate profits given to the monarchy. Around 86 million GBP in 2021-22, roughly 1.29 GBP per British citizen per year.', ctx:'Crown Estate = vast land portfolio ceded by George III in 1760.', diff:'new'},
-  {id:16, sub:'s1', deck:'Monarchie', q:'What is the Duchy of Lancaster?', a:'The monarch\'s personal estate — worth over 650 million GBP, generating around 24 million GBP per year. Separate from the Sovereign Grant.', ctx:'William inherits the Duchy of Cornwall as heir.', diff:'new'},
-  {id:17, sub:'s1', deck:'Monarchie', q:'How does a British MP formally resign?', a:'Since 1624, they must be appointed Crown Steward of the Chiltern Hundreds — a medieval fictional post — to vacate their seat and trigger a by-election.', ctx:'A constitutional quirk unique to the UK.', diff:'new'},
-  {id:18, sub:'s1', deck:'Monarchie', q:'Who is the current British monarch and since when?', a:'King Charles III, since September 8, 2022, following the death of Queen Elizabeth II after 70 years on the throne.', ctx:'Elizabeth II was the longest-reigning British monarch in history.', diff:'new'},
-  {id:19, sub:'s1', deck:'Monarchie', q:'What happened at the Barbados republic ceremony in 2021?', a:'Barbados became a republic, removing the Queen as head of state. Prince Charles acknowledged the abominable atrocity of slavery — without offering reparations.', ctx:'Part of a broader Caribbean push for post-colonial recognition.', diff:'new'},
-  {id:20, sub:'s1', deck:'Monarchie', q:'How does the UK participate in the Commonwealth Games?', a:'As four separate teams: England, Scotland, Wales, and Northern Ireland — unlike the Olympics where they compete as Team GB.', ctx:'Games held every 4 years. Reflects devolved national identities.', diff:'new'},
-
-  // ── Civi britannique — Commonwealth ────────────────────────
-  {id:21, sub:'s1', deck:'Commonwealth', q:'What is the Commonwealth of Nations?', a:'An association of 56 independent nations, most of them former British Empire territories. Founded 1931, modern form 1949.', ctx:'The King is head of the Commonwealth but it is not a political union.', diff:'new'},
-  {id:22, sub:'s1', deck:'Commonwealth', q:'Who were the Windrush Generation?', a:'Caribbean migrants invited to the UK between 1948 and 1971 on ships including the Empire Windrush. They came to fill post-war labor shortages.', ctx:'Named after HMT Empire Windrush, first ship, June 22, 1948.', diff:'new'},
-  {id:23, sub:'s1', deck:'Commonwealth', q:'What was the Hostile Environment Policy?', a:'A policy introduced by Theresa May as Home Secretary (2010-2016) making the UK unwelcoming to undocumented immigrants. It wrongly targeted the Windrush generation.', ctx:'Systematic and structural, not accidental — key term: institutional racism.', diff:'new'},
-  {id:24, sub:'s1', deck:'Commonwealth', q:'What was the Windrush Scandal?', a:'At least 83 people from the Windrush generation were wrongly deported. Many had lived in the UK for decades but were told to prove their right to remain. Some lost jobs, housing and NHS access.', ctx:'Compensation scheme later deemed inadequate.', diff:'new'},
-  {id:25, sub:'s1', deck:'Commonwealth', q:'What controversy surrounded William and Kate\'s Jamaica visit?', a:'CARICOM, representing 15 Caribbean states, presented a letter listing 60 reasons why Britain should pay reparations for slavery.', ctx:'Highlights ongoing tension between colonial legacy and the monarchy.', diff:'new'},
-  {id:26, sub:'s1', deck:'Commonwealth', q:'What is CARICOM?', a:'The Caribbean Community — an organization of 15 Caribbean nations promoting economic integration and regional cooperation.', ctx:'Active voice in reparations debate.', diff:'new'},
-
-  // ── Civi britannique — Devolution ──────────────────────────
-  {id:27, sub:'s1', deck:'Devolution', q:'What is devolution in the UK?', a:'The transfer of powers from Westminster to regional assemblies: the Scottish Parliament, the Senedd (Wales), and the Northern Ireland Assembly.', ctx:'Does not mean independence — Westminster retains sovereignty.', diff:'new'},
-  {id:28, sub:'s1', deck:'Devolution', q:'When was the Scottish Parliament created?', a:'1999, following a 1997 referendum. Holyrood has powers over education, health, justice and some taxes.', ctx:'The 1999 devolution acts transformed UK governance.', diff:'new'},
-  {id:29, sub:'s1', deck:'Devolution', q:'What was the result of the 2014 Scottish independence referendum?', a:'55% No (stay in UK) vs 45% Yes (independence). Turnout: 85% — the highest ever in a UK election.', ctx:'The SNP has called for a second referendum since Brexit.', diff:'new'},
-  {id:30, sub:'s1', deck:'Devolution', q:'What is the Senedd?', a:'The Welsh Parliament, created in 1999 as the National Assembly for Wales. Renamed Senedd Cymru in 2020. Has powers over health, education and local government.', ctx:'Wales has a distinct legal system but shares English law on many matters.', diff:'new'},
-
-  // ── Civi americaine — Race ─────────────────────────────────
-  {id:31, sub:'s2', deck:'Race & Civil Rights', q:'What did the Civil Rights Act of 1964 do?', a:'Outlawed discrimination based on race, colour, religion, sex, or national origin. Signed by President LBJ after years of activism.', ctx:'Preceded by the Civil Rights Act of 1957 (voting rights) under Eisenhower.', diff:'new'},
-  {id:32, sub:'s2', deck:'Race & Civil Rights', q:'What was Martin Luther King Jr\'s "I Have a Dream" speech?', a:'Delivered on August 28, 1963, at the March on Washington (250,000 people). A defining moment of the civil rights movement, calling for racial equality and an end to discrimination.', ctx:'King was assassinated on April 4, 1968 in Memphis.', diff:'new'},
-  {id:33, sub:'s2', deck:'Race & Civil Rights', q:'What sparked the 2020 Black Lives Matter protests?', a:'The murder of George Floyd by Minneapolis police officer Derek Chauvin on May 25, 2020. It triggered global protests in over 60 countries.', ctx:'Chauvin was convicted of murder in April 2021.', diff:'new'},
-  {id:34, sub:'s2', deck:'Race & Civil Rights', q:'What does systemic racism mean?', a:'Racism embedded in institutions, laws, and social systems — not just individual prejudice. Manifests in policing, housing, healthcare, and educational disparities.', ctx:'Distinguish from individual racism — systemic = structural.', diff:'new'},
-  {id:35, sub:'s2', deck:'Race & Civil Rights', q:'What is Jim Crow?', a:'Laws enforcing racial segregation in the Southern US from 1877 to the 1960s. Named after a minstrel caricature. Included separate schools, transport, and public spaces.', ctx:'Overturned by the Civil Rights Act 1964 and Voting Rights Act 1965.', diff:'new'},
-  {id:36, sub:'s2', deck:'Race & Civil Rights', q:'What was Brown v. Board of Education (1954)?', a:'A landmark Supreme Court ruling declaring racial segregation in public schools unconstitutional. Overturned Plessy v. Ferguson (1896), which had enshrined "separate but equal".', ctx:'Argued by NAACP lawyer Thurgood Marshall, later first Black Supreme Court justice.', diff:'new'},
-  {id:37, sub:'s2', deck:'Race & Civil Rights', q:'What is redlining?', a:'A discriminatory practice of denying services (mortgages, insurance) to residents of certain neighbourhoods based on race. Widespread until the Fair Housing Act of 1968.', ctx:'Its legacy: the racial wealth gap persists today.', diff:'new'},
-  {id:38, sub:'s2', deck:'Race & Civil Rights', q:'What is the 13th Amendment (1865)?', a:'Abolished slavery — except as punishment for crime. The exception clause has enabled prison labor, which critics call a continuation of slavery by other means.', ctx:'The exception clause is central to prison-industrial complex debates.', diff:'new'},
-  {id:39, sub:'s2', deck:'Race & Civil Rights', q:'What happened to affirmative action in 2023?', a:'The Supreme Court ruled race-conscious admissions unconstitutional at US universities, effectively ending affirmative action in higher education.', ctx:'Decided in SFFA v. Harvard. Reversed decades of precedent.', diff:'new'},
-
-  // ── Civi americaine — Democratie ───────────────────────────
-  {id:40, sub:'s2', deck:'Democratie americaine', q:'What are the three branches of US government?', a:'Legislative (Congress: Senate + House of Representatives), Executive (President and Cabinet), Judicial (Supreme Court and federal courts).', ctx:'Separation of powers + checks and balances — Madison\'s design.', diff:'new'},
-  {id:41, sub:'s2', deck:'Democratie americaine', q:'What is the Electoral College?', a:'A system of 538 electors who formally elect the President. A candidate needs 270 to win. Electors are allocated per state. Critics say it distorts popular will.', ctx:'In 2000 and 2016, the winner lost the popular vote.', diff:'new'},
-  {id:42, sub:'s2', deck:'Democratie americaine', q:'What is a filibuster?', a:'A Senate tactic of prolonged debate to delay or block legislation. Requires 60 votes to end (cloture). Regularly used to block civil rights legislation in the 20th century.', ctx:'Named after Dutch word for pirate. A uniquely American obstruction tool.', diff:'new'},
-  {id:43, sub:'s2', deck:'Democratie americaine', q:'What is gerrymandering?', a:'Manipulating electoral district boundaries to favour one party. Named after Governor Elbridge Gerry of Massachusetts (1812), whose district resembled a salamander.', ctx:'Both parties do it. Undermines electoral fairness.', diff:'new'},
-  {id:44, sub:'s2', deck:'Democratie americaine', q:'What is the Bill of Rights?', a:'The first 10 amendments to the US Constitution (1791). Includes freedom of speech, religion, press (1st), right to bear arms (2nd), protection against unreasonable searches (4th).', ctx:'Added to reassure anti-Federalists that individual rights would be protected.', diff:'new'},
-  {id:45, sub:'s2', deck:'Democratie americaine', q:'What is the impeachment process?', a:'The House of Representatives impeaches (simple majority vote). The Senate holds a trial. A 2/3 Senate majority is needed to convict and remove from office.', ctx:'Trump was impeached twice (2019, 2021) but not convicted by the Senate.', diff:'new'},
-
-  // ── Civi americaine — Gun Control ──────────────────────────
-  {id:46, sub:'s2', deck:'Gun Control', q:'What does the 2nd Amendment say?', a:'A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed. (1791)', ctx:'Debate: does it protect individual gun ownership or collective militia rights?', diff:'new'},
-  {id:47, sub:'s2', deck:'Gun Control', q:'What is the NRA?', a:'The National Rifle Association — the most powerful gun rights lobby in the US, with around 5 million members. Spends heavily on political donations to block gun control legislation.', ctx:'Founded 1871 for marksmanship; became a political force in the 1970s.', diff:'new'},
-  {id:48, sub:'s2', deck:'Gun Control', q:'Name 3 key mass shootings in US history.', a:'Columbine High School (1999, 13 dead). Sandy Hook Elementary (2012, 20 children dead). Uvalde, Texas (2022, 19 children dead). Las Vegas concert (2017, 60 dead).', ctx:'Each prompted calls for reform; each was followed by limited legislative action.', diff:'new'},
-  {id:49, sub:'s2', deck:'Gun Control', q:'How many guns are there per 100 people in the US?', a:'Around 120 guns per 100 people — the highest rate in the world by far. The US has 4% of the world\'s population but 46% of civilian-owned guns.', ctx:'Compare: Switzerland ~27, UK ~5, Japan ~0.3.', diff:'new'},
-
-  // ── Enjeux contemporains — Climat ──────────────────────────
-  {id:50, sub:'s3', deck:'Crise climatique', q:'What is the Paris Agreement?', a:'A UN climate accord signed in 2015 by 196 parties. Aims to limit global warming to 1.5-2 degrees Celsius above pre-industrial levels through nationally determined contributions.', ctx:'US withdrew under Trump (2020), rejoined under Biden (2021).', diff:'new'},
-  {id:51, sub:'s3', deck:'Crise climatique', q:'What is Fridays for Future?', a:'A global youth climate strike movement launched by Greta Thunberg in August 2018. Her "How dare you" speech at the UN General Assembly in 2019 became iconic.', ctx:'Over 4 million people struck in September 2019 across 161 countries.', diff:'new'},
-  {id:52, sub:'s3', deck:'Crise climatique', q:'What is COP and what was COP26?', a:'Conference of the Parties — the annual UN climate summit. COP26 was held in Glasgow in 2021, targeting coal phase-down and stronger national commitments.', ctx:'COP = the decision-making body of the UNFCCC (1992 climate framework).', diff:'new'},
-  {id:53, sub:'s3', deck:'Crise climatique', q:'What is net zero?', a:'Balancing the amount of greenhouse gases emitted with the amount removed from the atmosphere. The UK committed to net zero by 2050. Requires systemic change, not just offsets.', ctx:'Net zero by 2050 is UK law under the Climate Change Act 2008 (amended 2019).', diff:'new'},
-  {id:54, sub:'s3', deck:'Crise climatique', q:'What is greenwashing?', a:'Marketing that makes a company or product appear more environmentally friendly than it actually is. A form of deception that undermines genuine climate action.', ctx:'Ofcom and the Advertising Standards Authority are increasingly cracking down on it.', diff:'new'},
-  {id:55, sub:'s3', deck:'Crise climatique', q:'What is the IPCC?', a:'The Intergovernmental Panel on Climate Change — the UN body that assesses climate science. Founded 1988. Its reports (Assessment Reports) are the global scientific consensus on climate.', ctx:'IPCC reports drive the targets set at COP summits.', diff:'new'},
-
-  // ── Enjeux contemporains — Medias ──────────────────────────
-  {id:56, sub:'s3', deck:'Medias et democratie', q:'What is fake news and why is it dangerous?', a:'Deliberately false information spread via media and social networks. Dangerous because it erodes trust in institutions, distorts public debate, and can influence elections.', ctx:'Trump weaponised the term against mainstream media from 2016.', diff:'new'},
-  {id:57, sub:'s3', deck:'Medias et democratie', q:'What is the BBC and how is it funded?', a:'The British Broadcasting Corporation — the UK\'s public broadcaster, established in 1927. Funded by a licence fee (around 169 GBP per year). Independent of government.', ctx:'Mission: inform, educate, entertain. A global model of public service broadcasting.', diff:'new'},
-  {id:58, sub:'s3', deck:'Medias et democratie', q:'What is Ofcom?', a:'The Office of Communications — the UK\'s independent communications regulator. Oversees TV, radio, on-demand services, telecoms. Sets broadcasting standards and enforces impartiality rules.', ctx:'Broadcasters (BBC, ITV) must be impartial under Ofcom rules. Newspapers are not regulated.', diff:'new'},
-  {id:59, sub:'s3', deck:'Medias et democratie', q:'What is the Overton Window?', a:'The range of ideas deemed acceptable in mainstream public discourse at a given time. Shifting it — normalising fringe ideas — is a key political strategy.', ctx:'Named after policy analyst Joseph Overton. Brexit and Trump both shifted the window rightward.', diff:'new'},
-  {id:60, sub:'s3', deck:'Medias et democratie', q:'What was the Cambridge Analytica scandal?', a:'In 2018 it was revealed that Cambridge Analytica harvested Facebook data of 87 million users without consent. The data was used for targeted political advertising in the Brexit campaign and Trump\'s 2016 election.', ctx:'Led to Facebook\'s Mark Zuckerberg testifying before the US Congress.', diff:'new'},
-  {id:61, sub:'s3', deck:'Medias et democratie', q:'What is an echo chamber?', a:'A social environment where people only encounter information and opinions that reinforce their own. Social media algorithms amplify this by prioritising engaging content over diverse viewpoints.', ctx:'Echo chambers + confirmation bias = radicalisation pipeline.', diff:'new'},
-
-  // ── Litterature — The Tempest ─────────────────────────────
-  {id:62, sub:'s4', deck:'The Tempest', q:'Who wrote The Tempest and when?', a:'William Shakespeare, around 1610-1611. Generally considered his last solo play.', ctx:'First performed at the court of King James I in 1611.', diff:'new'},
-  {id:63, sub:'s4', deck:'The Tempest', q:'Who is Prospero and what does he represent?', a:'The exiled Duke of Milan who uses magic to control the island and its inhabitants. He represents colonial power — the European who claims civilising authority over others.', ctx:'His magic = European technology and knowledge used as domination.', diff:'new'},
-  {id:64, sub:'s4', deck:'The Tempest', q:'Who is Caliban and what does he represent?', a:'The native of the island, enslaved by Prospero. He represents the colonised subject — dispossessed of his land, forced to serve, but capable of resistance.', ctx:'Anagram of "Cannibal" — linking him to European fears of the Other.', diff:'new'},
-  {id:65, sub:'s4', deck:'The Tempest', q:'What does Caliban say about language and what does it mean?', a:'You taught me language, and my profit on it is I know how to curse. Language was given as a tool of control; Caliban turns it into an act of resistance.', ctx:'Central postcolonial reading: colonialism teaches language to impose order — but the colonised can subvert it.', diff:'new'},
-  {id:66, sub:'s4', deck:'The Tempest', q:'Who is Ariel and how does Ariel contrast with Caliban?', a:'A spirit servant of Prospero who obeys in exchange for freedom. Ariel represents the compliant colonial subject who works within the system; Caliban represents outright resistance.', ctx:'Two colonial responses: accommodation vs rebellion.', diff:'new'},
-  {id:67, sub:'s4', deck:'The Tempest', q:'What are the key themes of The Tempest?', a:'Colonialism and power, language as control, magic vs nature, forgiveness and reconciliation, the illusion of civilisation, master-servant relationships.', ctx:'A postcolonial lens is almost mandatory for the CAPES oral.', diff:'new'},
-  {id:68, sub:'s4', deck:'The Tempest', q:'What is the significance of the island in The Tempest?', a:'It is a space of colonial projection — a supposedly empty land claimed and controlled by Prospero. It symbolises the New World and the logic of Terra Nullius (empty land justifying colonisation).', ctx:'The island was already inhabited by Caliban\'s mother Sycorax before Prospero\'s arrival.', diff:'new'},
-
-  // ── Litterature — Poesie ──────────────────────────────────
-  {id:69, sub:'s4', deck:'Poesie', q:'What is iambic pentameter?', a:'A metrical pattern of 5 iambs per line (unstressed-STRESSED syllables, da-DUM). Shakespeare\'s default rhythm. Example: "Shall I compare THEE to a SUM-mer\'s DAY."', ctx:'10 syllables per line. Closest to natural English speech rhythm.', diff:'new'},
-  {id:70, sub:'s4', deck:'Poesie', q:'What is a Shakespearean sonnet?', a:'A 14-line poem in iambic pentameter. Structure: 3 quatrains (ABAB CDCD EFEF) + 1 couplet (GG). The couplet usually provides a twist or resolution.', ctx:'Compare with the Petrarchan sonnet: octave (ABBAABBA) + sestet (CDECDE).', diff:'new'},
-  {id:71, sub:'s4', deck:'Poesie', q:'What is the difference between a simile and a metaphor?', a:'A simile compares using "like" or "as" (My love is like a red, red rose). A metaphor states directly that one thing IS another (All the world\'s a stage — Shakespeare).', ctx:'Both are figurative language; metaphors are more direct and powerful.', diff:'new'},
-  {id:72, sub:'s4', deck:'Poesie', q:'What is enjambment?', a:'When a sentence or clause runs over from one line of poetry to the next without a pause. Creates momentum, mirrors natural speech, can build tension.', ctx:'Opposite of end-stopped line (where a line ends with a full stop or natural pause).', diff:'new'},
-
-  // ── Langue — Phonologie ───────────────────────────────────
-  {id:73, sub:'s5', deck:'Phonologie', q:'What is a phoneme?', a:'The smallest unit of sound that distinguishes meaning in a language. English has approximately 44 phonemes (20 vowel sounds + 24 consonant sounds).', ctx:'A phoneme is abstract; a phone is the actual sound produced.', diff:'new'},
-  {id:74, sub:'s5', deck:'Phonologie', q:'What is the schwa and why is it important?', a:'The schwa /schwa/ is the most common vowel sound in English. It appears in unstressed syllables: "about", "sofa", "banana". Essential for natural English rhythm and stress patterns.', ctx:'Mispronouncing stressed vowels instead of schwas is a key marker of foreign accent.', diff:'new'},
-  {id:75, sub:'s5', deck:'Phonologie', q:'What is assimilation in phonology?', a:'When a sound changes under the influence of a neighbouring sound. Example: "ten boys" becomes "tem boys" — the /n/ assimilates to /m/ before the bilabial /b/.', ctx:'Types: regressive (anticipatory) vs progressive assimilation.', diff:'new'},
-  {id:76, sub:'s5', deck:'Phonologie', q:'What is elision in phonology?', a:'The omission of a sound in connected speech. Example: "next day" can be pronounced "neks day" (the /t/ is elided). Common at word boundaries.', ctx:'Elision + assimilation + linking = key features of connected speech.', diff:'new'},
-  {id:77, sub:'s5', deck:'Phonologie', q:'What is linking in English connected speech?', a:'When a final consonant links smoothly to the following word\'s initial vowel. Example: "turn off" is pronounced "tur-noff". Makes speech flow more naturally.', ctx:'Intrusive /r/ is a related phenomenon: "law and order" becomes "law-r-and order".', diff:'new'},
-  {id:78, sub:'s5', deck:'Phonologie', q:'What is the difference between minimal pairs?', a:'Two words that differ by only one phoneme: "ship" vs "sheep", "bat" vs "bad", "pan" vs "ban". Used in phonological analysis and language teaching.', ctx:'Minimal pairs prove that two sounds are distinct phonemes in a language.', diff:'new'},
-
-  // ── Langue — Grammaire ────────────────────────────────────
-  {id:79, sub:'s5', deck:'Grammaire', q:'What is the difference between the present perfect and the preterite?', a:'Present perfect: past event with present relevance or unspecified time (I have seen it). Preterite: completed event at a specific past time (I saw it yesterday).', ctx:'Common error for French speakers who use passe compose for both functions.', diff:'new'},
-  {id:80, sub:'s5', deck:'Grammaire', q:'What is the difference between "must" and "have to"?', a:'Must: internal obligation or logical deduction (I must finish this / You must be tired). Have to: external obligation imposed by rules or circumstances (I have to work — it is the law).', ctx:'Epistemic must (deduction) vs deontic must (obligation). Key modal distinction.', diff:'new'},
-  {id:81, sub:'s5', deck:'Grammaire', q:'How is the passive voice formed and when is it used?', a:'Be + past participle. Used when the agent is unknown, unimportant, or deliberately withheld. Example: The bill was passed in 1964. Foregrounding the action, not the actor.', ctx:'Passive is more frequent in English than in French — important for translation.', diff:'new'},
-  {id:82, sub:'s5', deck:'Grammaire', q:'What are the rules of reported speech?', a:'Tense backshift (am becomes was, will becomes would), pronoun changes, and time expressions shift (today becomes that day, yesterday becomes the day before).', ctx:'Direct: She said "I am tired." Reported: She said she was tired.', diff:'new'},
-  {id:83, sub:'s5', deck:'Grammaire', q:'What is aspect in English grammar?', a:'Aspect expresses how an action unfolds in time: simple (I write), progressive (I am writing — ongoing), perfect (I have written — completed with present relevance).', ctx:'Tense = when. Aspect = how. English grammar separates these; French is less systematic.', diff:'new'}
-];
-
-// ── state ──
-var subjects, cards, checkedSubs, studyFilter, activeDeck, queue, qIdx, revealed, sessionDone;
-
-function loadData() {
-  var ss = store.getItem('fcs5'), sc = store.getItem('fcc5');
-  subjects = ss ? tryParse(ss, cloneArr(SUBJECTS)) : cloneArr(SUBJECTS);
-  cards    = sc ? tryParse(sc, cloneArr(CARDS))    : cloneArr(CARDS);
+function loadData(){
+  var ss=store.getItem('fcs9'),sc=store.getItem('fcc9');
+  subjects=ss?tryParse(ss,cloneArr(SUBJECTS)):cloneArr(SUBJECTS);
+  cards=sc?tryParse(sc,cloneArr(CARDS)):cloneArr(CARDS);
 }
-function tryParse(s, fb) { try { var v = JSON.parse(s); return (v && v.length !== undefined) ? v : fb; } catch(e) { return fb; } }
-function cloneArr(a) { var o = []; for (var i = 0; i < a.length; i++) { var n = {}, s = a[i]; for (var k in s) n[k] = s[k]; o.push(n); } return o; }
-function persist() {
-  try { store.setItem('fcs5', JSON.stringify(subjects)); } catch(e) {}
-  try { store.setItem('fcc5', JSON.stringify(cards));    } catch(e) {}
-}
-function findSub(id) { for (var i = 0; i < subjects.length; i++) if (subjects[i].id === id) return subjects[i]; return null; }
-function countEasy(arr) { var n = 0; for (var i = 0; i < arr.length; i++) if (arr[i].diff === 'easy') n++; return n; }
+function tryParse(s,fb){try{var v=JSON.parse(s);return(v&&v.length!==undefined)?v:fb;}catch(e){return fb;}}
+function cloneArr(a){var o=[];for(var i=0;i<a.length;i++){var n={},s=a[i];for(var k in s)n[k]=s[k];o.push(n);}return o;}
+function persist(){try{store.setItem('fcs9',JSON.stringify(subjects));}catch(e){}try{store.setItem('fcc9',JSON.stringify(cards));}catch(e){}}
+function findSub(id){for(var i=0;i<subjects.length;i++)if(subjects[i].id===id)return subjects[i];return null;}
+function countEasy(arr){var n=0;for(var i=0;i<arr.length;i++)if(arr[i].diff==='easy')n++;return n;}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 
-// ── panels ──
-function showPanel(name) {
-  var ps = ['study','add','manage','cards'];
-  for (var i = 0; i < ps.length; i++) {
-    var el = document.getElementById('panel-' + ps[i]);
-    if (el) el.style.display = ps[i] === name ? 'block' : 'none';
-  }
-  var ts = ['study','add','manage'];
-  for (var j = 0; j < ts.length; j++) {
-    var t = document.getElementById('t-' + ts[j]);
-    if (t) t.className = 'tab' + ((ts[j] === name || (name === 'cards' && ts[j] === 'study')) ? ' on' : '');
-  }
+// ── PANELS ─────────────────────────────────────────────────
+function showPanel(name){
+  ['study','add','manage','cards'].forEach(function(p){
+    var el=document.getElementById('panel-'+p);
+    if(el)el.style.display=p===name?'block':'none';
+  });
+  ['study','add','manage'].forEach(function(t){
+    var el=document.getElementById('t-'+t);
+    if(el)el.className='tab'+(t===name||(name==='cards'&&t==='study')?' on':'');
+  });
 }
 
-// ── HOME ──
-function renderHome() {
+// ── HOME ───────────────────────────────────────────────────
+function renderHome(){
   showPanel('study');
-  var easy = countEasy(cards);
-  document.getElementById('stat-total').textContent = cards.length;
-  document.getElementById('stat-easy').textContent  = easy;
-  document.getElementById('stat-due').textContent   = cards.length - easy;
-
-  // study-sel button
-  var selBtn = document.getElementById('btn-study-sel');
-  if (checkedSubs.length > 0) {
-    selBtn.className = 'btn-sel visible';
-    selBtn.textContent = 'Etudier la selection (' + checkedSubs.length + ' dossier' + (checkedSubs.length > 1 ? 's' : '') + ')';
-  } else {
-    selBtn.className = 'btn-sel';
+  var easy=countEasy(cards);
+  document.getElementById('st-tot').textContent=cards.length;
+  document.getElementById('st-ok').textContent=easy;
+  document.getElementById('st-due').textContent=cards.length-easy;
+  var sb=document.getElementById('btn-sel');
+  if(checkedSubs.length>0){sb.className='btn-sel vis';sb.textContent='✓ Étudier la sélection ('+checkedSubs.length+')';}
+  else{sb.className='btn-sel';}
+  var fg=document.getElementById('fg'),html='';
+  for(var i=0;i<subjects.length;i++){
+    var s=subjects[i],sc=0,se=0;
+    for(var j=0;j<cards.length;j++){if(cards[j].sub===s.id){sc++;if(cards[j].diff==='easy')se++;}}
+    var pct=sc?Math.round(se/sc*100):0,ck=checkedSubs.indexOf(s.id)!==-1;
+    html+='<div class="fc'+(ck?' ck':'')+'" data-sid="'+s.id+'">'
+      +'<div class="fch'+(ck?' on':'')+'" data-csid="'+s.id+'">'+(ck?'✓':'')+'</div>'
+      +'<div class="fi">'+s.icon+'</div><div class="fn">'+s.name+'</div>'
+      +'<div class="fc2">'+sc+' cartes</div>'
+      +'<div class="fp"><div class="fpf" style="width:'+pct+'%"></div></div></div>';
   }
-
-  var grid = document.getElementById('folder-grid');
-  var html = '';
-  for (var i = 0; i < subjects.length; i++) {
-    var s = subjects[i], sc = 0, se = 0;
-    for (var j = 0; j < cards.length; j++) {
-      if (cards[j].sub === s.id) { sc++; if (cards[j].diff === 'easy') se++; }
-    }
-    var pct = sc ? Math.round(se / sc * 100) : 0;
-    var isChecked = checkedSubs.indexOf(s.id) !== -1;
-    html += '<div class="folder-card' + (isChecked ? ' checked' : '') + '" data-sid="' + s.id + '">'
-      + '<div class="fcheck' + (isChecked ? ' on' : '') + '" data-csid="' + s.id + '">' + (isChecked ? '✓' : '') + '</div>'
-      + '<div class="fi">' + s.icon + '</div>'
-      + '<div class="fn">' + s.name + '</div>'
-      + '<div class="fc2">' + sc + ' carte' + (sc !== 1 ? 's' : '') + '</div>'
-      + '<div class="fp"><div class="fpf" style="width:' + pct + '%"></div></div>'
-      + '</div>';
-  }
-  html += '<div class="add-folder-card" id="btn-new-folder"><div class="fi">+</div><div class="fn">Nouveau dossier</div></div>';
-  grid.innerHTML = html;
-
-  // folder card clicks → open subject
-  var fcs = grid.getElementsByClassName('folder-card');
-  for (var k = 0; k < fcs.length; k++) {
-    fcs[k].onclick = (function(sid) {
-      return function() { studyFilter = [sid]; checkedSubs = []; buildQueue(); renderCards(); };
-    })(fcs[k].getAttribute('data-sid'));
-  }
-
-  // checkbox clicks → toggle selection
-  var checks = grid.getElementsByClassName('fcheck');
-  for (var c = 0; c < checks.length; c++) {
-    checks[c].onclick = (function(sid) {
-      return function(e) {
-        e.stopPropagation();
-        var idx = checkedSubs.indexOf(sid);
-        if (idx === -1) checkedSubs.push(sid);
-        else checkedSubs.splice(idx, 1);
-        renderHome();
-      };
-    })(checks[c].getAttribute('data-csid'));
-  }
-
-  document.getElementById('btn-new-folder').onclick = function() {
-    document.getElementById('modal').className = 'overlay open';
-  };
+  html+='<div class="add-fc" id="btn-nf"><div class="fi">+</div><div class="fn">Nouveau dossier</div></div>';
+  fg.innerHTML=html;
+  fg.querySelectorAll('.fc').forEach(function(el){
+    el.onclick=function(){studyFilter=[this.getAttribute('data-sid')];checkedSubs=[];startSession();};
+    el.querySelector('.fch').onclick=function(e){
+      e.stopPropagation();
+      var sid=this.getAttribute('data-csid'),idx=checkedSubs.indexOf(sid);
+      if(idx===-1)checkedSubs.push(sid);else checkedSubs.splice(idx,1);
+      renderHome();
+    };
+  });
+  document.getElementById('btn-nf').onclick=function(){document.getElementById('modal-folder').className='overlay open';};
 }
 
-// ── QUEUE ──
-function buildQueue() {
-  var pool = [];
-  for (var i = 0; i < cards.length; i++) {
-    var c = cards[i];
-    if (studyFilter.length > 0 && studyFilter.indexOf(c.sub) === -1) continue;
-    if (activeDeck !== 'Tous' && c.deck !== activeDeck) continue;
+function startSession(){
+  var pool=[];
+  for(var i=0;i<cards.length;i++){
+    var c=cards[i];
+    if(studyFilter.length>0&&studyFilter.indexOf(c.sub)===-1)continue;
     pool.push(c);
   }
-  pool.sort(function(a, b) {
-    var o = {hard:0, medium:1, new:2, easy:3};
-    return (o[a.diff] !== undefined ? o[a.diff] : 2) - (o[b.diff] !== undefined ? o[b.diff] : 2);
-  });
-  queue = pool; qIdx = 0; revealed = false; sessionDone = 0;
+  if(!pool.length){toast('Aucune carte dans cette sélection !');return;}
+  if(mode==='flash'){
+    pool.sort(function(a,b){var o={hard:0,medium:1,new:2,easy:3};return(o[a.diff]!==undefined?o[a.diff]:2)-(o[b.diff]!==undefined?o[b.diff]:2);});
+    queue=pool;qIdx=0;revealed=false;done=0;
+  }else if(mode==='qcm'){
+    queue=shuffle(pool.slice());qcmIdx=0;qcmScore=0;
+  }else if(mode==='match'){
+    queue=shuffle(pool.slice());qIdx=0;matchDone=0;
+  }
+  activeDeck='Tous';
+  showPanel('cards');
+  renderCards();
 }
 
-// ── CARDS VIEW ──
-function renderCards() {
-  showPanel('cards');
+// ── CARDS VIEW ─────────────────────────────────────────────
+function renderCards(){
+  var pool=[];
+  for(var i=0;i<cards.length;i++){
+    if(studyFilter.length===0||studyFilter.indexOf(cards[i].sub)!==-1){
+      if(activeDeck==='Tous'||cards[i].deck===activeDeck)pool.push(cards[i]);
+    }
+  }
+  var easy=countEasy(pool);
+  document.getElementById('cs-tot').textContent=pool.length;
+  document.getElementById('cs-ok').textContent=easy;
+  document.getElementById('cs-due').textContent=pool.length-easy;
 
   // breadcrumb
-  var bcText = '';
-  if (studyFilter.length === 0) { bcText = ' › Tout'; }
-  else if (studyFilter.length === 1) {
-    var s = findSub(studyFilter[0]);
-    bcText = s ? (' › ' + s.icon + ' ' + s.name) : '';
-  } else { bcText = ' › ' + studyFilter.length + ' dossiers selectionnes'; }
-  document.getElementById('bc-sub').textContent = bcText;
-
-  // stats for the current filter
-  var pool = [];
-  for (var i = 0; i < cards.length; i++) {
-    if (studyFilter.length === 0 || studyFilter.indexOf(cards[i].sub) !== -1) pool.push(cards[i]);
-  }
-  var easy = countEasy(pool);
-  document.getElementById('cstat-total').textContent = pool.length;
-  document.getElementById('cstat-easy').textContent  = easy;
-  document.getElementById('cstat-due').textContent   = pool.length - easy;
+  var bt='';
+  if(studyFilter.length===0)bt=' › Tout';
+  else if(studyFilter.length===1){var s=findSub(studyFilter[0]);bt=s?' › '+s.icon+' '+s.name:'';}
+  else bt=' › '+studyFilter.length+' dossiers';
+  document.getElementById('bc-sub').textContent=bt;
 
   // deck chips
-  var decks = ['Tous'];
-  for (var d = 0; d < pool.length; d++) {
-    var found = false;
-    for (var di = 0; di < decks.length; di++) { if (decks[di] === pool[d].deck) { found = true; break; } }
-    if (!found) decks.push(pool[d].deck);
-  }
-  var dr = document.getElementById('deck-row'), dhtml = '';
-  for (var dk = 0; dk < decks.length; dk++) {
-    dhtml += '<button class="chip' + (decks[dk] === activeDeck ? ' on' : '') + '" data-deck="' + dk + '">' + decks[dk] + '</button>';
-  }
-  dr.innerHTML = dhtml;
-  var chips = dr.getElementsByTagName('button');
-  for (var ci = 0; ci < chips.length; ci++) {
-    chips[ci].onclick = (function(dn) {
-      return function() { activeDeck = dn; buildQueue(); renderCards(); };
-    })(decks[parseInt(chips[ci].getAttribute('data-deck'), 10)]);
-  }
+  var allPool=[];
+  for(var i=0;i<cards.length;i++){if(studyFilter.length===0||studyFilter.indexOf(cards[i].sub)!==-1)allPool.push(cards[i]);}
+  var decks=['Tous'];
+  allPool.forEach(function(c){if(decks.indexOf(c.deck)===-1)decks.push(c.deck);});
+  var dr=document.getElementById('deck-row');
+  dr.innerHTML=decks.map(function(d,i){return'<button class="chip'+(d===activeDeck?' on':'')+'" data-di="'+i+'">'+d+'</button>';}).join('');
+  dr.querySelectorAll('.chip').forEach(function(el,i){
+    el.onclick=function(){activeDeck=decks[i];buildQueue();renderCards();};
+  });
 
-  // progress
-  var pct = queue.length ? Math.round(sessionDone / queue.length * 100) : 0;
-  document.getElementById('prog-txt').textContent  = sessionDone + ' / ' + queue.length;
-  document.getElementById('prog-pct').textContent  = pct + '%';
-  document.getElementById('prog-fill').style.width = pct + '%';
+  if(mode==='flash')renderFlash();
+  else if(mode==='qcm')renderQCM();
+  else if(mode==='match')renderMatch();
+}
 
-  // card content
-  var cc = document.getElementById('card-content');
-  if (!queue.length) {
-    cc.innerHTML = '<div class="empty">Aucune carte ici. Ajoute-en depuis + !</div>';
-  } else if (qIdx >= queue.length) {
-    cc.innerHTML = '<div class="done"><h2>Session terminee !</h2><p>Tu as revu ' + sessionDone + ' carte' + (sessionDone > 1 ? 's' : '') + ' — bravo !</p><button class="nb pri" id="btn-restart">Recommencer</button></div>';
-    document.getElementById('btn-restart').onclick = function() { buildQueue(); renderCards(); };
-  } else {
-    var c = queue[qIdx];
-    if (!revealed) {
-      cc.innerHTML = '<div class="card-box" id="card-box"><p class="cq">' + c.q + '</p><p class="chint">Appuie pour voir la reponse ✦</p></div>'
-        + '<div class="nav"><button class="nb" id="btn-prev">← Precedent</button><button class="nb" id="btn-skip">Passer →</button></div>';
-      document.getElementById('card-box').onclick = function() { revealed = true; renderCards(); };
-    } else {
-      cc.innerHTML = '<div class="card-box back">' + c.a + (c.ctx ? '<span class="ctx">💡 ' + c.ctx + '</span>' : '') + '</div>'
-        + '<div class="abts"><button class="ab hard" id="btn-hard">😬 Difficile</button><button class="ab medium" id="btn-med">🤔 Moyen</button><button class="ab easy" id="btn-easy">✅ Maitrise !</button></div>'
-        + '<div class="nav"><button class="nb" id="btn-prev">← Precedent</button><button class="nb" id="btn-skip">Passer →</button></div>';
-      document.getElementById('btn-hard').onclick = function() { rate('hard'); };
-      document.getElementById('btn-med').onclick  = function() { rate('medium'); };
-      document.getElementById('btn-easy').onclick = function() { rate('easy'); };
-    }
-    document.getElementById('btn-prev').onclick = function() { if (qIdx > 0) { qIdx--; revealed = false; renderCards(); } };
-    document.getElementById('btn-skip').onclick = function() { qIdx++; revealed = false; renderCards(); };
+function buildQueue(){
+  var pool=[];
+  for(var i=0;i<cards.length;i++){
+    var c=cards[i];
+    if(studyFilter.length>0&&studyFilter.indexOf(c.sub)===-1)continue;
+    if(activeDeck!=='Tous'&&c.deck!==activeDeck)continue;
+    pool.push(c);
+  }
+  if(mode==='flash'){
+    pool.sort(function(a,b){var o={hard:0,medium:1,new:2,easy:3};return(o[a.diff]!==undefined?o[a.diff]:2)-(o[b.diff]!==undefined?o[b.diff]:2);});
+    queue=pool;qIdx=0;revealed=false;done=0;
+  }else if(mode==='qcm'){
+    queue=shuffle(pool.slice());qcmIdx=0;qcmScore=0;
+  }else{
+    queue=shuffle(pool.slice());qIdx=0;
   }
 }
 
-function rate(diff) {
-  for (var i = 0; i < cards.length; i++) { if (cards[i].id === queue[qIdx].id) { cards[i].diff = diff; break; } }
-  persist(); sessionDone++; qIdx++; revealed = false; renderCards();
+// ── FLASH MODE ─────────────────────────────────────────────
+function renderFlash(){
+  var cc=document.getElementById('card-content');
+  var pct=queue.length?Math.round(done/queue.length*100):0;
+  document.getElementById('pg-txt').textContent=done+' / '+queue.length;
+  document.getElementById('pg-pct').textContent=pct+'%';
+  document.getElementById('pg-fl').style.width=pct+'%';
+
+  if(!queue.length){cc.innerHTML='<div class="done"><h2>Aucune carte ici</h2><p>Ajoute des cartes depuis + !</p></div>';return;}
+  if(qIdx>=queue.length){
+    cc.innerHTML='<div class="done"><h2>🎉 Session terminée !</h2><p>'+done+' cartes révisées</p><button class="nb pri" id="btn-restart">Recommencer</button></div>';
+    document.getElementById('btn-restart').onclick=function(){buildQueue();renderFlash();};
+    return;
+  }
+  var c=queue[qIdx];
+  if(!revealed){
+    cc.innerHTML='<div class="card-box" id="cbox"><p class="cq">'+c.q+'</p><p class="chint">Appuie pour voir la réponse ✦</p></div>'
+      +'<div class="nav"><button class="nb" id="bprev">← Précédent</button><button class="nb" id="bskip">Passer →</button></div>';
+    document.getElementById('cbox').onclick=function(){revealed=true;renderFlash();};
+  }else{
+    cc.innerHTML='<div class="card-box back">'+c.a+(c.ctx?'<span class="ctx">💡 '+c.ctx+'</span>':'')+'</div>'
+      +'<div class="abts"><button class="ab hard" id="bh">😬 Difficile</button><button class="ab medium" id="bm">🤔 Moyen</button><button class="ab easy" id="be">✅ Maîtrisé !</button></div>'
+      +'<div class="nav"><button class="nb" id="bprev">← Précédent</button><button class="nb" id="bskip">Passer →</button></div>';
+    document.getElementById('bh').onclick=function(){rate('hard');};
+    document.getElementById('bm').onclick=function(){rate('medium');};
+    document.getElementById('be').onclick=function(){rate('easy');};
+  }
+  document.getElementById('bprev').onclick=function(){if(qIdx>0){qIdx--;revealed=false;renderFlash();}};
+  document.getElementById('bskip').onclick=function(){qIdx++;revealed=false;renderFlash();};
+}
+function rate(diff){
+  for(var i=0;i<cards.length;i++)if(cards[i].id===queue[qIdx].id){cards[i].diff=diff;break;}
+  persist();done++;qIdx++;revealed=false;renderFlash();
 }
 
-// ── ADD ──
-function renderAdd() {
-  showPanel('add');
-  var sel = document.getElementById('ns');
-  sel.innerHTML = '';
-  for (var i = 0; i < subjects.length; i++) {
-    var opt = document.createElement('option');
-    opt.value = subjects[i].id;
-    opt.textContent = subjects[i].icon + ' ' + subjects[i].name;
-    sel.appendChild(opt);
+// ── QCM MODE ───────────────────────────────────────────────
+function renderQCM(){
+  var cc=document.getElementById('card-content');
+  var pct=queue.length?Math.round(qcmIdx/queue.length*100):0;
+  document.getElementById('pg-txt').textContent=qcmIdx+' / '+queue.length;
+  document.getElementById('pg-pct').textContent=pct+'%';
+  document.getElementById('pg-fl').style.width=pct+'%';
+
+  if(qcmIdx>=queue.length){
+    var pctScore=Math.round(qcmScore/queue.length*100);
+    var emoji=pctScore>=80?'🏆':pctScore>=60?'👍':'💪';
+    cc.innerHTML='<div class="qcm-score"><h2>'+emoji+' Résultat</h2>'
+      +'<div class="score-ring">'+qcmScore+'/'+queue.length+'</div>'
+      +'<p style="color:var(--sub);margin-bottom:16px">'+pctScore+'% de bonnes réponses</p>'
+      +'<button class="nb pri" id="qcm-r">Recommencer</button></div>';
+    document.getElementById('qcm-r').onclick=function(){buildQueue();renderQCM();};
+    return;
   }
+  var c=queue[qcmIdx];
+  // build 4 options: 1 correct + 3 wrong from pool
+  var wrong=[];
+  for(var i=0;i<queue.length;i++){if(i!==qcmIdx)wrong.push(queue[i]);}
+  shuffle(wrong);
+  var opts=[c];
+  for(var i=0;i<wrong.length&&opts.length<4;i++)opts.push(wrong[i]);
+  shuffle(opts);
+  var correctId=c.id;
+  cc.innerHTML='<div class="qcm-q">'+c.q+'</div>'
+    +'<div class="qcm-opts">'+opts.map(function(o,i){
+      return'<button class="qcm-opt" data-oid="'+o.id+'" data-ci="'+i+'">'+o.a+'</button>';
+    }).join('')+'</div>'
+    +'<div class="nav"><button class="nb" id="qskip">Passer →</button></div>';
+  cc.querySelectorAll('.qcm-opt').forEach(function(el){
+    el.onclick=function(){
+      if(this.disabled)return;
+      cc.querySelectorAll('.qcm-opt').forEach(function(x){x.disabled=true;});
+      var isRight=parseInt(this.getAttribute('data-oid'),10)===correctId;
+      if(isRight){this.className='qcm-opt correct';qcmScore++;}
+      else{
+        this.className='qcm-opt wrong';
+        cc.querySelectorAll('.qcm-opt').forEach(function(x){if(parseInt(x.getAttribute('data-oid'),10)===correctId)x.className='qcm-opt reveal';});
+      }
+      setTimeout(function(){qcmIdx++;renderQCM();},1100);
+    };
+  });
+  document.getElementById('qskip').onclick=function(){qcmIdx++;renderQCM();};
 }
 
-// ── MANAGE ──
-function renderManage() {
-  showPanel('manage');
+// ── MATCH MODE ─────────────────────────────────────────────
+function renderMatch(){
+  var cc=document.getElementById('card-content');
+  var pct=queue.length?Math.round(matchDone/queue.length*100):0;
+  document.getElementById('pg-txt').textContent=matchDone+' / '+queue.length;
+  document.getElementById('pg-pct').textContent=pct+'%';
+  document.getElementById('pg-fl').style.width=pct+'%';
 
-  // folders section
-  var fl = document.getElementById('manage-folders');
-  var fhtml = '';
-  for (var i = 0; i < subjects.length; i++) {
-    var s = subjects[i], sc = 0;
-    for (var j = 0; j < cards.length; j++) if (cards[j].sub === s.id) sc++;
-    fhtml += '<div class="mfolder">'
-      + '<span class="mf-icon">' + s.icon + '</span>'
-      + '<span class="mf-name">' + s.name + '</span>'
-      + '<span class="mf-count">' + sc + ' cartes</span>'
-      + '<button class="del" data-fid="' + s.id + '">✕</button>'
-      + '</div>';
+  if(matchDone>=queue.length){
+    cc.innerHTML='<div class="done"><h2>🎉 Tout associé !</h2><p>'+queue.length+' paires trouvées</p><button class="nb pri" id="mr">Rejouer</button></div>';
+    document.getElementById('mr').onclick=function(){buildQueue();matchDone=0;renderMatch();};
+    return;
   }
-  fl.innerHTML = fhtml;
-  var fdels = fl.getElementsByClassName('del');
-  for (var fd = 0; fd < fdels.length; fd++) {
-    fdels[fd].onclick = (function(fid) {
-      return function() {
-        var s = findSub(fid);
-        var sc = 0;
-        for (var i = 0; i < cards.length; i++) if (cards[i].sub === fid) sc++;
-        var msg = sc > 0
-          ? 'Supprimer le dossier "' + (s ? s.name : fid) + '" et ses ' + sc + ' cartes ?'
-          : 'Supprimer le dossier "' + (s ? s.name : fid) + '" ?';
-        if (window.confirm(msg)) {
-          subjects = subjects.filter(function(x) { return x.id !== fid; });
-          cards    = cards.filter(function(x)    { return x.sub !== fid; });
-          persist(); renderManage(); toast('Dossier supprime !');
-        }
+  // take next batch of 4 (or fewer)
+  var batch=[];
+  for(var i=qIdx;i<queue.length&&batch.length<4;i++)batch.push(queue[i]);
+  if(!batch.length){cc.innerHTML='<div class="done"><h2>Aucune carte</h2></div>';return;}
+
+  selQ=null;selA=null;
+  var qs=batch.slice();
+  var as=shuffle(batch.slice().map(function(c){return{id:c.id,a:c.a};}));
+
+  function buildMatch(){
+    var qdone=qs.filter(function(c){return c._matched;}).map(function(c){return c.id;});
+    cc.innerHTML='<div class="match-wrap">'
+      +'<div class="match-score">'+qdone.length+' / '+qs.length+' paires trouvées</div>'
+      +'<div class="match-grid">'
+      +'<div class="match-side">'+qs.map(function(c){
+        var matched=c._matched;
+        var sel=selQ&&selQ.id===c.id;
+        return'<div class="match-card q-card'+(matched?' matched':'')+(sel?' selected':'')+'" data-qid="'+c.id+'">'+c.q+'</div>';
+      }).join('')+'</div>'
+      +'<div class="match-side">'+as.map(function(a){
+        var matched=a._matched;
+        var sel=selA&&selA.id===a.id;
+        return'<div class="match-card'+(matched?' matched':'')+(sel?' selected':'')+'" data-aid="'+a.id+'">'+a.a+'</div>';
+      }).join('')+'</div>'
+      +'</div></div>';
+
+    cc.querySelectorAll('.q-card:not(.matched)').forEach(function(el){
+      el.onclick=function(){
+        selQ=null;
+        qs.forEach(function(c){if(c.id===parseInt(el.getAttribute('data-qid'),10))selQ=c;});
+        tryMatch();
       };
-    })(fdels[fd].getAttribute('data-fid'));
+    });
+    cc.querySelectorAll('.match-card:not(.q-card):not(.matched)').forEach(function(el){
+      el.onclick=function(){
+        selA=null;
+        as.forEach(function(a){if(a.id===parseInt(el.getAttribute('data-aid'),10))selA=a;});
+        tryMatch();
+      };
+    });
   }
 
-  // cards section
+  function tryMatch(){
+    buildMatch();
+    if(!selQ||!selA)return;
+    if(selQ.id===selA.id){
+      // correct!
+      qs.forEach(function(c){if(c.id===selQ.id)c._matched=true;});
+      as.forEach(function(a){if(a.id===selA.id)a._matched=true;});
+      matchDone++;
+      selQ=null;selA=null;
+      buildMatch();
+      // check if batch done
+      var allDone=qs.every(function(c){return c._matched;});
+      if(allDone){
+        qIdx+=batch.length;
+        qs.forEach(function(c){delete c._matched;});
+        as.forEach(function(a){delete a._matched;});
+        if(matchDone>=queue.length){renderMatch();}
+        else{setTimeout(function(){renderMatch();},400);}
+      }
+    }else{
+      // wrong — flash error
+      var qel=cc.querySelector('[data-qid="'+selQ.id+'"]');
+      var ael=cc.querySelector('[data-aid="'+selA.id+'"]');
+      if(qel)qel.classList.add('error');
+      if(ael)ael.classList.add('error');
+      selQ=null;selA=null;
+      setTimeout(function(){buildMatch();},700);
+    }
+  }
+  buildMatch();
+}
+
+// ── ADD PANEL ──────────────────────────────────────────────
+function renderAdd(){
+  showPanel('add');
+  var sel=document.getElementById('ns');sel.innerHTML='';
+  subjects.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent=s.icon+' '+s.name;sel.appendChild(o);});
+}
+
+// ── MANAGE PANEL ───────────────────────────────────────────
+function renderManage(){
+  showPanel('manage');
+  var fl=document.getElementById('mf-list');fl.innerHTML='';
+  subjects.forEach(function(s){
+    var ct=0;cards.forEach(function(c){if(c.sub===s.id)ct++;});
+    var div=document.createElement('div');div.className='mfolder';
+    div.innerHTML='<span class="mf-icon">'+s.icon+'</span><span class="mf-name">'+s.name+'</span><span class="mf-ct">'+ct+' cartes</span><button class="del" data-fid="'+s.id+'">✕</button>';
+    fl.appendChild(div);
+    div.querySelector('.del').onclick=function(){
+      var fid=this.getAttribute('data-fid'),sv=findSub(fid);
+      var ct2=0;cards.forEach(function(c){if(c.sub===fid)ct2++;});
+      var msg='Supprimer "'+((sv?sv.name:fid))+'"'+(ct2>0?' et ses '+ct2+' cartes':'')+' ?';
+      if(window.confirm(msg)){subjects=subjects.filter(function(x){return x.id!==fid;});cards=cards.filter(function(x){return x.sub!==fid;});persist();renderManage();toast('Supprimé !');}
+    };
+  });
   renderManageCards('');
 }
-
-function renderManageCards(search) {
-  var el = document.getElementById('manage-cards');
-  var filtered = [];
-  var s = search.toLowerCase();
-  for (var i = 0; i < cards.length; i++) {
-    if (!s || cards[i].q.toLowerCase().indexOf(s) !== -1 || cards[i].a.toLowerCase().indexOf(s) !== -1) {
-      filtered.push(cards[i]);
-    }
-  }
-  if (!filtered.length) { el.innerHTML = '<div class="empty">Aucune carte trouvee.</div>'; return; }
-  var html = '<div class="mlist">';
-  for (var j = 0; j < filtered.length; j++) {
-    var c = filtered[j], sub = findSub(c.sub);
-    html += '<div class="mi">'
-      + '<div class="mq">' + c.q + '</div>'
-      + (sub ? '<span class="ms">' + sub.icon + '</span>' : '')
-      + '<span class="mb">' + c.deck + '</span>'
-      + '<button class="edit-btn" data-eid="' + c.id + '">✏️</button>'
-      + '<button class="del" data-did="' + c.id + '">✕</button>'
-      + '</div>';
-  }
-  html += '</div>';
-  el.innerHTML = html;
-
-  // edit buttons
-  var ebtns = el.getElementsByClassName('edit-btn');
-  for (var e = 0; e < ebtns.length; e++) {
-    ebtns[e].onclick = (function(cid) {
-      return function() { openEditModal(cid); };
-    })(parseInt(ebtns[e].getAttribute('data-eid'), 10));
-  }
-  // delete buttons
-  var dbtns = el.getElementsByClassName('del');
-  for (var d = 0; d < dbtns.length; d++) {
-    dbtns[d].onclick = (function(cid) {
-      return function() {
-        if (window.confirm('Supprimer cette carte ?')) {
-          cards = cards.filter(function(x) { return x.id !== cid; });
-          persist(); renderManage(); toast('Carte supprimee !');
-        }
-      };
-    })(parseInt(dbtns[d].getAttribute('data-did'), 10));
-  }
+function renderManageCards(search){
+  var el=document.getElementById('mc-list'),filtered=[];
+  var s=search.toLowerCase();
+  cards.forEach(function(c){if(!s||c.q.toLowerCase().indexOf(s)!==-1||c.a.toLowerCase().indexOf(s)!==-1)filtered.push(c);});
+  if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--sub);font-size:.85rem">Aucune carte trouvée.</div>';return;}
+  el.innerHTML='<div class="mlist">'+filtered.map(function(c){
+    var sub=findSub(c.sub);
+    return'<div class="mi"><div class="mq">'+c.q+'</div>'+(sub?'<span class="ms">'+sub.icon+'</span>':'')+'<span class="mb">'+c.deck+'</span><button class="edbtn" data-eid="'+c.id+'">✏️</button><button class="del" data-did="'+c.id+'">✕</button></div>';
+  }).join('')+'</div>';
+  el.querySelectorAll('.edbtn').forEach(function(b){b.onclick=function(){openEdit(parseInt(b.getAttribute('data-eid'),10));};});
+  el.querySelectorAll('.del').forEach(function(b){b.onclick=function(){
+    if(window.confirm('Supprimer cette carte ?')){cards=cards.filter(function(x){return x.id!==parseInt(b.getAttribute('data-did'),10);});persist();renderManage();toast('Supprimée !');}
+  };});
+}
+function openEdit(cid){
+  var c=null;cards.forEach(function(x){if(x.id===cid)c=x;});
+  if(!c)return;
+  var es=document.getElementById('es');es.innerHTML='';
+  subjects.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent=s.icon+' '+s.name;if(s.id===c.sub)o.selected=true;es.appendChild(o);});
+  document.getElementById('eid').value=c.id;
+  document.getElementById('ed').value=c.deck;
+  document.getElementById('eq').value=c.q;
+  document.getElementById('ea').value=c.a;
+  document.getElementById('ec').value=c.ctx||'';
+  document.getElementById('modal-edit').className='overlay open';
 }
 
-// ── EDIT MODAL ──
-function openEditModal(cid) {
-  var c = null;
-  for (var i = 0; i < cards.length; i++) { if (cards[i].id === cid) { c = cards[i]; break; } }
-  if (!c) return;
+// ── TOAST ──────────────────────────────────────────────────
+function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.className='toast show';setTimeout(function(){el.className='toast';},2200);}
 
-  // populate subject select
-  var esel = document.getElementById('edit-sub');
-  esel.innerHTML = '';
-  for (var j = 0; j < subjects.length; j++) {
-    var opt = document.createElement('option');
-    opt.value = subjects[j].id;
-    opt.textContent = subjects[j].icon + ' ' + subjects[j].name;
-    if (subjects[j].id === c.sub) opt.selected = true;
-    esel.appendChild(opt);
-  }
-  document.getElementById('edit-id').value    = c.id;
-  document.getElementById('edit-deck').value  = c.deck;
-  document.getElementById('edit-q').value     = c.q;
-  document.getElementById('edit-a').value     = c.a;
-  document.getElementById('edit-ctx').value   = c.ctx || '';
-  document.getElementById('edit-modal').className = 'overlay open';
-}
+// ── WIRING ─────────────────────────────────────────────────
+document.getElementById('t-study').onclick=function(){renderHome();};
+document.getElementById('t-add').onclick=function(){renderAdd();};
+document.getElementById('t-manage').onclick=function(){renderManage();};
+document.getElementById('btn-all').onclick=function(){studyFilter=[];checkedSubs=[];startSession();};
+document.getElementById('btn-sel').onclick=function(){studyFilter=checkedSubs.slice();checkedSubs=[];startSession();};
+document.getElementById('btn-back').onclick=function(){renderHome();};
 
-// ── STATIC WIRING ──
-document.getElementById('t-study').onclick  = function() { renderHome(); };
-document.getElementById('t-add').onclick    = function() { renderAdd(); };
-document.getElementById('t-manage').onclick = function() { renderManage(); };
-
-document.getElementById('btn-study-all').onclick = function() {
-  studyFilter = []; checkedSubs = []; activeDeck = 'Tous'; buildQueue(); renderCards();
-};
-document.getElementById('btn-study-sel').onclick = function() {
-  studyFilter = checkedSubs.slice(); checkedSubs = []; activeDeck = 'Tous'; buildQueue(); renderCards();
-};
-document.getElementById('btn-back-home').onclick = function() { renderHome(); };
+// mode chips
+document.querySelectorAll('.mchip').forEach(function(el){
+  el.onclick=function(){
+    document.querySelectorAll('.mchip').forEach(function(x){x.className='mchip';});
+    this.className='mchip on';
+    mode=this.getAttribute('data-mode');
+  };
+});
 
 // add card
-document.getElementById('btn-save-card').onclick = function() {
-  var sub  = document.getElementById('ns').value;
-  var deck = document.getElementById('nd').value.trim();
-  var q    = document.getElementById('nq').value.trim();
-  var a    = document.getElementById('na').value.trim();
-  var ctx  = document.getElementById('nc').value.trim();
-  if (!q || !a || !deck) { toast('Remplis tous les champs !'); return; }
-  cards.push({ id: Date.now(), sub: sub, deck: deck, q: q, a: a, ctx: ctx, diff: 'new' });
+document.getElementById('btn-save').onclick=function(){
+  var sub=document.getElementById('ns').value,deck=document.getElementById('nd').value.trim(),q=document.getElementById('nq').value.trim(),a=document.getElementById('na').value.trim(),ctx=document.getElementById('nc').value.trim();
+  if(!q||!a||!deck){toast('Remplis tous les champs !');return;}
+  cards.push({id:Date.now(),sub:sub,deck:deck,q:q,a:a,ctx:ctx,diff:'new'});
   persist();
-  document.getElementById('nd').value = '';
-  document.getElementById('nq').value = '';
-  document.getElementById('na').value = '';
-  document.getElementById('nc').value = '';
-  toast('Carte ajoutee !'); renderHome();
+  ['nd','nq','na','nc'].forEach(function(id){document.getElementById(id).value='';});
+  toast('Carte ajoutée !');renderHome();
 };
-document.getElementById('btn-cancel-card').onclick = function() { renderHome(); };
-
-// manage search
-document.getElementById('manage-search').oninput = function() {
-  renderManageCards(this.value);
-};
-
-// add folder button in manage
-document.getElementById('btn-add-folder-manage').onclick = function() {
-  document.getElementById('modal').className = 'overlay open';
-};
+document.getElementById('btn-cancel-add').onclick=function(){renderHome();};
+document.getElementById('msearch').oninput=function(){renderManageCards(this.value);};
+document.getElementById('btn-new-f-m').onclick=function(){document.getElementById('modal-folder').className='overlay open';};
 
 // new folder modal
-document.getElementById('btn-confirm-folder').onclick = function() {
-  var name = document.getElementById('folder-name').value.trim();
-  var icon = document.getElementById('folder-icon').value.trim() || '📁';
-  if (!name) { toast('Donne un nom !'); return; }
-  subjects.push({ id: 's' + Date.now(), name: name, icon: icon });
-  persist();
-  document.getElementById('modal').className = 'overlay';
-  document.getElementById('folder-name').value = '';
-  document.getElementById('folder-icon').value = '';
-  renderHome(); toast('Dossier cree !');
+document.getElementById('btn-cf').onclick=function(){
+  var name=document.getElementById('fn').value.trim(),icon=document.getElementById('fi').value.trim()||'📁';
+  if(!name){toast('Donne un nom !');return;}
+  subjects.push({id:'s'+Date.now(),name:name,icon:icon});persist();
+  document.getElementById('modal-folder').className='overlay';
+  document.getElementById('fn').value='';document.getElementById('fi').value='';
+  renderHome();toast('Dossier créé !');
 };
-document.getElementById('btn-cancel-folder').onclick = function() {
-  document.getElementById('modal').className = 'overlay';
-};
+document.getElementById('btn-xf').onclick=function(){document.getElementById('modal-folder').className='overlay';};
 
-// edit modal save
-document.getElementById('btn-save-edit').onclick = function() {
-  var cid  = parseInt(document.getElementById('edit-id').value, 10);
-  var sub  = document.getElementById('edit-sub').value;
-  var deck = document.getElementById('edit-deck').value.trim();
-  var q    = document.getElementById('edit-q').value.trim();
-  var a    = document.getElementById('edit-a').value.trim();
-  var ctx  = document.getElementById('edit-ctx').value.trim();
-  if (!q || !a || !deck) { toast('Remplis tous les champs !'); return; }
-  for (var i = 0; i < cards.length; i++) {
-    if (cards[i].id === cid) {
-      cards[i].sub = sub; cards[i].deck = deck;
-      cards[i].q = q; cards[i].a = a; cards[i].ctx = ctx;
-      break;
-    }
-  }
-  persist();
-  document.getElementById('edit-modal').className = 'overlay';
-  renderManage(); toast('Carte modifiee !');
+// edit modal
+document.getElementById('btn-se').onclick=function(){
+  var cid=parseInt(document.getElementById('eid').value,10),sub=document.getElementById('es').value,deck=document.getElementById('ed').value.trim(),q=document.getElementById('eq').value.trim(),a=document.getElementById('ea').value.trim(),ctx=document.getElementById('ec').value.trim();
+  if(!q||!a||!deck){toast('Remplis tous les champs !');return;}
+  cards.forEach(function(c){if(c.id===cid){c.sub=sub;c.deck=deck;c.q=q;c.a=a;c.ctx=ctx;}});
+  persist();document.getElementById('modal-edit').className='overlay';renderManage();toast('Carte modifiée !');
 };
-document.getElementById('btn-cancel-edit').onclick = function() {
-  document.getElementById('edit-modal').className = 'overlay';
-};
+document.getElementById('btn-xe').onclick=function(){document.getElementById('modal-edit').className='overlay';};
 
-// toast
-function toast(msg) {
-  var el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'toast show';
-  setTimeout(function() { el.className = 'toast'; }, 2200);
-}
-
-// ── INIT ──
+// ── INIT ───────────────────────────────────────────────────
 loadData();
-checkedSubs = []; studyFilter = []; activeDeck = 'Tous';
-queue = []; qIdx = 0; revealed = false; sessionDone = 0;
+checkedSubs=[];studyFilter=[];activeDeck='Tous';mode='flash';
+queue=[];qIdx=0;revealed=false;done=0;qcmIdx=0;qcmScore=0;matchDone=0;
 renderHome();
 </script>
 </body>

@@ -474,13 +474,13 @@ var subjects,cards,checkedSubs,studyFilter,activeDeck,mode,queue,qIdx,revealed,d
 var qcmIdx,qcmScore,matchQs,matchAs,selQ,selA,matchDone;
 
 function loadData(){
-  var ss=store.getItem('fcs9'),sc=store.getItem('fcc9');
+  var ss=store.getItem('fcs10'),sc=store.getItem('fcc10');
   subjects=ss?tryParse(ss,cloneArr(SUBJECTS)):cloneArr(SUBJECTS);
   cards=sc?tryParse(sc,cloneArr(CARDS)):cloneArr(CARDS);
 }
 function tryParse(s,fb){try{var v=JSON.parse(s);return(v&&v.length!==undefined)?v:fb;}catch(e){return fb;}}
 function cloneArr(a){var o=[];for(var i=0;i<a.length;i++){var n={},s=a[i];for(var k in s)n[k]=s[k];o.push(n);}return o;}
-function persist(){try{store.setItem('fcs9',JSON.stringify(subjects));}catch(e){}try{store.setItem('fcc9',JSON.stringify(cards));}catch(e){}}
+function persist(){try{store.setItem('fcs10',JSON.stringify(subjects));}catch(e){}try{store.setItem('fcc10',JSON.stringify(cards));}catch(e){}}
 function findSub(id){for(var i=0;i<subjects.length;i++)if(subjects[i].id===id)return subjects[i];return null;}
 function countEasy(arr){var n=0;for(var i=0;i<arr.length;i++)if(arr[i].diff==='easy')n++;return n;}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
